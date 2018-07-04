@@ -2,9 +2,6 @@
  * L.Control.Coordinates is used for displaying current mouse coordinates on the map.
  */
 
-const mapList = require('./data/json/d2o/map.json');
-const areas = require('./data/json/d2o/Areas.json')
-
 L.Control.Coordinates = L.Control.extend({
     options: {
         position: "topright",
@@ -47,10 +44,11 @@ L.Control.Coordinates = L.Control.extend({
         commaSpan.innerHTML = ",";
         commaSpan.style.font = '18px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif';
         this._inputY = this._createInput("inputY", this._inputcontainer);
-        this._mapId = L.DomUtil.create("input", "no-class", this._inputcontainer);
+        this._mapId = L.DomUtil.create("input", "mapId", this._inputcontainer);
         this._mapId.style.width = "65px";
         L.DomEvent.on(this._inputX, 'keyup', this._handleKeypress, this);
         L.DomEvent.on(this._inputY, 'keyup', this._handleKeypress, this);
+        L.DomEvent.on(this._mapId, 'keyup', this._handleKeypress, this);
         $(this._inputX).blur(function () {
             if ($(this).attr("data-selected-all")) {
                 //Remove atribute to allow select all again on focus        
@@ -150,15 +148,10 @@ L.Control.Coordinates = L.Control.extend({
 	 */
     _handleKeypress: function (e) {
         switch (e.keyCode) {
-            case 27: //Esc
-                //this.collapse();
-                break;
             case 13: //Enter
-                this._handleSubmit();
-                //this.collapse();
+                this._handleSubmit(e);
                 break;
             default: //All keys
-                //this._handleSubmit();
                 break;
         }
     },
@@ -166,14 +159,24 @@ L.Control.Coordinates = L.Control.extend({
 	/**
 	 *	Called on each keyup except ESC
 	 */
-    _handleSubmit: function () {
-        var x = this._inputX.value;//L.NumberFormatter.createValidNumber(this._inputX.value, this.options.decimalSeperator);
-        var y = this._inputY.value;//L.NumberFormatter.createValidNumber(this._inputY.value, this.options.decimalSeperator);
-        if (x !== undefined && y !== undefined) {
-            var geoCoords = dofusCoordsToGeoCoords([x, y]);
-            geoCoords.latlng = geoCoords;
-            map.flyTo(geoCoords, 4);
-            // L.HighlightMap.drawDofusMapBoundsOnMouseMove(geoCoords);
+    _handleSubmit: function (e) {
+        if (e.target.className == 'mapId') {
+            var mapid = this._mapId.value;
+            if (mapid !== undefined) {
+                var coord = this._getCoord([mapid])
+                var geoCoords = dofusCoordsToGeoCoords([coord[0].x, coord[0].y]);
+                geoCoords.latlng = geoCoords;
+                map.flyTo(geoCoords, 4);
+            }
+        } else {
+            var x = this._inputX.value;//L.NumberFormatter.createValidNumber(this._inputX.value, this.options.decimalSeperator);
+            var y = this._inputY.value;//L.NumberFormatter.createValidNumber(this._inputY.value, this.options.decimalSeperator);
+            if (x !== undefined && y !== undefined) {
+                var geoCoords = dofusCoordsToGeoCoords([x, y]);
+                geoCoords.latlng = geoCoords;
+                map.flyTo(geoCoords, 4);
+                // L.HighlightMap.drawDofusMapBoundsOnMouseMove(geoCoords);
+            }
         }
     },
 

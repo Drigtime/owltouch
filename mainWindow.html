@@ -6,25 +6,12 @@
     <link rel="stylesheet" href="./node_modules/leaflet.markercluster/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="./node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css" />
     <link rel="stylesheet" href="./style.css">
-    <!-- <link rel="stylesheet" href="./node_modules/fontawesome-free-5.0.13/web-fonts-with-css/css/fontawesome-all.min.css"> -->
-    <link rel="stylesheet" href="./icomoon/style.css">
-    <!-- <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css"> -->
-    <!-- <link rel="stylesheet" href="./node_modules/bootstrap-select/dist/css/bootstrap-select.css"> -->
-    <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
-    <!-- <link rel="stylesheet" href="./node_modules/materialize-css/dist/css/materialize.min.css"> -->
     <script>window.$ = window.jQuery = require('jquery');</script>
     <script src="./node_modules/semantic-ui-css/semantic.min.js"></script>
-    <script src="./node_modules/leaflet/dist/leaflet.js"></script>
-    <script src="./node_modules/leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
-    <!-- <script src="./node_modules/popper.js/dist/umd/popper.min.js"></script> -->
-    <!-- <script src="./node_modules/bootstrap/dist/js/bootstrap.js"></script> -->
-    <!-- <script src="./node_modules/bootstrap-select/dist/js/bootstrap-select.js"></script> -->
-    <!-- <script src="./node_modules/materialize-css/dist/js/materialize.min.js"></script> -->
     <title>Owl</title>
 </head>
 
 <body>
-    <!-- Just an image -->
     <nav>
         <div class="ui icon compact menu">
             <a class="item">
@@ -33,7 +20,7 @@
             <a class="item">
                 <img src="./data/assets/ui/sort.png">
             </a>
-            <div class="ui form item icon" style="padding: 0%">
+            <div class="ui form item icon">
                 <div class="field">
                     <div class="ui selection dropdown">
                         <input type="hidden" name="gender">
@@ -75,39 +62,10 @@
             </a>
         </div>
     </nav>
-    <!-- Modal -->
-    <!-- <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div> -->
-    <!-- <div class="progress" , style="margin: 0">
-            <div class="determinate"></div>
-        </div> -->
-    <!-- <div id="path-creator-bar" class="leaflet-top leaflet-right" style="top: 150px;"></div> -->
     <div id="map" style="position: fixed!important;">
     </div>
-    <!-- <div class="modal fade" id="havenBagSetting" tabindex="-1" role="dialog" style="top: 300px;"></div>
-        <div class="modal fade" id="setting" tabindex="-1" role="dialog" style="top: 100px;"></div>
-        <div class="modal fade" id="pathSetting" tabindex="-1" role="dialog" style="top: 100px;"></div> -->
 </body>
 
-<script src="./plugins/coordControl.js"></script>
-<script src="./plugins/areaControl.js"></script>
 <script src="./plugins/map.js"></script>
 
 <script>

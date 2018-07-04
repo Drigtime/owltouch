@@ -1,48 +1,18 @@
-const electron = require('electron');
-const url = require('url');
-const path = require('path');
-const fs = require('fs');
+const mapList = require('./data/json/d2o/map.json');
+const areas = require('./data/json/d2o/Areas.json')
 const hints = require('./data/json/d2o/Hints.json');
 const sizeOf = require('image-size');
-const settings = require('./data/settings.json')
-const { ipcRenderer } = electron;
+require('leaflet')
+require('leaflet.markercluster')
+require('leaflet.markercluster.layersupport')
+require('./plugins/areaControl')
+require('./plugins/areaHighlight')
+require('./plugins/coordControl')
 // const mapList = require('./json/d2o/map.json');
 
 const amakna = L.tileLayer('./data/tiles/amakna/{z}/{x}/{y}.jpg', {
 	minZoom: 0,
 	maxZoom: 4,
-});
-
-var classStatue = L.markerClusterGroup({
-	maxClusterRadius: 1, iconCreateFunction: function (cluster) {
-		var markers = cluster.getAllChildMarkers();
-		return L.divIcon({ html: `<img src="${markers[0].options.icon.options.iconUrl}"><div class="qnt">${cluster.getChildCount()}</div>`, className: 'mycluster', iconAnchor: [sizeOf(markers[0].options.icon.options.iconUrl).width / 2, sizeOf(markers[0].options.icon.options.iconUrl).height / 2] });
-	}, animate: false
-}), misc = L.markerClusterGroup({
-	maxClusterRadius: 1, iconCreateFunction: function (cluster) {
-		var markers = cluster.getAllChildMarkers();
-		return L.divIcon({ html: `<img src="${markers[0].options.icon.options.iconUrl}"><div class="qnt">${cluster.getChildCount()}</div>`, className: 'mycluster', iconAnchor: [sizeOf(markers[0].options.icon.options.iconUrl).width / 2, sizeOf(markers[0].options.icon.options.iconUrl).height / 2] });
-	}, animate: false
-}), workshop = L.markerClusterGroup({
-	maxClusterRadius: 1, iconCreateFunction: function (cluster) {
-		var markers = cluster.getAllChildMarkers();
-		return L.divIcon({ html: `<img src="${markers[0].options.icon.options.iconUrl}"><div class="qnt">${cluster.getChildCount()}</div>`, className: 'mycluster', iconAnchor: [sizeOf(markers[0].options.icon.options.iconUrl).width / 2, sizeOf(markers[0].options.icon.options.iconUrl).height / 2] });
-	}, animate: false
-}), market = L.markerClusterGroup({
-	maxClusterRadius: 1, iconCreateFunction: function (cluster) {
-		var markers = cluster.getAllChildMarkers();
-		return L.divIcon({ html: `<img src="${markers[0].options.icon.options.iconUrl}"><div class="qnt">${cluster.getChildCount()}</div>`, className: 'mycluster', iconAnchor: [sizeOf(markers[0].options.icon.options.iconUrl).width / 2, sizeOf(markers[0].options.icon.options.iconUrl).height / 2] });
-	}, animate: false
-}), dungeon = L.markerClusterGroup({
-	maxClusterRadius: 1, iconCreateFunction: function (cluster) {
-		var markers = cluster.getAllChildMarkers();
-		return L.divIcon({ html: `<img src="${markers[0].options.icon.options.iconUrl}"><div class="qnt">${cluster.getChildCount()}</div>`, className: 'mycluster', iconAnchor: [sizeOf(markers[0].options.icon.options.iconUrl).width / 2, sizeOf(markers[0].options.icon.options.iconUrl).height / 2] });
-	}, animate: false
-}), lairs = L.markerClusterGroup({
-	maxClusterRadius: 1, iconCreateFunction: function (cluster) {
-		var markers = cluster.getAllChildMarkers();
-		return L.divIcon({ html: `<img src="${markers[0].options.icon.options.iconUrl}"><div class="qnt">${cluster.getChildCount()}</div>`, className: 'mycluster', iconAnchor: [sizeOf(markers[0].options.icon.options.iconUrl).width / 2, sizeOf(markers[0].options.icon.options.iconUrl).height / 2] });
-	}, animate: false
 });
 
 const map = L.map('map', {
@@ -51,7 +21,7 @@ const map = L.map('map', {
 	center: [-261.0625, 425.34375],
 	// zoom: 0,
 	zoom: 4,
-	layers: [amakna, classStatue, misc, workshop, market, dungeon, lairs],
+	layers: [amakna],
 	zoomControl: true
 });
 
@@ -88,8 +58,6 @@ const dofusCoordsToGeoCoords = (dofusCoords) => {
 const dofusMapSubAreaHighlight = [];
 let actualID;
 let actualDofusCoords = {};
-// const subAreas = Mavvo.SubAreas.subAreas;
-// const subAreaMapDb = Mavvo.SubAreas.subAreaMapDb;
 
 const highlightSubArea = (e) => {
 	const geoCoords = e.latlng;
@@ -168,14 +136,29 @@ function getDofusMapBounds(dofusMapCoord) {
 }
 const drawRectangle = (point) => {
 	const bounds = getDofusMapBounds(point);
-	dofusMapUnderMouse = L.rectangle(bounds, { color: 'black', opacity: 1, interactive: false, clickable: false, fillOpacity: 0, weight: 1.2}).addTo(map);
+	dofusMapUnderMouse = L.rectangle(bounds, { color: 'black', opacity: 1, interactive: false, clickable: false, fillOpacity: 0, weight: 1.2 }).addTo(map);
 };
+
+
+var mcgLayerSupportGroup = L.markerClusterGroup.layerSupport({
+	maxClusterRadius: 1, iconCreateFunction: function (cluster) {
+		var markers = cluster.getAllChildMarkers();
+		return L.divIcon({ html: `<img src="${markers[0].options.icon.options.iconUrl}"><div class="qnt">${cluster.getChildCount()}</div>`, className: 'mycluster', iconAnchor: [sizeOf(markers[0].options.icon.options.iconUrl).width / 2, sizeOf(markers[0].options.icon.options.iconUrl).height / 2] });
+	}, animate: false
+}),
+	classStatue = L.layerGroup(),
+	misc = L.layerGroup(),
+	workshop = L.layerGroup(),
+	market = L.layerGroup(),
+	dungeon = L.layerGroup(),
+	lairs = L.layerGroup();
+
+mcgLayerSupportGroup.addTo(map);
 
 for (const key in hints) {
 	if (hints[key].worldMapId == 1) {
 		if (hints[key].categoryId == 1) {
 			L.marker(dofusCoordsToGeoCoords([hints[key].x, hints[key].y]), { icon: L.icon({ iconUrl: `./data/assets/hint/${hints[key].gfx}.png`, iconAnchor: [sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).width / 2, sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).height / 2] }) }).bindPopup(hints[key].nameId).addTo(classStatue)
-			// L.marker(dofusCoordsToGeoCoords([hints[key].x, hints[key].y]), { icon: L.icon({ iconUrl: `./data/assets/hint/${hints[key].gfx}.png`, iconAnchor: [sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).width / 2, sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).height / 2] }) }).bindPopup(hints[key].nameId).addTo(map)
 		} else if (hints[key].categoryId == 4) {
 			L.marker(dofusCoordsToGeoCoords([hints[key].x, hints[key].y]), { icon: L.icon({ iconUrl: `./data/assets/hint/${hints[key].gfx}.png`, iconAnchor: [sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).width / 2, sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).height / 2] }) }).bindPopup(hints[key].nameId).addTo(misc)
 		} else if (hints[key].categoryId == 3) {
@@ -190,32 +173,8 @@ for (const key in hints) {
 	}
 }
 
-// const hint = {
-// 	classStatue: [],
-// 	misc: [],
-// 	workshop: [],
-// 	market: [],
-// 	dungeon: [],
-// 	lairs: []
-// }
-
-// for (const key in hints) {
-// 	if (hints[key].worldMapId == 1) {
-// 		if (hints[key].categoryId == 1) {
-// 			hint.classStatue.push(L.marker(dofusCoordsToGeoCoords([hints[key].x, hints[key].y]), { icon: L.icon({ iconUrl: `./data/assets/hint/${hints[key].gfx}.png`, iconAnchor: [sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).width / 2, sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).height / 2] }) }).bindPopup(hints[key].nameId))
-// 		} else if (hints[key].categoryId == 4) {
-// 			hint.misc.push(L.marker(dofusCoordsToGeoCoords([hints[key].x, hints[key].y]), { icon: L.icon({ iconUrl: `./data/assets/hint/${hints[key].gfx}.png`, iconAnchor: [sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).width / 2, sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).height / 2] }) }).bindPopup(hints[key].nameId))
-// 		} else if (hints[key].categoryId == 3) {
-// 			hint.workshop.push(L.marker(dofusCoordsToGeoCoords([hints[key].x, hints[key].y]), { icon: L.icon({ iconUrl: `./data/assets/hint/${hints[key].gfx}.png`, iconAnchor: [sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).width / 2, sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).height / 2] }) }).bindPopup(hints[key].nameId))
-// 		} else if (hints[key].categoryId == 2) {
-// 			hint.market.push(L.marker(dofusCoordsToGeoCoords([hints[key].x, hints[key].y]), { icon: L.icon({ iconUrl: `./data/assets/hint/${hints[key].gfx}.png`, iconAnchor: [sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).width / 2, sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).height / 2] }) }).bindPopup(hints[key].nameId))
-// 		} else if (hints[key].categoryId == 6) {
-// 			hint.dungeon.push(L.marker(dofusCoordsToGeoCoords([hints[key].x, hints[key].y]), { icon: L.icon({ iconUrl: `./data/assets/hint/${hints[key].gfx}.png`, iconAnchor: [sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).width / 2, sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).height / 2] }) }).bindPopup(hints[key].nameId))
-// 		} else if (hints[key].categoryId == 9) {
-// 			hint.lairs.push(L.marker(dofusCoordsToGeoCoords([hints[key].x, hints[key].y]), { icon: L.icon({ iconUrl: `./data/assets/hint/${hints[key].gfx}.png`, iconAnchor: [sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).width / 2, sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).height / 2] }) }).bindPopup(hints[key].nameId))
-// 		}
-// 	}
-// }
+mcgLayerSupportGroup.addTo(map);
+mcgLayerSupportGroup.checkIn([classStatue, misc, workshop, market, dungeon, lairs]); // <= this is where the magic happens!
 
 var baseLayers = {
 	"Amakna": amakna
@@ -230,26 +189,13 @@ var overlays = {
 	"Lairs": lairs
 };
 
+
 map.addControl(L.control.coordinates())
 map.addControl(L.control.area())
-// map.addControl(L.control.info())
 L.control.layers(baseLayers, overlays).addTo(map);
 
 
 map.on('mousemove', (e) => {
-	// console.log(geoCoordsToDofusCoords(e.latlng))
 	drawDofusMapBoundsOnMouseMove(e)
 	highlightSubArea(e)
-	// coords = geoCoordsToDofusCoords(e.latlng);
-	// x = coords[0];
-	// y = coords[1];
-	// var divCoordinates = document.querySelector('#mapCoordinates');
-	// divCoordinates.innerHTML = x + ', ' + y;
-	// if (objOnMap.staticMarkersOver) {
-	// 	divCoordinates.innerHTML += '<br/><span style="font-size:12px;font-weight:normal;">' + objOnMap.staticMarkersOver + '</span>';
-	// }
-	// divCoordinates.style.top = e.containerPoint.y + 6 + 'px';
-	// divCoordinates.style.left = e.containerPoint.x + 6 + 'px';
-	// divCoordinates.style.display = 'block';
-	// objOnMap.rectangle.setLatLng(dofusCoordsToGeoCoords([x, y]));
 })
