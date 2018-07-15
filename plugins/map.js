@@ -1,6 +1,20 @@
-const mapList = require('./data/json/d2o/map.json');
-const areas = require('./data/json/d2o/Areas.json')
-const hints = require('./data/json/d2o/Hints.json');
+const mapList = require('./data/json/d2o/map.json'),
+	areas = require('./data/json/d2o/Areas.json'),
+	json = {
+		hints: require('./data/json/d2o/Hints.json'),
+		farmer: {
+			whea: require('./data/json/farmer/ble.json'),
+			barl: require('./data/json/farmer/Orge.json'),
+			oats: require('./data/json/farmer/Avoine.json'),
+			hop: require('./data/json/farmer/houblon.json'),
+			flax: require('./data/json/farmer/Lin.json'),
+			rice: require('./data/json/farmer/Riz.json'),
+			rye: require('./data/json/farmer/Seigle.json'),
+			malt: require('./data/json/farmer/Malt.json'),
+			hemp: require('./data/json/farmer/Chanvre.json'),
+			fros: require('./data/json/farmer/Frostriz.json')
+		}
+	}
 const sizeOf = require('image-size');
 require('leaflet')
 require('leaflet.markercluster')
@@ -125,6 +139,7 @@ const drawDofusMapBoundsOnMouseMove = (e) => {
 		drawRectangle(dofusCoords);
 	}
 };
+
 function getDofusMapBounds(dofusMapCoord) {
 	let topLeftCornerCorner = dofusCoordsToPixelCoords(dofusMapCoord);
 	topLeftCornerCorner.x = topLeftCornerCorner.x - 34.75;
@@ -134,11 +149,11 @@ function getDofusMapBounds(dofusMapCoord) {
 	const sE = pixelCoordsToGeoCoords(bottomRightCornerCorner);
 	return [nW, sE];
 }
+
 const drawRectangle = (point) => {
 	const bounds = getDofusMapBounds(point);
 	dofusMapUnderMouse = L.rectangle(bounds, { color: 'black', opacity: 1, interactive: false, clickable: false, fillOpacity: 0, weight: 1.2 }).addTo(map);
 };
-
 
 var mcgLayerSupportGroup = L.markerClusterGroup.layerSupport({
 	maxClusterRadius: 1, iconCreateFunction: function (cluster) {
@@ -146,54 +161,136 @@ var mcgLayerSupportGroup = L.markerClusterGroup.layerSupport({
 		return L.divIcon({ html: `<img src="${markers[0].options.icon.options.iconUrl}"><div class="qnt">${cluster.getChildCount()}</div>`, className: 'mycluster', iconAnchor: [sizeOf(markers[0].options.icon.options.iconUrl).width / 2, sizeOf(markers[0].options.icon.options.iconUrl).height / 2] });
 	}, animate: false
 }),
-	classStatue = L.layerGroup(),
-	misc = L.layerGroup(),
-	workshop = L.layerGroup(),
-	market = L.layerGroup(),
-	dungeon = L.layerGroup(),
-	lairs = L.layerGroup();
+	hint = {
+		class: L.layerGroup(),
+		misc: L.layerGroup(),
+		workshop: L.layerGroup(),
+		market: L.layerGroup(),
+		dungeon: L.layerGroup(),
+		lairs: L.layerGroup()
+	},
+	farmer = {
+		whea: L.layerGroup(),
+		barl: L.layerGroup(),
+		oats: L.layerGroup(),
+		hop: L.layerGroup(),
+		flax: L.layerGroup(),
+		rice: L.layerGroup(),
+		rye: L.layerGroup(),
+		malt: L.layerGroup(),
+		hemp: L.layerGroup(),
+		fros: L.layerGroup()
+	},
+	lumberjack = {
+
+	},
+	alchemist = {
+
+	},
+	fisherman = {
+
+	},
+	miner = {
+
+	};
 
 mcgLayerSupportGroup.addTo(map);
 
-for (const key in hints) {
-	if (hints[key].worldMapId == 1) {
-		if (hints[key].categoryId == 1) {
-			L.marker(dofusCoordsToGeoCoords([hints[key].x, hints[key].y]), { icon: L.icon({ iconUrl: `./data/assets/hint/${hints[key].gfx}.png`, iconAnchor: [sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).width / 2, sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).height / 2] }) }).bindPopup(hints[key].nameId).addTo(classStatue)
-		} else if (hints[key].categoryId == 4) {
-			L.marker(dofusCoordsToGeoCoords([hints[key].x, hints[key].y]), { icon: L.icon({ iconUrl: `./data/assets/hint/${hints[key].gfx}.png`, iconAnchor: [sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).width / 2, sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).height / 2] }) }).bindPopup(hints[key].nameId).addTo(misc)
-		} else if (hints[key].categoryId == 3) {
-			L.marker(dofusCoordsToGeoCoords([hints[key].x, hints[key].y]), { icon: L.icon({ iconUrl: `./data/assets/hint/${hints[key].gfx}.png`, iconAnchor: [sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).width / 2, sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).height / 2] }) }).bindPopup(hints[key].nameId).addTo(workshop)
-		} else if (hints[key].categoryId == 2) {
-			L.marker(dofusCoordsToGeoCoords([hints[key].x, hints[key].y]), { icon: L.icon({ iconUrl: `./data/assets/hint/${hints[key].gfx}.png`, iconAnchor: [sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).width / 2, sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).height / 2] }) }).bindPopup(hints[key].nameId).addTo(market)
-		} else if (hints[key].categoryId == 6) {
-			L.marker(dofusCoordsToGeoCoords([hints[key].x, hints[key].y]), { icon: L.icon({ iconUrl: `./data/assets/hint/${hints[key].gfx}.png`, iconAnchor: [sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).width / 2, sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).height / 2] }) }).bindPopup(hints[key].nameId).addTo(dungeon)
-		} else if (hints[key].categoryId == 9) {
-			L.marker(dofusCoordsToGeoCoords([hints[key].x, hints[key].y]), { icon: L.icon({ iconUrl: `./data/assets/hint/${hints[key].gfx}.png`, iconAnchor: [sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).width / 2, sizeOf(`./data/assets/hint/${hints[key].gfx}.png`).height / 2] }) }).bindPopup(hints[key].nameId).addTo(lairs)
+for (const key in json.hints) {
+	if (json.hints[key].worldMapId == 1) {
+		if (json.hints[key].categoryId == 1) {
+			L.marker(dofusCoordsToGeoCoords([json.hints[key].x, json.hints[key].y]), { icon: L.icon({ iconUrl: `./data/assets/hint/${json.hints[key].gfx}.png`, iconAnchor: [sizeOf(`./data/assets/hint/${json.hints[key].gfx}.png`).width / 2, sizeOf(`./data/assets/hint/${json.hints[key].gfx}.png`).height / 2] }) }).bindPopup(json.hints[key].nameId).addTo(hint.class)
+		} else if (json.hints[key].categoryId == 4) {
+			L.marker(dofusCoordsToGeoCoords([json.hints[key].x, json.hints[key].y]), { icon: L.icon({ iconUrl: `./data/assets/hint/${json.hints[key].gfx}.png`, iconAnchor: [sizeOf(`./data/assets/hint/${json.hints[key].gfx}.png`).width / 2, sizeOf(`./data/assets/hint/${json.hints[key].gfx}.png`).height / 2] }) }).bindPopup(json.hints[key].nameId).addTo(hint.misc)
+		} else if (json.hints[key].categoryId == 3) {
+			L.marker(dofusCoordsToGeoCoords([json.hints[key].x, json.hints[key].y]), { icon: L.icon({ iconUrl: `./data/assets/hint/${json.hints[key].gfx}.png`, iconAnchor: [sizeOf(`./data/assets/hint/${json.hints[key].gfx}.png`).width / 2, sizeOf(`./data/assets/hint/${json.hints[key].gfx}.png`).height / 2] }) }).bindPopup(json.hints[key].nameId).addTo(hint.workshop)
+		} else if (json.hints[key].categoryId == 2) {
+			L.marker(dofusCoordsToGeoCoords([json.hints[key].x, json.hints[key].y]), { icon: L.icon({ iconUrl: `./data/assets/hint/${json.hints[key].gfx}.png`, iconAnchor: [sizeOf(`./data/assets/hint/${json.hints[key].gfx}.png`).width / 2, sizeOf(`./data/assets/hint/${json.hints[key].gfx}.png`).height / 2] }) }).bindPopup(json.hints[key].nameId).addTo(hint.market)
+		} else if (json.hints[key].categoryId == 6) {
+			L.marker(dofusCoordsToGeoCoords([json.hints[key].x, json.hints[key].y]), { icon: L.icon({ iconUrl: `./data/assets/hint/${json.hints[key].gfx}.png`, iconAnchor: [sizeOf(`./data/assets/hint/${json.hints[key].gfx}.png`).width / 2, sizeOf(`./data/assets/hint/${json.hints[key].gfx}.png`).height / 2] }) }).bindPopup(json.hints[key].nameId).addTo(hint.dungeon)
+		} else if (json.hints[key].categoryId == 9) {
+			L.marker(dofusCoordsToGeoCoords([json.hints[key].x, json.hints[key].y]), { icon: L.icon({ iconUrl: `./data/assets/hint/${json.hints[key].gfx}.png`, iconAnchor: [sizeOf(`./data/assets/hint/${json.hints[key].gfx}.png`).width / 2, sizeOf(`./data/assets/hint/${json.hints[key].gfx}.png`).height / 2] }) }).bindPopup(json.hints[key].nameId).addTo(hint.lairs)
 		}
 	}
 }
 
+for (const key in json.farmer.whea) {
+	L.marker(dofusCoordsToGeoCoords([json.farmer.whea[key].posX, json.farmer.whea[key].posY])).addTo(farmer.whea)
+}
+for (const key in json.farmer.barl) {
+	L.marker(dofusCoordsToGeoCoords([json.farmer.barl[key].posX, json.farmer.barl[key].posY])).addTo(farmer.barl)
+}
+for (const key in json.farmer.oats) {
+	L.marker(dofusCoordsToGeoCoords([json.farmer.oats[key].posX, json.farmer.oats[key].posY])).addTo(farmer.oats)
+}
+for (const key in json.farmer.hop) {
+	L.marker(dofusCoordsToGeoCoords([json.farmer.hop[key].posX, json.farmer.hop[key].posY])).addTo(farmer.hop)
+}
+for (const key in json.farmer.flax) {
+	L.marker(dofusCoordsToGeoCoords([json.farmer.flax[key].posX, json.farmer.flax[key].posY])).addTo(farmer.flax)
+}
+for (const key in json.farmer.rice) {
+	L.marker(dofusCoordsToGeoCoords([json.farmer.rice[key].posX, json.farmer.rice[key].posY])).addTo(farmer.rice)
+}
+for (const key in json.farmer.rye) {
+	L.marker(dofusCoordsToGeoCoords([json.farmer.rye[key].posX, json.farmer.rye[key].posY])).addTo(farmer.rye)
+}
+for (const key in json.farmer.malt) {
+	L.marker(dofusCoordsToGeoCoords([json.farmer.malt[key].posX, json.farmer.malt[key].posY])).addTo(farmer.malt)
+}
+for (const key in json.farmer.hemp) {
+	L.marker(dofusCoordsToGeoCoords([json.farmer.hemp[key].posX, json.farmer.hemp[key].posY])).addTo(farmer.hemp)
+}
+for (const key in json.farmer.fros) {
+	L.marker(dofusCoordsToGeoCoords([json.farmer.fros[key].posX, json.farmer.fros[key].posY])).addTo(farmer.fros)
+}
+
+
 mcgLayerSupportGroup.addTo(map);
-mcgLayerSupportGroup.checkIn([classStatue, misc, workshop, market, dungeon, lairs]); // <= this is where the magic happens!
+mcgLayerSupportGroup.checkIn([
+	hint.class,
+	hint.misc,
+	hint.workshop,
+	hint.market,
+	hint.dungeon,
+	hint.lairs,
+	farmer.barl,
+	farmer.oats,
+	farmer.hop,
+	farmer.flax,
+	farmer.rice,
+	farmer.rye,
+	farmer.malt,
+	farmer.hemp,
+	farmer.fros]); // <= this is where the magic happens!
 
 var baseLayers = {
 	"Amakna": amakna
 };
 
 var overlays = {
-	"Class": classStatue,
-	"Misc": misc,
-	"Workshop": workshop,
-	"Market": market,
-	"Dungeon": dungeon,
-	"Lairs": lairs
-};
+	"Class": hint.class,
+	"Misc": hint.misc,
+	"Workshop": hint.workshop,
+	"Market": hint.market,
+	"Dungeon": hint.dungeon,
+	"Lairs": hint.lairs,
 
+	"whea": farmer.whea,
+	"barl": farmer.barl,
+	"oats": farmer.oats,
+	"hop": farmer.hop,
+	"flax": farmer.flax,
+	"rice": farmer.rice,
+	"rye": farmer.rye,
+	"malt": farmer.malt,
+	"hemp": farmer.hemp,
+	"fros": farmer.fros
+};
 
 map.addControl(L.control.coordinates())
 map.addControl(L.control.area())
 L.control.layers(baseLayers, overlays).addTo(map);
-
 
 map.on('mousemove', (e) => {
 	drawDofusMapBoundsOnMouseMove(e)

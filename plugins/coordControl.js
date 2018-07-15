@@ -31,12 +31,6 @@ L.Control.Coordinates = L.Control.extend({
         L.DomEvent.disableClickPropagation(this._container);
         L.DomEvent.addListener(container, 'mousemove', L.DomEvent.stop);
 
-
-        //label containers
-        //this._labelcontainer = L.DomUtil.create("div", "uiElement label", container);
-        //this._label = L.DomUtil.create("span", "labelFirst", this._labelcontainer);
-
-
         //input containers
         this._inputcontainer = L.DomUtil.create("div", "uiElement input", container);
         this._inputX = this._createInput("inputX", this._inputcontainer);
@@ -314,8 +308,7 @@ L.Control.Coordinates = L.Control.extend({
             var subAreas = this._getId(x, y)
             if (!subAreas.subAreaId) {
                 if (this._showsCoordinates) {
-                    //L.DomUtil.addClass(this._labelcontainer, "uiHidden"); 
-                    //this._label.innerHTML = this._createCoordinateLabel({ x: "-", y: "-" });
+
                     this._inputX.value = "";
                     this._inputY.value = "";
                     this._mapId.value = "";
@@ -324,25 +317,10 @@ L.Control.Coordinates = L.Control.extend({
                 return;
             }
             this._showsCoordinates = true;
-            //L.DomUtil.removeClass(this._labelcontainer, "uiHidden");
             this._mapId.value = subAreas.id;
-            //this._inputX.value = L.NumberFormatter.round(geoCoords.lng, opts.decimals, opts.decimalSeperator);
-            //this._label.innerHTML = this._createCoordinateLabel(dofusCoords);
+
             this._inputX.value = x;
             this._inputY.value = y;
-            // this._areaName.innerHTML = areas[subAreas.subAreaId].nameId;
-            // let coords = this._getCoord(subAreas.mapIds)
-            // if (highlight !== undefined) {
-            //     for (const iterator of highlight) {
-            //         L.map.removeLayer(highlight[iterator])
-            //     }
-            // }
-            // var highlight = []
-            // for (const key in coords) {
-            //     const bounds = getDofusMapBounds([coords[key].x, coords[key].y]);
-            //     highlight.push(L.rectangle(bounds, { color: "#00ffcc", weight: 0, fillOpacity: 0.25, interactive: false, }).addTo(map))
-            //     // dofusMapSubAreaHighlight.push(highlight);
-            // }
         }
     },
 
