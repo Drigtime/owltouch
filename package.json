@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "owltouch-new",
   "productName": "owltouch-new",
   "version": "1.0.0",
@@ -71,4 +72,29 @@
     "eslint-plugin-jsx-a11y": "^5",
     "eslint-plugin-react": "^7"
   }
+=======
+  "name": "owltouch",
+  "version": "1.0.0",
+  "description": "Dofus Touch path creator",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "Drigtime",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^2.0.4",
+    "gulp": "^3.9.1",
+    "image-size": "^0.6.3",
+    "jquery": "^3.3.1",
+    "leaflet": "^1.3.1",
+    "leaflet.markercluster": "^1.3.0",
+    "leaflet.markercluster.layersupport": "^2.0.1",
+    "material-design-icons": "^3.0.1",
+    "npm": "^6.1.0",
+    "semantic-ui-css": "^2.3.1"
+  },
+  "devDependencies": {}
+>>>>>>> 0dc6b7b7d1df17ab902fefe009444fb9d0b35064
 }

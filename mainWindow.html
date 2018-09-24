@@ -1,0 +1,83 @@
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="./node_modules/semantic-ui-css/semantic.min.css">
+    <link rel="stylesheet" href="./node_modules/leaflet/dist/leaflet.css">
+    <link rel="stylesheet" href="./node_modules/leaflet.markercluster/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="./node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="./style.css">
+    <script>window.$ = window.jQuery = require('jquery');</script>
+    <script src="./node_modules/semantic-ui-css/semantic.min.js"></script>
+    <title>Owl</title>
+</head>
+
+<body>
+    <nav>
+        <div class="ui icon compact menu">
+            <a class="item">
+                <img src="./data/assets/ui/eraser.png">
+            </a>
+            <a class="item">
+                <img src="./data/assets/ui/sort.png">
+            </a>
+            <div class="ui form item icon">
+                <div class="field">
+                    <div class="ui selection dropdown">
+                        <input type="hidden" name="gender">
+                        <i class="dropdown icon"></i>
+                        <div class="text">
+                            <img src="./data/assets/hint/move.png"> move
+                        </div>
+                        <div class="menu">
+                            <div class="item selected">
+                                <img src="./data/assets/hint/move.png"> move
+                            </div>
+                            <div class="item">
+                                <img src="./data/assets/hint/gather.png"> gather
+                            </div>
+                            <div class="item">
+                                <img src="./data/assets/hint/fight.png"> fight
+                            </div>
+                            <div class="item">
+                                <img src="./data/assets/hint/401.png"> bank / home
+                            </div>
+                            <div class="item">
+                                <img src="./data/assets/hint/phoe.png"> phoenix
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="item">
+                <img src="./data/assets/hint/up.png">
+            </a>
+            <a class="item">
+                <img src="./data/assets/hint/down.png">
+            </a>
+            <a class="item">
+                <img src="./data/assets/hint/left.png">
+            </a>
+            <a class="item">
+                <img src="./data/assets/hint/right.png">
+            </a>
+        </div>
+    </nav>
+    <div id="map" style="position: fixed!important;">
+    </div>
+</body>
+
+<script src="./plugins/map.js"></script>
+
+<script>
+    $('.ui.selection.dropdown').dropdown();
+    $('a.item').on('click', (e) => {
+        if ($(e.currentTarget.className).hasClass('toggled')) {
+            $(e.currentTarget).toggleClass('toggled')
+        } else {
+            $(e.currentTarget).toggleClass('toggled')
+        }
+        console.log(e);
+    })
+</script>
+
+</html>
