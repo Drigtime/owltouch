@@ -1,0 +1,275 @@
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" href="../node_modules/materialize-css/dist/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link rel="stylesheet" href="nouislider.css">
+  <link rel="stylesheet" href="../node_modules/leaflet/dist/leaflet.css">
+  <link rel="stylesheet" href="../node_modules/leaflet.markercluster/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="../node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+  <link rel="stylesheet" href="./style.css">
+  <title>Owl</title>
+</head>
+
+<body>
+  <nav>
+    <div class="nav-wrapper blue-grey darken-5">
+      <ul>
+        <li>
+          <div class="input-field">
+            <select id="type">
+              <option data-array-type="path" data-type="move" value="path">Déplacement</option>
+              <option data-array-type="path" data-type="gather" value="path">Récolte</option>
+              <option data-array-type="path" data-type="fight" value="path">Combat</option>
+              <option data-array-type="bank" data-type="bank" value="bank">Banque</option>
+              <option data-array-type="phoenix" data-type="phoenix" value="phoenix">Phoenix</option>
+            </select>
+          </div>
+        </li>
+        <li>
+          <span class="btn-group">
+            <a class="waves-effect btn-flat" id="up"><i class="material-icons">arrow_upward</i></a>
+            <a class="waves-effect btn-flat" id="down"><i class="material-icons">arrow_downward</i></a>
+            <a class="waves-effect btn-flat" id="left"><i class="material-icons">arrow_back</i></a>
+            <a class="waves-effect btn-flat" id="right"><i class="material-icons">arrow_forward</i></a>
+          </span>
+        </li>
+        <li>
+          <span class="btn-group">
+            <a class="waves-effect btn-flat" id="delete"><i class="material-icons">delete</i></a>
+          </span>
+        </li>
+      </ul>
+      <ul class="right">
+        <li><a class="waves-effect btn-floating btn-flat modal-trigger" href="#modal1"><i class="material-icons">settings</i></a></li>
+      </ul>
+    </div>
+  </nav>
+  <!-- Modal Structure -->
+  <div id="modal1" class="modal">
+    <div class="modal-content grey darken-4">
+      <div class="row">
+        <div class="col s12">
+          <ul class="tabs">
+            <li class="tab col s4"><a class="blue-grey active" href="#gatherTab">Récolte</a></li>
+            <li class="tab col s4"><a class="blue-grey" href="#fightTab">Combat</a></li>
+            <li class="tab col s4"><a class="blue-grey" href="#bankTab">Banque</a></li>
+          </ul>
+        </div>
+        <div class="col s12">
+          <div class="row">
+            <div class="col s12">
+              <div id="gatherTab" class="card-panel grey darken-3">
+                <div class="switch">
+                  <label>
+                    <input type="checkbox" id="displayGatherCountCheckbox">
+                    <span class="lever"></span>
+                    Afficher le compteur de récoltes
+                  </label>
+                </div>
+                <div class="switch">
+                  <label>
+                    <input type="checkbox" id="autoRegenCheckbox">
+                    <span class="lever"></span>
+                    Ouverture automatique des sacs de récolte
+                  </label>
+                </div>
+                <div class="input-field-header">
+                  <span>Ressources à récolter</span>
+                  <div class="chips chips-autocomplete" id="gatherElementChips"></div>
+                </div>
+              </div>
+              <div id="fightTab" class="card-panel grey darken-3">
+                <div class="switch">
+                  <label>
+                    <input type="checkbox">
+                    <span class="lever"></span>
+                    Afficher le compteur de combats
+                  </label>
+                </div>
+                <div class="row" style="margin-bottom: 0px">
+                  <div class="col s12">
+                    <ul class="collapsible expandable">
+                      <li>
+                        <div class="collapsible-header grey darken-3 white-text" style="font-size: small">
+                          <span>Régénération de vie automatique</span>
+                        </div>
+                        <div class="collapsible-body grey darken-3">
+                          <div class="switch">
+                            <label>
+                              <input type="checkbox">
+                              <span class="lever"></span>
+                              Activer la régénération de vie automatique
+                            </label>
+                          </div>
+                          <div class="input-field-header">
+                            <span>Régénération minimum / maximum</span>
+                            <div id="lifeMinMax"></div>
+                          </div>
+                          <div class="input-field-header">
+                            <span>Objets à récupérer en banque pour se régénérer</span>
+                            <div class="chips chips-placeholder chips-autocomplete" id="regenItemChips"></div>
+                          </div>
+                          <div class="input-field-header">
+                            <span>Quantité d'objets à récupérer en banque</span>
+                            <div class="input-field"><input type="number" min="0" value="0" id="regenItemValue"></div>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="input-field-header">
+                  <span>Nombre de monstres minimum / maximum</span>
+                  <div id="monsterQuantMinMax"></div>
+                </div>
+                <div class="row" style="margin-bottom: 0px">
+                  <div class="col s12">
+                    <ul class="collapsible expandable">
+                      <li>
+                        <div class="collapsible-header grey darken-3 white-text" style="font-size: small">
+                          <span>Niveau des groupes de monstres</span>
+                        </div>
+                        <div class="collapsible-body grey darken-3">
+                          <div class="row" style="margin-bottom: 0px">
+                            <div class="input-field col s6 input-field-header"><span>Minimum</span>
+                              <input id="monsterMin" type="number" min="1" value="1"></div>
+                            <div class="input-field col s6 input-field-header"><span>Maximum</span>
+                              <input id="monsterMax" type="number" min="1" value="1000"></div>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="input-field-header">
+                  <span>Monstres obligatoires</span>
+                  <div class="chips chips-autocomplete" id="monsterMandatory"></div>
+                </div>
+                <div class="input-field-header">
+                  <span>Monstres interdits</span>
+                  <div class="chips chips-autocomplete" id="monsterForbidden"></div>
+                </div>
+              </div>
+              <div id="bankTab" class="card-panel grey darken-3">
+                <div class="input-field-header">
+                  <span>Pods maximum avant retour en banque</span>
+                  <form action="#">
+                    <p class="range-field">
+                      <input type="range" id="maxPods" min="0" max="100" value="90" id="podMax" />
+                    </p>
+                  </form>
+                </div>
+                <div class="input-field-header">
+                  <span>Suppression automatique</span>
+                  <div class="chips chips-autocomplete" id="autoDelete"></div>
+                </div>
+                <div class="switch">
+                  <label>
+                    <input type="checkbox" id="putKamasCheckbox">
+                    <span class="lever"></span>
+                    Déposer des kamas
+                  </label>
+                </div>
+                <div class="input-field">
+                  <input id="putKamasValue" type="number" min="0" value="0">
+                  <span class="helper-text">Si vous mettez 0, tous les kamas seront déposés.</span>
+                </div>
+                <div class="input-field-header">
+                  <div class="switch">
+                    <label>
+                      <input type="checkbox" id="getKamasCheckbox">
+                      <span class="lever"></span>
+                      Prendre des kamas
+                    </label>
+                  </div>
+                  <div class="input-field">
+                    <input id="getKamasValue" type="number" min="0" value="0">
+                    <span class="helper-text">Si vous mettez 0, tous les kamas seront récupérés.</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col s12">
+                    <ul class="collapsible expandable">
+                      <li>
+                        <div class="collapsible-header grey darken-3 white-text" style="font-size: small">
+                          <span>Objets a déposer dans la banque</span>
+                        </div>
+                        <div class="collapsible-body grey darken-3">
+                          <div class="row">
+                            <div class="input-field col s6 input-field-header">
+                              <span>Nom de l'objet à déposer</span>
+                              <input class="autocomplete" type="text" id="putItemName">
+                            </div>
+                            <div class="input-field col s4 input-field-header">
+                              <span>Quantité</span><input type="number" min="0" value="0" id="putItemQuant">
+                              <span class="helper-text">Si vous mettez 0, toute la quantité de l’élément sera déposée</span>
+                            </div>
+                            <a class="col s2 waves-effect waves-light btn blue-grey" id="addPutItem">Ajouter</a>
+                          </div>
+                          <table class="white-text">
+                            <thead>
+                              <tr>
+                                <th>Icone</th>
+                                <th>Nom</th>
+                                <th>Quantité</th>
+                                <th>Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                          </table>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="collapsible-header grey darken-3 white-text" style="font-size: small">
+                          <span>Objets a récupérer de la banque</span>
+                        </div>
+                        <div class="collapsible-body grey darken-3">
+                          <div class="row">
+                            <div class="input-field col s6 input-field-header">
+                              <span>Nom de l'objet à récupérer</span>
+                              <input class="autocomplete" type="text" id="getItemName">
+                            </div>
+                            <div class="input-field col s4 input-field-header">
+                              <span>Quantité</span><input type="number" min="0" value="0" id="getItemQuant">
+                              <span class="helper-text">Si vous mettez 0, toute la quantité de l’élément sera récupéré</span>
+                            </div>
+                            <a class="col s2 waves-effect waves-light btn blue-grey" id="addGetItem">Ajouter</a>
+                          </div>
+                          <table class="white-text">
+                            <thead>
+                              <tr>
+                                <th>Icone</th>
+                                <th>Nom</th>
+                                <th>Quantité</th>
+                                <th>Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                          </table>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="map"> </div>
+</body>
+<script>
+  window.$ = window.jQuery = require('jquery');
+</script>
+<script type="text/javascript" src="../node_modules/materialize-css/dist/js/materialize.min.js"></script>
+<script src="nouislider.js"></script>
+<script src="./plugins/map.js"></script>
+<script src="./plugins/pathMaker.js"></script>
+
+</html>

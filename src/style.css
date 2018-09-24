@@ -1,0 +1,384 @@
+#map {
+    height: calc(100% - 64px);
+    width: 100%;
+    background-color: #000
+}
+
+.qnt {
+    position: absolute;
+    top: 0;
+    right: -25px;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    color: #000 !important;
+    border: 1px solid #666;
+    text-align: center;
+    font-size: 10px
+}
+
+.qnt1 {
+    position: absolute;
+    top: 0;
+    right: -25px;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    background: #ffe79a;
+    color: #000 !important;
+    border: 1px solid #666;
+    text-align: center;
+    font-size: 10px
+}
+
+.qnt2 {
+    position: absolute;
+    top: 0;
+    right: -25px;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    background: #ff9c9c;
+    color: #000 !important;
+    border: 1px solid #666;
+    text-align: center;
+    font-size: 10px
+}
+
+.qnt3 {
+    position: absolute;
+    top: 0;
+    right: -25px;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    background: #ff5c5c;
+    color: #000 !important;
+    border: 1px solid #666;
+    text-align: center;
+    font-size: 10px
+}
+
+.uiElement {
+    position: relative;
+    z-index: -1;
+    background-color: #343a40;
+    font-weight: 700;
+    color: #fff;
+    padding: 2px;
+    border-radius: 2px
+}
+
+.container-resources>a {
+    width: 32px;
+    height: 32px;
+    background-color: #343a40;
+    justify-content: center;
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto
+}
+
+a.farm-control {
+    border-top-right-radius: 2px;
+    border-top-left-radius: 2px
+}
+
+a.farm-control.container-resources-open {
+    border-top-right-radius: 0
+}
+
+a.misc-control {
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px
+}
+
+a.misc-control.container-resources-open {
+    border-bottom-right-radius: 0
+}
+
+a.scale-border-in-out:last-child {
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px
+}
+
+a.scale-border-in-out.selected {
+    background-color: #1d2124
+}
+
+.scale-border-in-out {
+    width: 36px;
+    height: 32px;
+    justify-content: center;
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    background-color: #343a40;
+    padding: 2px;
+    border-left: 2px solid #22262b
+}
+
+.scale-border-in-out>a:last-child {
+    background-color: #343a40;
+    padding: 2px;
+    border-left: 2px solid #22262b;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px
+}
+
+.uiElement.uiHidden {
+    display: none
+}
+
+.navbar {
+    z-index: 1000;
+    width: 100%;
+    position: fixed
+}
+
+.container-resources {
+    display: inline-flex
+}
+
+.container-resources-magic {
+    display: inline-flex;
+    width: 0;
+    height: 32px;
+    overflow: hidden;
+    transition: width .5s ease;
+    box-shadow: .5px 1.5px 4.5px rgba(0, 0, 0, 0.7)
+}
+
+.container-resources-magic.in {
+    width: 100%
+}
+
+img.no-class {
+    height: 20px
+}
+
+ul>li>.input-field {
+    margin-left: 1rem;
+    display: flex;
+    align-items: center
+}
+
+.btn-group {
+    padding: 0 15px
+}
+
+.btn-group>a.btn-flat {
+    padding: 0 8px;
+    margin: 0 0 !important
+}
+
+.btn-floating:hover {
+    background-color: rgba(0, 0, 0, 0.1)
+}
+
+.dropdown-content {
+    background-color: #424242 !important
+}
+
+.dropdown-content li>a,
+.dropdown-content li>span {
+    color: #fff
+}
+
+.btn-flat:focus {
+    background-color: rgba(0, 0, 0, 0)
+}
+
+.btn-flat.selected {
+    background-color: rgba(0, 0, 0, 0.1)
+}
+
+.btn-flat.selected:hover {
+    background-color: rgba(0, 0, 0, 0.2)
+}
+
+.tabs .indicator {
+    background-color: #ffc400
+}
+
+.switch label .lever {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0
+}
+
+.switch {
+    margin-bottom: 10px;
+    margin-top: .625rem
+}
+
+.input-field {
+    margin: 0
+}
+
+.card {
+    margin: 0 0 1rem
+}
+
+.align-div-middle {
+    display: flex;
+    align-items: center
+}
+
+label {
+    font-size: 15px;
+    color: #fff
+}
+
+a,
+div,
+input,
+.helper-text {
+    color: #fff !important
+}
+
+svg.caret {
+    fill: #fff !important
+}
+
+.chip,
+.chip:focus {
+    color: #000 !important;
+    background-color: #607d8b
+}
+
+.chips.focus {
+    border-bottom: 1px solid #607d8b;
+    box-shadow: 0 1px 0 0 #607d8b
+}
+
+input[type="range"] {
+    border: none
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    background-color: #607d8b
+}
+
+input[type="range"]+.thumb {
+    background-color: #607d8b
+}
+
+input[type="range"]+.thumb.active .value {
+    color: #000
+}
+
+.noUi-target.noUi-horizontal .noUi-tooltip {
+    background-color: #607d8b
+}
+
+.noUi-horizontal .noUi-handle,
+.noUi-vertical .noUi-handle {
+    background-color: #607d8b
+}
+
+.noUi-connect {
+    background: #607d8b
+}
+
+.noUi-tooltip span {
+    color: #111
+}
+
+.autocomplete-content li .highlight {
+    color: #607d8b
+}
+
+.dropdown-content li:hover,
+.dropdown-content li.active {
+    background-color: #212121
+}
+
+.switch label input[type="checkbox"]:checked+.lever {
+    background-color: #515f66 !important
+}
+
+.switch label input[type="checkbox"]:checked+.lever:after {
+    background-color: #607d8b !important
+}
+
+body {
+    font-family: "Roboto"
+}
+
+.switch label {
+    color: #fff;
+    font-size: small
+}
+
+input[type="checkbox"]:checked:not(:disabled)~.lever:active::before,
+input[type="checkbox"]:checked:not(:disabled).tabbed:focus~.lever::before {
+    background-color: hsl(200, 11%, 36%) !important
+}
+
+.switch label .lever:before {
+    background-color: hsl(200, 11%, 36%) !important
+}
+
+.input-field input {
+    color: #fff !important
+}
+
+.helper-text {
+    color: #d3d3d3 !important
+}
+
+.input-field-header {
+    margin-top: .625rem
+}
+
+.input-field-header>span {
+    color: #d3d3d3;
+    font-size: small
+}
+
+.input-field-header input {
+    color: #fff !important;
+    font-size: small
+}
+
+.chip {
+    min-height: 32px
+}
+
+.input-field:focus,
+.input-field input:focus {
+    border-bottom: 1px solid #607d8b !important;
+    box-shadow: 0 1px 0 0 #607d8b !important
+}
+
+.noUi-target.noUi-ltr.noUi-horizontal {
+    margin: .652rem 0 .625rem
+}
+
+#gatherTab,
+#fightTab,
+#bankTab {
+    margin: 0
+}
+
+.select-wrapper input.select-dropdown:focus {
+    border-bottom: 1px solid #fff;
+    box-shadow: 0 1px 0 0 #fff !important
+}
+
+.blue-grey.darken-5 {
+    background-color: #343a40 !important
+}
+
+.collapsible {
+    border-top: none;
+    border-right: none;
+    border-left: none;
+}
+
+.collapsible-header,
+.collapsible-body {
+    border-bottom: none;
+}
