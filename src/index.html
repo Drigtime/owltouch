@@ -2,8 +2,8 @@
 
 <head>
   <link rel="stylesheet" href="../node_modules/materialize-css/dist/css/materialize.min.css">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link rel="stylesheet" href="../node_modules/material-design-icons/iconfont/material-icons.css">
+  <link rel="stylesheet" href="../node_modules/typeface-roboto/index.css">
   <link rel="stylesheet" href="nouislider.css">
   <link rel="stylesheet" href="../node_modules/leaflet/dist/leaflet.css">
   <link rel="stylesheet" href="../node_modules/leaflet.markercluster/dist/MarkerCluster.css" />
@@ -15,7 +15,7 @@
 <body>
   <nav>
     <div class="nav-wrapper blue-grey darken-5">
-      <ul>
+      <ul class="hide-on-small-only">
         <li>
           <div class="input-field">
             <select id="type">
@@ -262,7 +262,7 @@
       </div>
     </div>
   </div>
-  <div id="map"> </div>
+  <div id="map"></div>
 </body>
 <script>
   window.$ = window.jQuery = require('jquery');
