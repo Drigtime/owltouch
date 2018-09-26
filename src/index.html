@@ -52,9 +52,10 @@
       <div class="row">
         <div class="col s12">
           <ul class="tabs">
-            <li class="tab col s4"><a class="blue-grey active" href="#gatherTab">Récolte</a></li>
-            <li class="tab col s4"><a class="blue-grey" href="#fightTab">Combat</a></li>
-            <li class="tab col s4"><a class="blue-grey" href="#bankTab">Banque</a></li>
+            <li class="tab col s3"><a class="blue-grey active" href="#gatherTab">Récolte</a></li>
+            <li class="tab col s3"><a class="blue-grey" href="#fightTab">Combat</a></li>
+            <li class="tab col s3"><a class="blue-grey" href="#bankTab">Banque</a></li>
+            <li class="tab col s3"><a class="blue-grey" href="#informationTab">Information</a></li>
           </ul>
         </div>
         <div class="col s12">
@@ -63,14 +64,14 @@
               <div id="gatherTab" class="card-panel grey darken-3">
                 <div class="switch">
                   <label>
-                    <input type="checkbox" id="displayGatherCountCheckbox">
+                    <input type="checkbox" id="displayGatherCountCheckbox" checked>
                     <span class="lever"></span>
                     Afficher le compteur de récoltes
                   </label>
                 </div>
                 <div class="switch">
                   <label>
-                    <input type="checkbox" id="autoRegenCheckbox">
+                    <input type="checkbox" id="openBagsCheckbox" checked>
                     <span class="lever"></span>
                     Ouverture automatique des sacs de récolte
                   </label>
@@ -83,7 +84,7 @@
               <div id="fightTab" class="card-panel grey darken-3">
                 <div class="switch">
                   <label>
-                    <input type="checkbox">
+                    <input type="checkbox" id="displayFightCountCheckbox" checked>
                     <span class="lever"></span>
                     Afficher le compteur de combats
                   </label>
@@ -98,7 +99,7 @@
                         <div class="collapsible-body grey darken-3">
                           <div class="switch">
                             <label>
-                              <input type="checkbox">
+                              <input type="checkbox" id="autoRegenCheckbox" checked>
                               <span class="lever"></span>
                               Activer la régénération de vie automatique
                             </label>
@@ -124,23 +125,13 @@
                   <span>Nombre de monstres minimum / maximum</span>
                   <div id="monsterQuantMinMax"></div>
                 </div>
-                <div class="row" style="margin-bottom: 0px">
-                  <div class="col s12">
-                    <ul class="collapsible expandable">
-                      <li>
-                        <div class="collapsible-header grey darken-3 white-text" style="font-size: small">
-                          <span>Niveau des groupes de monstres</span>
-                        </div>
-                        <div class="collapsible-body grey darken-3">
-                          <div class="row" style="margin-bottom: 0px">
-                            <div class="input-field col s6 input-field-header"><span>Minimum</span>
-                              <input id="monsterMin" type="number" min="1" value="1"></div>
-                            <div class="input-field col s6 input-field-header"><span>Maximum</span>
-                              <input id="monsterMax" type="number" min="1" value="1000"></div>
-                          </div>
-                        </div>
-                      </li>
-                    </ul>
+                <div class="input-field-header">
+                  <span>Niveau des groupes de monstres</span>
+                  <div class="row" style="margin-bottom: 0px">
+                    <div class="input-field col s6 input-field-header"><span>Minimum</span>
+                      <input id="monsterMin" type="number" min="1" value="1"></div>
+                    <div class="input-field col s6 input-field-header"><span>Maximum</span>
+                      <input id="monsterMax" type="number" min="1" value="1000"></div>
                   </div>
                 </div>
                 <div class="input-field-header">
@@ -151,6 +142,14 @@
                   <span>Monstres interdits</span>
                   <div class="chips chips-autocomplete" id="monsterForbidden"></div>
                 </div>
+                <div class="switch">
+                  <label>
+                    <input type="checkbox" id="maxFightPerMapCheckbox">
+                    <span class="lever"></span>
+                    Nombre maximum de combats par map
+                  </label>
+                </div>
+                <input class="input-field" id="maxFightPerMapValue" type="number" min="0" value="10">
               </div>
               <div id="bankTab" class="card-panel grey darken-3">
                 <div class="input-field-header">
@@ -217,7 +216,7 @@
                                 <th>Action</th>
                               </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="putItemTable">
                             </tbody>
                           </table>
                         </div>
@@ -247,13 +246,27 @@
                                 <th>Action</th>
                               </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="getItemTable">
                             </tbody>
                           </table>
                         </div>
                       </li>
                     </ul>
                   </div>
+                </div>
+              </div>
+              <div id="informationTab" class="card-panel grey darken-3">
+                <div class="input-field input-field-header"><span>Nom de l'auteur du trajet</span>
+                  <input id="scriptAuthor" type="text">
+                </div>
+                <div class="input-field input-field-header"><span>Type de trajet</span>
+                  <input id="scriptType" type="text">
+                </div>
+                <div class="input-field input-field-header"><span>Zone du trajet</span>
+                  <input id="scriptArea" type="text">
+                </div>
+                <div class="input-field input-field-header"><span>Métier du trajet</span>
+                  <input id="scriptJob" type="text">
                 </div>
               </div>
             </div>

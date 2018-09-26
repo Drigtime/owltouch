@@ -1,5 +1,8 @@
 const mapList = require("./data/json/d2o/map.json")
 const areas = require("./data/json/d2o/Areas.json")
+const interactive = require('./data/json/d2o/Interactive.json')
+const items = require('./data/json/d2o/Items.json')
+const monsters = require('./data/json/d2o/Monsters.json')
 const sizeOf = require("image-size")
 const json = {}
 import "leaflet";
@@ -255,34 +258,45 @@ $(".btn-group>a.btn-flat").on("click", e => {
   }
 });
 
+let gatherListList = {};
+for (const iterator of Object.values(interactive)) {
+  gatherListList[iterator.nameId] = null
+}
+
 const elementToGather = M.Chips.init(document.querySelector('#gatherElementChips'), {
   autocompleteOptions: {
-    data: {
-      'Blé': null
-    },
-    limit: 10,
+    data: gatherListList,
+    limit: 5,
     minLength: 1
   },
-  placeholder: 'ex : Orge ...'
+  placeholder: 'ex : Orge ...',
 });
+
+let regenItemsList = {};
+for (const iterator of Object.values(items)) {
+  if (iterator._type == "Item" && iterator.usable) {
+    regenItemsList[iterator.nameId] = `https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/items/${iterator.iconId}.png`
+  }
+}
 
 const regenItems = M.Chips.init(document.querySelector('#regenItemChips'), {
   autocompleteOptions: {
-    data: {
-      'Pain d\'incarnam': null
-    },
-    limit: 10,
+    data: regenItemsList,
+    limit: 5,
     minLength: 1
   },
   placeholder: 'ex : Pain ...'
 });
 
+let monstersList = {};
+for (const iterator of Object.values(monsters)) {
+  monstersList[iterator.nameId] = `https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/monsters/${iterator.id}.png`
+}
+
 const monsterMandatory = M.Chips.init(document.querySelector('#monsterMandatory'), {
   autocompleteOptions: {
-    data: {
-      'Piou bleu': null
-    },
-    limit: 10,
+    data: monstersList,
+    limit: 5,
     minLength: 1
   },
   placeholder: 'ex : Piou ...'
@@ -290,37 +304,38 @@ const monsterMandatory = M.Chips.init(document.querySelector('#monsterMandatory'
 
 const monsterForbidden = M.Chips.init(document.querySelector('#monsterForbidden'), {
   autocompleteOptions: {
-    data: {
-      'Piou bleu': null
-    },
-    limit: 10,
+    data: monstersList,
+    limit: 5,
     minLength: 1
   },
   placeholder: 'ex : Piou ...'
 });
 
+let itemsList = {};
+for (const iterator of Object.values(items)) {
+  itemsList[iterator.nameId] = `https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/items/${iterator.iconId}.png`
+}
+
 const autoDelete = M.Chips.init(document.querySelector('#autoDelete'), {
   autocompleteOptions: {
-    data: {
-      "Plume de Piou Bleu": "https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/items/53114.png"
-    },
-    limit: 10,
+    data: itemsList,
+    limit: 5,
     minLength: 1
   },
   placeholder: 'ex : Plume ...'
 });
 
 const putItemName = M.Autocomplete.init(document.querySelector('#putItemName'), {
-  data: {
-    "Plume de Piou Bleu": "https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/items/53114.png"
-  }
-});
+  data: itemsList,
+  limit: 5,
+  minLength: 1
+}, );
 
 const getItemName = M.Autocomplete.init(document.querySelector('#getItemName'), {
-  data: {
-    "Plume de Piou Bleu": "https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/items/53114.png"
-  }
-});
+  data: itemsList,
+  limit: 5,
+  minLength: 1
+}, );
 
 const lifeMinMax = document.getElementById("lifeMinMax");
 noUiSlider.create(lifeMinMax, {
@@ -356,14 +371,64 @@ const collapsible = M.Collapsible.init(document.querySelectorAll('.collapsible.e
   accordion: false
 });
 
-$("#addGetItem").on("click", () => {
-  const picture =
-    "https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/items/53114.png";
-  const name = $("#getItemName").val();
-  const quant = $("#getItemQuant").val();
+const itemsBank = {}
+itemsBank.put = []
+itemsBank.get = []
+
+$("#addPutItem").on("click", () => {
+  $('.delete-item').off()
+  let name = $("#putItemName").val();
+  let ids = getIdOfAutoComplete(name, items);
+  let quant = $("#putItemQuant").val();
   if (name.length > 0) {
-    const html =
-      `<tr><td><img src="${picture}" width="40" height="40"/></td><td>${name}</td><td>${quant}</td><td><a class="waves-effect waves-light btn amber accent-3">X</a></td></tr>`;
-    $("table tbody").append(html);
+    let html =
+      `<tr>
+    <td><img src="https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/items/${ids.iconId}.png" width="40" height="40"/></td>
+    <td>${name}</td>
+    <td>${quant}</td>
+    <td><a class="waves-effect waves-light btn amber accent-3 delete-item" data-id="${ids.id}">X</a></td>
+    </tr>`;
+    itemsBank.put.push({
+      item: ids.id,
+      quantity: quant
+    })
+    console.log(itemsBank.put);
+    $("#putItemTable").append(html);
+    $('.delete-item').on('click', (e) => {
+      itemsBank.put.splice(itemsBank.put.indexOf(parseInt({
+        item: e.target.dataset.id
+      })), 1);
+      console.log(itemsBank.put);
+      $(e.target.parentNode.parentNode).remove();
+    })
+  }
+});
+
+$("#addGetItem").on("click", () => {
+  $('.delete-item').off()
+  let name = $("#getItemName").val();
+  let ids = getIdOfAutoComplete(name, items);
+  let quant = $("#getItemQuant").val();
+  if (name.length > 0) {
+    let html =
+      `<tr>
+    <td><img src="https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/items/${ids.iconId}.png" width="40" height="40"/></td>
+    <td>${name}</td>
+    <td>${quant}</td>
+    <td><a class="waves-effect waves-light btn amber accent-3 delete-item" data-id="${ids.id}">X</a></td>
+    </tr>`;
+    itemsBank.get.push({
+      item: ids.id,
+      quantity: quant
+    })
+    console.log(itemsBank.get);
+    $("#getItemTable").append(html);
+    $('.delete-item').on('click', (e) => {
+      itemsBank.get.splice(itemsBank.get.indexOf(parseInt({
+        item: e.target.dataset.id
+      })), 1);
+      console.log(itemsBank.get);
+      $(e.target.parentNode.parentNode).remove();
+    })
   }
 });

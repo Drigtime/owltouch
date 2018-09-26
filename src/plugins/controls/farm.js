@@ -71,102 +71,104 @@ L.Control.Farmer = L.Control.extend({
       }.json`);
       hint[this.resources[j]] = L.layerGroup();
       for (const key in json[this.resources[j]]) {
-        if (
-          json[this.resources[j]][key].q > 1 &&
-          json[this.resources[j]][key].q < 6
-        ) {
-          L.marker(
-            dofusCoordsToGeoCoords([
-              json[this.resources[j]][key].posX,
-              json[this.resources[j]][key].posY
-            ]), {
-              icon: L.divIcon({
-                iconUrl: `./data/assets/farm/${this.resources[j]}.png`,
-                html: `<img src="./data/assets/farm/${
+        if (json[this.resources[j]][key].w === 1) {
+          if (
+            json[this.resources[j]][key].q > 1 &&
+            json[this.resources[j]][key].q < 6
+          ) {
+            L.marker(
+              dofusCoordsToGeoCoords([
+                json[this.resources[j]][key].posX,
+                json[this.resources[j]][key].posY
+              ]), {
+                icon: L.divIcon({
+                  iconUrl: `./data/assets/farm/${this.resources[j]}.png`,
+                  html: `<img src="./data/assets/farm/${
                   this.resources[j]
                 }.png"><div class="qnt1">${
                   json[this.resources[j]][key].q
                 }</div>`,
-                className: "mycluster",
-                iconAnchor: [
-                  sizeOf(`./src/data/assets/farm/${this.resources[j]}.png`).width /
-                  2,
-                  sizeOf(`./src/data/assets/farm/${this.resources[j]}.png`).height /
-                  2
-                ]
-              }),
-              interactive: false
-            }
-          ).addTo(hint[this.resources[j]]);
-        } else if (
-          json[this.resources[j]][key].q > 5 &&
-          json[this.resources[j]][key].q < 11
-        ) {
-          L.marker(
-            dofusCoordsToGeoCoords([
-              json[this.resources[j]][key].posX,
-              json[this.resources[j]][key].posY
-            ]), {
-              icon: L.divIcon({
-                iconUrl: `./data/assets/farm/${this.resources[j]}.png`,
-                html: `<img src="./data/assets/farm/${
+                  className: "mycluster",
+                  iconAnchor: [
+                    sizeOf(`./src/data/assets/farm/${this.resources[j]}.png`).width /
+                    2,
+                    sizeOf(`./src/data/assets/farm/${this.resources[j]}.png`).height /
+                    2
+                  ]
+                }),
+                interactive: false
+              }
+            ).addTo(hint[this.resources[j]]);
+          } else if (
+            json[this.resources[j]][key].q > 5 &&
+            json[this.resources[j]][key].q < 11
+          ) {
+            L.marker(
+              dofusCoordsToGeoCoords([
+                json[this.resources[j]][key].posX,
+                json[this.resources[j]][key].posY
+              ]), {
+                icon: L.divIcon({
+                  iconUrl: `./data/assets/farm/${this.resources[j]}.png`,
+                  html: `<img src="./data/assets/farm/${
                   this.resources[j]
                 }.png"><div class="qnt2">${
                   json[this.resources[j]][key].q
                 }</div>`,
-                className: "mycluster",
-                iconAnchor: [
-                  sizeOf(`./src/data/assets/farm/${this.resources[j]}.png`).width /
-                  2,
-                  sizeOf(`./src/data/assets/farm/${this.resources[j]}.png`).height /
-                  2
-                ]
-              }),
-              interactive: false
-            }
-          ).addTo(hint[this.resources[j]]);
-        } else if (json[this.resources[j]][key].q > 10) {
-          L.marker(
-            dofusCoordsToGeoCoords([
-              json[this.resources[j]][key].posX,
-              json[this.resources[j]][key].posY
-            ]), {
-              icon: L.divIcon({
-                iconUrl: `./data/assets/farm/${this.resources[j]}.png`,
-                html: `<img src="./data/assets/farm/${
+                  className: "mycluster",
+                  iconAnchor: [
+                    sizeOf(`./src/data/assets/farm/${this.resources[j]}.png`).width /
+                    2,
+                    sizeOf(`./src/data/assets/farm/${this.resources[j]}.png`).height /
+                    2
+                  ]
+                }),
+                interactive: false
+              }
+            ).addTo(hint[this.resources[j]]);
+          } else if (json[this.resources[j]][key].q > 10) {
+            L.marker(
+              dofusCoordsToGeoCoords([
+                json[this.resources[j]][key].posX,
+                json[this.resources[j]][key].posY
+              ]), {
+                icon: L.divIcon({
+                  iconUrl: `./data/assets/farm/${this.resources[j]}.png`,
+                  html: `<img src="./data/assets/farm/${
                   this.resources[j]
                 }.png"><div class="qnt3">${
                   json[this.resources[j]][key].q
                 }</div>`,
-                className: "mycluster",
-                iconAnchor: [
-                  sizeOf(`./src/data/assets/farm/${this.resources[j]}.png`).width /
-                  2,
-                  sizeOf(`./src/data/assets/farm/${this.resources[j]}.png`).height /
-                  2
-                ]
-              }),
-              interactive: false
-            }
-          ).addTo(hint[this.resources[j]]);
-        } else {
-          L.marker(
-            dofusCoordsToGeoCoords([
-              json[this.resources[j]][key].posX,
-              json[this.resources[j]][key].posY
-            ]), {
-              icon: L.icon({
-                iconUrl: `./data/assets/farm/${this.resources[j]}.png`,
-                iconAnchor: [
-                  sizeOf(`./src/data/assets/farm/${this.resources[j]}.png`).width /
-                  2,
-                  sizeOf(`./src/data/assets/farm/${this.resources[j]}.png`).height /
-                  2
-                ]
-              }),
-              interactive: false
-            }
-          ).addTo(hint[this.resources[j]]);
+                  className: "mycluster",
+                  iconAnchor: [
+                    sizeOf(`./src/data/assets/farm/${this.resources[j]}.png`).width /
+                    2,
+                    sizeOf(`./src/data/assets/farm/${this.resources[j]}.png`).height /
+                    2
+                  ]
+                }),
+                interactive: false
+              }
+            ).addTo(hint[this.resources[j]]);
+          } else {
+            L.marker(
+              dofusCoordsToGeoCoords([
+                json[this.resources[j]][key].posX,
+                json[this.resources[j]][key].posY
+              ]), {
+                icon: L.icon({
+                  iconUrl: `./data/assets/farm/${this.resources[j]}.png`,
+                  iconAnchor: [
+                    sizeOf(`./src/data/assets/farm/${this.resources[j]}.png`).width /
+                    2,
+                    sizeOf(`./src/data/assets/farm/${this.resources[j]}.png`).height /
+                    2
+                  ]
+                }),
+                interactive: false
+              }
+            ).addTo(hint[this.resources[j]]);
+          }
         }
       }
       mcgLayerSupportGroup.checkIn([hint[this.resources[j]]]);

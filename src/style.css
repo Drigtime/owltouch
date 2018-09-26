@@ -359,7 +359,8 @@ input[type="checkbox"]:checked:not(:disabled).tabbed:focus~.lever::before {
 
 #gatherTab,
 #fightTab,
-#bankTab {
+#bankTab,
+#informationTab {
     margin: 0
 }
 
@@ -381,4 +382,8 @@ input[type="checkbox"]:checked:not(:disabled).tabbed:focus~.lever::before {
 .collapsible-header,
 .collapsible-body {
     border-bottom: none;
+}
+
+.autocomplete-content {
+    width: 500px !important;
 }

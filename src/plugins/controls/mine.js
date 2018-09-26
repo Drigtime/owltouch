@@ -75,6 +75,8 @@ L.Control.Miner = L.Control.extend({
       }.json`);
       hint[this.resources[j]] = L.layerGroup();
       for (const key in json[this.resources[j]]) {
+        if (json[this.resources[j]][key].w === 1) {
+
         if (
           json[this.resources[j]][key].q > 1 &&
           json[this.resources[j]][key].q < 6
@@ -171,7 +173,7 @@ L.Control.Miner = L.Control.extend({
               interactive: false
             }
           ).addTo(hint[this.resources[j]]);
-        }
+        }}
       }
       mcgLayerSupportGroup.checkIn([hint[this.resources[j]]]);
     }

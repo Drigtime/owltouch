@@ -65,25 +65,26 @@ L.Control.Miscellaneous = L.Control.extend({
       json[this.resources[j]] = require(`../../data/json/miscellaneous/${this.resources[j]}.json`);
       hint[this.resources[j]] = L.layerGroup();
       for (const key in json[this.resources[j]]) {
-        L.marker(
-          dofusCoordsToGeoCoords([
-            json[this.resources[j]][key].posX,
-            json[this.resources[j]][key].posY
-          ]), {
-            icon: L.icon({
-              iconUrl: `./data/assets/hint/${json[this.resources[j]][key].gfx}.png`,
-              iconAnchor: [
-                sizeOf(`./src/data/assets/hint/${json[this.resources[j]][key].gfx}.png`).width / 2,
-                sizeOf(`./src/data/assets/hint/${json[this.resources[j]][key].gfx}.png`).height / 2
-              ]
-            }),
-            interactive: false
-          }
-        ).addTo(hint[this.resources[j]]);
+        if (json[this.resources[j]][key].worldMapId === 1) {
+          L.marker(
+            dofusCoordsToGeoCoords([
+              json[this.resources[j]][key].posX,
+              json[this.resources[j]][key].posY
+            ]), {
+              icon: L.icon({
+                iconUrl: `./data/assets/hint/${json[this.resources[j]][key].gfx}.png`,
+                iconAnchor: [
+                  sizeOf(`./src/data/assets/hint/${json[this.resources[j]][key].gfx}.png`).width / 2,
+                  sizeOf(`./src/data/assets/hint/${json[this.resources[j]][key].gfx}.png`).height / 2
+                ]
+              }),
+              interactive: false
+            }
+          ).addTo(hint[this.resources[j]]);
+        }
       }
       mcgLayerSupportGroup.checkIn([hint[this.resources[j]]]);
     }
-
     return container;
   },
 
