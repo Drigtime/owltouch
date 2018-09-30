@@ -1,19 +1,19 @@
 const icon = {
-  move: ['up', 'down', 'left', 'right'],
+  move: ['top', 'bottom', 'left', 'right'],
   type: ['move', 'gather', 'fight', 'bank', 'phoenix'],
   size: {
     path: {
-      up: {
+      top: {
         width: 17.22,
         height: 25,
         marginLeft: 17.22 / 2,
-        topMargin: 25
+        topMargin: 25,
       },
-      down: {
+      bottom: {
         width: 17.22,
         height: 25,
         marginLeft: 17.22 / 2,
-        topMargin: 0
+        topMargin: 0,
       },
       left: {
         width: 32.04,
@@ -30,23 +30,23 @@ const icon = {
       zindex: 9999,
     },
     bank: {
-      up: {
+      top: {
         width: 17.22,
         height: 25,
         marginLeft: -2.5,
-        topMargin: 25
+        topMargin: 25,
       },
-      down: {
+      bottom: {
         width: 17.22,
         height: 25,
         marginLeft: -2.5,
-        topMargin: 0
+        topMargin: 0,
       },
       left: {
         width: 32.04,
         height: 17.22,
         marginLeft: 34.75,
-        topMargin: -2.5
+        topMargin: -2.5,
       },
       right: {
         width: 32.04,
@@ -57,23 +57,23 @@ const icon = {
       zindex: 9998,
     },
     phoenix: {
-      up: {
+      top: {
         width: 17.22,
         height: 25,
         marginLeft: 20,
-        topMargin: 25
+        topMargin: 25,
       },
-      down: {
+      bottom: {
         width: 17.22,
         height: 25,
         marginLeft: 20,
-        topMargin: 0
+        topMargin: 0,
       },
       left: {
         width: 32.04,
         height: 17.22,
         marginLeft: 34.75,
-        topMargin: 20
+        topMargin: 20,
       },
       right: {
         width: 32.04,
@@ -86,14 +86,14 @@ const icon = {
   },
 };
 
-for (const name of icon.move) {
+icon.move.forEach((name) => {
   icon[name] = {};
-  for (const type of icon.type) {
+  icon.type.forEach((type) => {
     icon[name][type] = {
-      iconUrl: `./data/assets/path/${type}/${name}.svg`
+      iconUrl: `./data/assets/path/${type}/${name}.svg`,
     };
-  }
-}
+  });
+});
 
 const movementType = {
   path: [],
@@ -130,20 +130,19 @@ const getScale = (size, zoom) => {
     default:
       break;
   }
-  const scale = {
+  return {
     width: size.width * zoom,
     height: size.height * zoom,
     marginLeft: size.marginLeft * zoom,
-    topMargin: size.topMargin * zoom
-  }
-  return scale
-}
+    topMargin: size.topMargin * zoom,
+  };
+};
 
 const resizeMarker = () => {
-  for (const dataType of Object.keys(movementType)) {
-    for (const object of Object.values(movementType[dataType])) {
-      for (const name of icon.move) {
-        if (!object.marker.hasOwnProperty(name)) continue;
+  Object.keys(movementType).forEach((dataType) => {
+    Object.values(movementType[dataType]).forEach((object) => {
+      icon.move.forEach((name) => {
+        if (!Object.prototype.hasOwnProperty.call(object.marker, name)) return;
         const zoom = getScale(icon.size[dataType][name], map.getZoom());
         object.marker[name].setIcon(
           L.icon({
@@ -153,13 +152,13 @@ const resizeMarker = () => {
             className: name,
           }),
         );
-      }
-    }
-  }
+      });
+    });
+  });
 };
 
 const deleteAction = (dataType, index, name) => {
-  if (!index.marker.hasOwnProperty(name)) return;
+  if (!Object.prototype.hasOwnProperty.call(index.marker, name)) return;
   index.marker[name].remove();
   delete index.data[name];
   delete index.marker[name];
@@ -168,23 +167,23 @@ const deleteAction = (dataType, index, name) => {
 
 const onMapClick = (coord) => {
   console.log(coord);
-  for (const name of icon.move) {
-    // loop through list of possible mouvement : ['up', 'down', 'left', 'right'],
-    if ($(`#${name}`).hasClass("selected")) {
-      let dataType = $('#type')[0].selectedOptions[0].dataset.arrayType,
-        scale = getScale(icon.size[dataType][name], map.getZoom()),
-        type = $('#type')[0].selectedOptions[0].dataset.type,
-        index = checkIfMapAlreadyExist(coord, movementType[dataType]),
-        arrowMarker = L.marker(dofusCoordsToGeoCoords([coord[0], coord[1]]), {
-          icon: L.icon({
-            iconUrl: icon[name][type].iconUrl,
-            iconSize: [scale.width, scale.height],
-            iconAnchor: [scale.marginLeft, scale.topMargin],
-            className: name,
-          }),
-          zIndexOffset: icon.size[dataType].zindex,
-          interactive: false,
-        });
+  icon.move.forEach((name) => {
+      // loop through list of possible mouvement : ['top', 'bottom', 'left', 'right'],
+    if ($(`#${name}`).hasClass('selected')) {
+      const dataType = $('#type')[0].selectedOptions[0].dataset.arrayType;
+      const scale = getScale(icon.size[dataType][name], map.getZoom());
+      const type = $('#type')[0].selectedOptions[0].dataset.type;
+      const index = checkIfMapAlreadyExist(coord, movementType[dataType]);
+      const arrowMarker = L.marker(dofusCoordsToGeoCoords([coord[0], coord[1]]), {
+        icon: L.icon({
+          iconUrl: icon[name][type].iconUrl,
+          iconSize: [scale.width, scale.height],
+          iconAnchor: [scale.marginLeft, scale.topMargin],
+          className: name,
+        }),
+        zIndexOffset: icon.size[dataType].zindex,
+        interactive: false,
+      });
       if (index !== null) {
         if (index.data[name]) {
           deleteAction(movementType[dataType], index, name);
@@ -207,108 +206,110 @@ const onMapClick = (coord) => {
           },
         });
       }
-    } else if ($('#delete').hasClass("selected")) {
+    } else if ($('#delete').hasClass('selected')) {
       let index;
-      for (const dataType of Object.values(movementType)) {
+      Object.values(movementType).forEach((dataType) => {
         index = checkIfMapAlreadyExist(coord, dataType);
         if (index !== null) deleteAction(dataType, index, name);
-      }
+      });
     }
-  }
+  });
   console.log(movementType);
 };
 
 const getIdOfChips = (chips, database) => {
-  let elementIds = []
-  for (const element of Object.values(chips.chipsData)) {
-    for (const iterator of Object.values(database)) {
-      if (element.tag == iterator.nameId) {
-        elementIds.push(iterator.id)
+  const elementIds = [];
+  Object.values(chips.chipsData).forEach((data) => {
+    Object.values(database).forEach((item) => {
+      if (data.tag === item.nameId) {
+        elementIds.push(item.id);
       }
-    }
-  }
-  return elementIds
-}
+    });
+  });
+  return elementIds;
+};
 
 const getIdOfAutoComplete = (value, database) => {
-  let elementIds = {}
+  let elementIds = {};
   for (const iterator of Object.values(database)) {
     if (value == iterator.nameId) {
       elementIds = {
         id: iterator.id,
-        iconId: iterator.iconId
-      }
-      return elementIds
+        iconId: iterator.iconId,
+      };
+      return elementIds;
     }
   }
-}
+};
 
 const generateMove = (type) => {
-  let maps = []
-  for (const iterator of Object.values(movementType[type])) {
-    let map = {}
-    let firstAction = true
-    map.map = `${iterator.coord[0]},${iterator.coord[1]}`
-    map.path = ''
-    for (const key of Object.keys(iterator.data)) {
+  const maps = [];
+  movementType[type].forEach((object) => {
+    const map = {};
+    let firstAction = true;
+    map.map = `${object.coord[0]},${object.coord[1]}`;
+    map.path = '';
+    Object.keys(object.data).forEach((key) => {
       if (firstAction) {
-        map.path += `${key}`
+        map.path += `${key}`;
       } else {
-        map.path += `|${key}`
+        map.path += `|${key}`;
       }
-      iterator.data[key].gather ? map.gather = true : iterator.data[key].fight ? map.fight = true : NaN
-      firstAction = false
-    }
-    maps.push(map)
-  }
-  return maps
-}
+      if (object.data[key].gather) { map.gather = true; } else if (object.data[key].fight) { map.fight = true; }
+      firstAction = false;
+    });
+    maps.push(map);
+  });
+  return maps;
+};
 
 const generateScript = () => {
-  let config = {}
-  config.information = {
-    author: document.querySelector('#scriptAuthor').value,
-    type: document.querySelector('#scriptType').value,
-    area: document.querySelector('#scriptArea').value,
-    job: document.querySelector('#scriptJob').value
-  }
-  config.monster = {
-    min: monsterQuantMinMax.noUiSlider.get()[0],
-    max: monsterQuantMinMax.noUiSlider.get()[1],
-    minLevel: document.querySelector('#monsterMin').value,
-    maxLevel: document.querySelector('#monsterMax').value,
-    forbiddenMonsters: JSON.stringify(getIdOfChips(monsterForbidden, monsters)),
-    mandatoryMonsters: JSON.stringify(getIdOfChips(monsterMandatory, monsters)),
-    maxFightPerMap: document.querySelector('#maxFightPerMapValue').value
-  }
-  config.bank = {
-    putKamas: document.querySelector('#putKamasValue').value,
-    getKamas: document.querySelector('#getKamasValue').value,
-    putItems: JSON.stringify(itemsBank.put),
-    getItems: JSON.stringify(itemsBank.get)
-  }
-  config.autoRegen = {
-    minLife: lifeMinMax.noUiSlider.get()[0],
-    maxLife: lifeMinMax.noUiSlider.get()[1],
-    items: JSON.stringify(getIdOfChips(regenItems, items)),
-    store: document.querySelector('#regenItemValue').value
-  }
-  config.display = {
-    gather: document.querySelector('#displayGatherCountCheckbox').checked,
-    fight: document.querySelector('#displayFightCountCheckbox').checked
-  }
-  config.paths = {
-    move: JSON.stringify(generateMove('path'), null, '\t'),
-    bank: JSON.stringify(generateMove('bank'), null, '\t'),
-    phoenix: JSON.stringify(generateMove('phoenix'), null, '\t')
-  }
-  config.delete = JSON.stringify(getIdOfChips(autoDelete, items))
-  config.maxPods = document.querySelector('#maxpods').value
-  config.openBags = document.querySelector('#openBagsCheckbox').checked
-  config.elementToGather = JSON.stringify(getIdOfChips(elementToGather, interactive))
+  const config = {
+    information: {
+      author: document.querySelector('#scriptAuthor').value,
+      name: document.querySelector('#scriptName').value,
+      type: document.querySelector('#scriptType').value,
+      area: document.querySelector('#scriptArea').value,
+      job: document.querySelector('#scriptJob').value,
+    },
+    monster: {
+      min: monsterQuantMinMax.noUiSlider.get()[0],
+      max: monsterQuantMinMax.noUiSlider.get()[1],
+      minLevel: document.querySelector('#monsterMin').value,
+      maxLevel: document.querySelector('#monsterMax').value,
+      forbiddenMonsters: JSON.stringify(getIdOfChips(monsterForbidden, monsters)),
+      mandatoryMonsters: JSON.stringify(getIdOfChips(monsterMandatory, monsters)),
+      maxFightPerMap: document.querySelector('#maxFightPerMapValue').value,
+    },
+    bank: {
+      putKamas: document.querySelector('#putKamasValue').value,
+      getKamas: document.querySelector('#getKamasValue').value,
+      putItems: JSON.stringify(itemsBank.put),
+      getItems: JSON.stringify(itemsBank.get),
+    },
+    autoRegen: {
+      minLife: lifeMinMax.noUiSlider.get()[0],
+      maxLife: lifeMinMax.noUiSlider.get()[1],
+      items: JSON.stringify(getIdOfChips(regenItems, items)),
+      store: document.querySelector('#regenItemValue').value,
+    },
+    display: {
+      gather: document.querySelector('#displayGatherCountCheckbox').checked,
+      fight: document.querySelector('#displayFightCountCheckbox').checked,
+    },
+    paths: {
+      move: JSON.stringify(generateMove('path')).replace(/({.+?}(?:,|))/g, '\n\t$&').replace(/}\]/g, '}\n]'),
+      bank: JSON.stringify(generateMove('bank')).replace(/({.+?}(?:,|))/g, '\n\t$&').replace(/}\]/g, '}\n]'),
+      phoenix: JSON.stringify(generateMove('phoenix')).replace(/({.+?}(?:,|))/g, '\n\t$&').replace(/}\]/g, '}\n]'),
+    },
+    delete: JSON.stringify(getIdOfChips(autoDelete, items)),
+    maxPods: document.querySelector('#maxpods').value,
+    openBags: document.querySelector('#openBagsCheckbox').checked,
+    elementToGather: JSON.stringify(getIdOfChips(elementToGather, interactive)),
+  };
 
-  let script =
-    `//---------------------------------------------
+  const script =
+`//---------------------------------------------
 //-- Script created with OwlTouch
 //---------------------------------------------
 //-- Créateur : ${config.information.author}
@@ -351,7 +352,6 @@ const move = ${config.paths.move}
 
 const bank = ${config.paths.bank}
 
-const phoenix = ${config.paths.phoenix}`
-  console.log(script);
-
-}
+const phoenix = ${config.paths.phoenix}`;
+  return script;
+};
