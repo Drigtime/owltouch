@@ -58,17 +58,19 @@ app.on('activate', () => {
 });
 
 
-// const template = [{
-//     label: 'File',
-//     submenu: [
-//       {label: 'Nouveau script', accelerator: 'CmdOrCtrl+N'},
-//       {label: 'Sauvegarder', accelerator: 'CmdOrCtrl+S'},
-//       {label: 'Charger un script', accelerator: 'CmdOrCtrl+O'},
-//     ]
-//   }
-// ]
+const template = [{
+  label: 'File',
+  submenu: [
+    {label: 'Nouveau script', accelerator: 'CmdOrCtrl+N', click: ()=>{mainWindow.webContents.send('newFile')}},
+    {label: 'Sauvegarder', accelerator: 'CmdOrCtrl+S', click: ()=>{mainWindow.webContents.send('saveFile')}},
+    {label: 'Charger un script', accelerator: 'CmdOrCtrl+O', click: ()=>{mainWindow.webContents.send('openFile')}},
+    {label: 'Reload', role: 'reload'},
+    {label: 'toggle Dev Tools', role: 'toggleDevTools'},
+  ],
+}
+]
 
-// const menu = Menu.buildFromTemplate(template)
-// Menu.setApplicationMenu(menu)
+const menu = Menu.buildFromTemplate(template)
+Menu.setApplicationMenu(menu)
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
