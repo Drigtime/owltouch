@@ -1,6 +1,7 @@
 <html lang="en">
 
 <head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
   <link rel="stylesheet" href="../node_modules/materialize-css/dist/css/materialize.min.css">
   <link rel="stylesheet" href="../node_modules/material-design-icons/iconfont/material-icons.css">
   <link rel="stylesheet" href="../node_modules/typeface-roboto/index.css">
@@ -29,8 +30,8 @@
         </li>
         <li>
           <span class="btn-group">
-            <a class="waves-effect btn-flat" id="up"><i class="material-icons">arrow_upward</i></a>
-            <a class="waves-effect btn-flat" id="down"><i class="material-icons">arrow_downward</i></a>
+            <a class="waves-effect btn-flat" id="top"><i class="material-icons">arrow_upward</i></a>
+            <a class="waves-effect btn-flat" id="bottom"><i class="material-icons">arrow_downward</i></a>
             <a class="waves-effect btn-flat" id="left"><i class="material-icons">arrow_back</i></a>
             <a class="waves-effect btn-flat" id="right"><i class="material-icons">arrow_forward</i></a>
           </span>
@@ -42,13 +43,13 @@
         </li>
       </ul>
       <ul class="right">
-        <li><a class="waves-effect btn-floating btn-flat modal-trigger" href="#modal1"><i class="material-icons">settings</i></a></li>
+        <li><a class="waves-effect btn-floating btn-flat modal-trigger" href="#information"><i class="material-icons">settings</i></a></li>
       </ul>
     </div>
   </nav>
   <!-- Modal Structure -->
-  <div id="modal1" class="modal">
-    <div class="modal-content grey darken-4">
+  <div id="information" class="modal grey darken-4 modal-fixed-footer" style="max-height: 71%;height: 71%;">
+    <div class="modal-content">
       <div class="row">
         <div class="col s12">
           <ul class="tabs">
@@ -89,7 +90,7 @@
                     Afficher le compteur de combats
                   </label>
                 </div>
-                <div class="row" style="margin-bottom: 0px">
+                <div class="row">
                   <div class="col s12">
                     <ul class="collapsible expandable">
                       <li>
@@ -127,7 +128,7 @@
                 </div>
                 <div class="input-field-header">
                   <span>Niveau des groupes de monstres</span>
-                  <div class="row" style="margin-bottom: 0px">
+                  <div class="row">
                     <div class="input-field col s6 input-field-header"><span>Minimum</span>
                       <input id="monsterMin" type="number" min="1" value="1"></div>
                     <div class="input-field col s6 input-field-header"><span>Maximum</span>
@@ -259,6 +260,9 @@
                 <div class="input-field input-field-header"><span>Nom de l'auteur du trajet</span>
                   <input id="scriptAuthor" type="text">
                 </div>
+                <div class="input-field input-field-header"><span>Nom du trajet</span>
+                  <input id="scriptName" type="text">
+                </div>
                 <div class="input-field input-field-header"><span>Type de trajet</span>
                   <input id="scriptType" type="text">
                 </div>
@@ -274,6 +278,10 @@
         </div>
       </div>
     </div>
+    <div class="modal-footer grey darken-4">
+      <!-- <a href="#information" class="modal-close waves-effect waves-red btn-flat" id="undoInformationChange">Annuler</a> -->
+      <a href="#information" class="modal-close waves-effect btn blue-grey">Confirmer</a>
+    </div>
   </div>
   <div id="map"></div>
 </body>
@@ -284,5 +292,6 @@
 <script src="nouislider.js"></script>
 <script src="./plugins/map.js"></script>
 <script src="./plugins/pathMaker.js"></script>
+<script src="./plugins/eventsAndIntances.js"></script>
 
 </html>
