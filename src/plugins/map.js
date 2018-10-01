@@ -18,10 +18,18 @@ const areas = require('./data/json/d2o/Areas.json');
 const interactive = require('./data/json/d2o/Interactive.json');
 const items = require('./data/json/d2o/Items.json');
 const monsters = require('./data/json/d2o/Monsters.json');
-const sizeOf = require('image-size')
-;
+const bankPos = require(`./data/json/miscellaneous/Bank.json`);
+const phoenixPos = require(`./data/json/miscellaneous/Phoenix.json`);
+const sizeOf = require('image-size');
 
 const json = {};
+const hint = {};
+const dofusMapSubAreaHighlight = [];
+const actualDofusCoords = {};
+
+let actualID;
+let dofusMapUnderMouse;
+
 // const mapList = require('./json/d2o/map.json');
 
 const amakna = L.tileLayer('./data/tiles/amakna/{z}/{x}/{y}.jpg', {
@@ -68,12 +76,6 @@ const dofusCoordsToGeoCoords = (dofusCoords) => {
   return pixelCoordsToGeoCoords(pixelCoords);
 };
 
-/* Mavvo.HighlightMap */
-
-const dofusMapSubAreaHighlight = [];
-let actualID;
-const actualDofusCoords = {};
-
 const highlightSubArea = (e) => {
   const geoCoords = e.latlng;
   const [x, y] = geoCoordsToDofusCoords(geoCoords);
@@ -110,7 +112,7 @@ const highlightSubArea = (e) => {
   }
 };
 
-function getId(x, y) {
+const getId = (x, y) => {
   for (const key in mapList) {
     if (
       mapList[key].posX == x &&
@@ -129,7 +131,7 @@ function getId(x, y) {
   return false;
 }
 
-function getCoord(mapIds) {
+const getCoord = (mapIds) => {
   const list = [];
   mapIds.forEach((element) => {
     if (mapList[element].hasPriorityOnWorldmap) {
@@ -148,8 +150,6 @@ function resetHighlightArea() {
   });
   dofusMapSubAreaHighlight.length = 0;
 }
-
-let dofusMapUnderMouse;
 
 const drawDofusMapBoundsOnMouseMove = (e) => {
   const geoCoords = e.latlng;
@@ -198,6 +198,31 @@ amakna.options.bounds = new L.LatLngBounds(
   pixelCoordsToGeoCoords([10000, 8000]),
 );
 
+function bpMarkers(type) {
+  let layer = []
+  type.forEach(element => {
+    layer.push(L.marker(
+      dofusCoordsToGeoCoords([
+        element.posX,
+        element.posY
+      ]), {
+        icon: L.icon({
+          iconUrl: `./data/assets/hint/${element.gfx}.png`,
+          iconAnchor: [
+            sizeOf(`./src/data/assets/hint/${element.gfx}.png`).width / 2,
+            sizeOf(`./src/data/assets/hint/${element.gfx}.png`).height / 2
+          ]
+        }),
+        interactive: false
+      }
+    ))
+  })
+  return layer
+}
+
+const bankLayerGroup = L.layerGroup(bpMarkers(bankPos))
+const phoenixLayerGroup = L.layerGroup(bpMarkers(phoenixPos))
+
 const mcgLayerSupportGroup = L.markerClusterGroup.layerSupport({
   maxClusterRadius: 1,
   iconCreateFunction(cluster) {
@@ -213,7 +238,6 @@ const mcgLayerSupportGroup = L.markerClusterGroup.layerSupport({
   },
   animate: false,
 });
-const hint = {};
 
 mcgLayerSupportGroup.addTo(map);
 

@@ -41,13 +41,20 @@
             <a class="waves-effect btn-flat" id="delete"><i class="material-icons">delete</i></a>
           </span>
         </li>
+        <li>
+          <span class="btn-group">
+            <a class="waves-effect btn-flat tooltipped" data-position="bottom" data-tooltip="Position de la banque" id="bankPlacement"><i
+                class="material-icons">account_balance</i></a>
+            <a class="waves-effect btn-flat tooltipped" data-position="bottom" data-tooltip="Position du phoenix" id="phoenixPlacement"><i
+                class="material-icons">whatshot</i></a>
+          </span>
+        </li>
       </ul>
       <ul class="right">
         <li><a class="waves-effect btn-floating btn-flat modal-trigger" href="#information"><i class="material-icons">settings</i></a></li>
       </ul>
     </div>
   </nav>
-  <!-- Modal Structure -->
   <div id="information" class="modal grey darken-4 modal-fixed-footer" style="max-height: 71%;height: 71%;">
     <div class="modal-content">
       <div class="row">
@@ -279,8 +286,52 @@
       </div>
     </div>
     <div class="modal-footer grey darken-4">
-      <!-- <a href="#information" class="modal-close waves-effect waves-red btn-flat" id="undoInformationChange">Annuler</a> -->
       <a href="#information" class="modal-close waves-effect btn blue-grey">Confirmer</a>
+    </div>
+  </div>
+  <div id="defineBankCoord" class="modal grey darken-4">
+    <div class="modal-content grey darken-4">
+      <div class="input-field input-field-header">
+        <span for="mapIdOutSide">mapid extérieur de la banque</span>
+        <input id="mapIdOutSide" type="number">
+      </div>
+      <div class="input-field input-field-header">
+        <span for="sunIdInside">cellid du soleil pour sortir de la banque</span>
+        <input id="sunIdInside" type="number">
+      </div>
+      <div class="input-field input-field-header">
+        <span for="mapIdInSide">mapid intérieur de la banque</span>
+        <input id="mapIdInSide" type="number">
+      </div>
+      <div class="input-field input-field-header">
+        <span for="doorIdOutSide">cellid de la porte pour rentrer dans la banque</span>
+        <input id="doorIdOutSide" type="number">
+      </div>
+    </div>
+    <div class="modal-footer grey darken-4">
+      <a href="#!" class="modal-close waves-effect btn-flat">Annuler</a>
+      <a href="#!" id="defineBankCoordConfirm" class="modal-close waves-effect waves-green btn blue-grey">Confirmer</a>
+    </div>
+  </div>
+  <div id="definePhoenixCoord" class="modal grey darken-4">
+    <div class="modal-content grey darken-4">
+      <div class="input-field input-field-header">
+        <span>cellid du phoenix</span>
+        <input id="phoenixCellid" type="number">
+      </div>
+      <div class="input-field input-field-header">
+        <span>Direction a prendre aprés être revenu à la vie</span>
+        <select id="actionAfterRevive">
+            <option data-direction="top" selected>haut</option>
+            <option data-direction="bottom">bas</option>
+            <option data-direction="left">gauche</option>
+            <option data-direction="right">droite</option>
+          </select>
+      </div>
+    </div>
+    <div class="modal-footer grey darken-4">
+      <a href="#!" class="modal-close waves-effect btn-flat">Annuler</a>
+      <a href="#!" id="definePhoenixCoordConfirm" class="modal-close waves-effect waves-green btn blue-grey">Confirmer</a>
     </div>
   </div>
   <div id="map"></div>

@@ -1,5 +1,5 @@
 const icon = {
-  move: ['top', 'bottom', 'left', 'right'],
+  move: ['top', 'bottom', 'left', 'right', 'bank', 'phoenix'],
   type: ['move', 'gather', 'fight', 'bank', 'phoenix'],
   size: {
     path: {
@@ -141,7 +141,7 @@ const getScale = (size, zoom) => {
 const resizeMarker = () => {
   Object.keys(movementType).forEach((dataType) => {
     Object.values(movementType[dataType]).forEach((object) => {
-      icon.move.forEach((name) => {
+      ['top', 'bottom', 'left', 'right'].forEach((name) => {
         if (!Object.prototype.hasOwnProperty.call(object.marker, name)) return;
         const zoom = getScale(icon.size[dataType][name], map.getZoom());
         object.marker[name].setIcon(
@@ -157,6 +157,26 @@ const resizeMarker = () => {
   });
 };
 
+function bpGetInformation(coord) {
+  let data = {}
+  for (const element of Object.values(bankPos)) {
+    if (element.posX = coord[0] && element.posY == coord[1]) {
+      data.mapIdOutSide = element.mapIdOutSide
+      data.mapIdInSide = element.mapIdInSide
+      data.doorIdOutSide = element.doorIdOutSide
+      data.sunIdInside = element.sunIdInside
+      break;
+    }
+  }
+  for (const element of Object.values(phoenixPos)) {
+    if (element.posX = coord[0] && element.posY == coord[1]) {
+      data.cellId = element.cellId
+      break;
+    }
+  }
+  return data
+}
+
 const deleteAction = (dataType, index, name) => {
   if (!Object.prototype.hasOwnProperty.call(index.marker, name)) return;
   index.marker[name].remove();
@@ -166,15 +186,14 @@ const deleteAction = (dataType, index, name) => {
 };
 
 const onMapClick = (coord) => {
-  console.log(coord);
   icon.move.forEach((name) => {
-      // loop through list of possible mouvement : ['top', 'bottom', 'left', 'right'],
+    // loop through list of possible mouvement : ['top', 'bottom', 'left', 'right'],
     if ($(`#${name}`).hasClass('selected')) {
       const dataType = $('#type')[0].selectedOptions[0].dataset.arrayType;
       const scale = getScale(icon.size[dataType][name], map.getZoom());
       const type = $('#type')[0].selectedOptions[0].dataset.type;
       const index = checkIfMapAlreadyExist(coord, movementType[dataType]);
-      const arrowMarker = L.marker(dofusCoordsToGeoCoords([coord[0], coord[1]]), {
+      const arrowMarker = L.marker(dofusCoordsToGeoCoords(coord), {
         icon: L.icon({
           iconUrl: icon[name][type].iconUrl,
           iconSize: [scale.width, scale.height],
@@ -209,12 +228,25 @@ const onMapClick = (coord) => {
     } else if ($('#delete').hasClass('selected')) {
       let index;
       Object.values(movementType).forEach((dataType) => {
-        index = checkIfMapAlreadyExist(coord, dataType);
+        index = checkIfMapAlreadyExist(coord, dataType); // get the object {coord: Array(), data: {…}, marker: {…}}
         if (index !== null) deleteAction(dataType, index, name);
       });
+    } else if ($('#phoenixPlacement').hasClass('selected')) {
+      const data = bpGetInformation(coord)
+      $('#definePhoenixCoord').data('coord', coord)
+      $('#phoenixCellid').val(data.cellId)
+      $('#definePhoenixCoord').modal('open')
+    } else if ($('#bankPlacement').hasClass('selected')) {
+      const data = bpGetInformation(coord)
+      $('#defineBankCoord').data('coord', coord)
+      $('#mapIdOutSide').val(data.mapIdOutSide)
+      $('#doorIdOutSide').val(data.doorIdOutSide)
+      $('#mapIdInSide').val(data.mapIdInSide)
+      $('#sunIdInside').val(data.sunIdInside)
+      $('#defineBankCoord').modal('open')
     }
   });
-  console.log(movementType);
+  console.log(coord, movementType);
 };
 
 const getIdOfChips = (chips, database) => {
@@ -246,19 +278,36 @@ const generateMove = (type) => {
   const maps = [];
   movementType[type].forEach((object) => {
     const map = {};
+    const secondarymap = {};
     let firstAction = true;
     map.map = `${object.coord[0]},${object.coord[1]}`;
-    map.path = '';
     Object.keys(object.data).forEach((key) => {
+      if (key == 'bank') {
+        map.map = parseInt(object.data[key].mapIdOutSide)
+        map.door = parseInt(object.data[key].doorIdOutSide)
+        secondarymap.map = parseInt(object.data[key].mapIdInSide)
+        secondarymap.path = object.data[key].sunIdInside
+        secondarymap.npcBank = true
+        return;
+      }
+      if (key == 'phoenix') {
+        map.path = object.data[key].actionAfterRevive
+        map.phoenix = parseInt(object.data[key].phoenixCellid)
+        return;
+      }
       if (firstAction) {
-        map.path += `${key}`;
+        map.path = `${key}`;
       } else {
         map.path += `|${key}`;
       }
-      if (object.data[key].gather) { map.gather = true; } else if (object.data[key].fight) { map.fight = true; }
+      if (object.data[key].gather) {
+        map.gather = true;
+      } else if (object.data[key].fight) {
+        map.fight = true;
+      }
       firstAction = false;
     });
-    maps.push(map);
+    $.isEmptyObject(secondarymap) ? maps.push(map) : maps.push(map, secondarymap)
   });
   return maps;
 };
@@ -309,7 +358,7 @@ const generateScript = () => {
   };
 
   const script =
-`//---------------------------------------------
+    `//---------------------------------------------
 //-- Script created with OwlTouch
 //---------------------------------------------
 //-- Créateur : ${config.information.author}

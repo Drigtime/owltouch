@@ -213,10 +213,6 @@ ul>li>.input-field {
     margin-top: .625rem
 }
 
-.input-field {
-    margin: 0
-}
-
 .card {
     margin: 0 0 1rem
 }
@@ -386,4 +382,8 @@ input[type="checkbox"]:checked:not(:disabled).tabbed:focus~.lever::before {
 
 .autocomplete-content {
     width: 500px !important;
+}
+
+.row {
+    margin-bottom: 0px
 }
