@@ -2,7 +2,7 @@ const icon = {
   move: ['top', 'bottom', 'left', 'right', 'bank', 'phoenix'],
   type: ['move', 'gather', 'fight', 'bank', 'phoenix'],
   size: {
-    path: {
+    move: {
       top: {
         width: 17.22,
         height: 25,
@@ -96,7 +96,7 @@ icon.move.forEach((name) => {
 });
 
 const movementType = {
-  path: [],
+  move: [],
   bank: [],
   phoenix: [],
 };
@@ -186,7 +186,7 @@ const deleteAction = (dataType, index, name) => {
 };
 
 const onMapClick = (coord) => {
-  icon.move.forEach((name) => {
+  for (const name of icon.move) {
     // loop through list of possible mouvement : ['top', 'bottom', 'left', 'right'],
     if ($(`#${name}`).hasClass('selected')) {
       const dataType = $('#type')[0].selectedOptions[0].dataset.arrayType;
@@ -245,7 +245,67 @@ const onMapClick = (coord) => {
       $('#sunIdInside').val(data.sunIdInside)
       $('#defineBankCoord').modal('open')
     }
-  });
+  };
+  // icon.move.forEach((name) => {
+  //   // loop through list of possible mouvement : ['top', 'bottom', 'left', 'right'],
+  //   if ($(`#${name}`).hasClass('selected')) {
+  //     const dataType = $('#type')[0].selectedOptions[0].dataset.arrayType;
+  //     const scale = getScale(icon.size[dataType][name], map.getZoom());
+  //     const type = $('#type')[0].selectedOptions[0].dataset.type;
+  //     const index = checkIfMapAlreadyExist(coord, movementType[dataType]);
+  //     const arrowMarker = L.marker(dofusCoordsToGeoCoords(coord), {
+  //       icon: L.icon({
+  //         iconUrl: icon[name][type].iconUrl,
+  //         iconSize: [scale.width, scale.height],
+  //         iconAnchor: [scale.marginLeft, scale.topMargin],
+  //         className: name,
+  //       }),
+  //       zIndexOffset: icon.size[dataType].zindex,
+  //       interactive: false,
+  //     });
+  //     if (index !== null) {
+  //       if (index.data[name]) {
+  //         deleteAction(movementType[dataType], index, name);
+  //       } else {
+  //         index.data[name] = {
+  //           [type]: true,
+  //         };
+  //         index.marker[name] = arrowMarker.addTo(map);
+  //       }
+  //     } else {
+  //       movementType[dataType].push({
+  //         coord: [coord[0], coord[1]],
+  //         data: {
+  //           [name]: {
+  //             [type]: true,
+  //           },
+  //         },
+  //         marker: {
+  //           [name]: arrowMarker.addTo(map),
+  //         },
+  //       });
+  //     }
+  //   } else if ($('#delete').hasClass('selected')) {
+  //     let index;
+  //     Object.values(movementType).forEach((dataType) => {
+  //       index = checkIfMapAlreadyExist(coord, dataType); // get the object {coord: Array(), data: {…}, marker: {…}}
+  //       if (index !== null) deleteAction(dataType, index, name);
+  //     });
+  //   } else if ($('#phoenixPlacement').hasClass('selected')) {
+  //     const data = bpGetInformation(coord)
+  //     $('#definePhoenixCoord').data('coord', coord)
+  //     $('#phoenixCellid').val(data.cellId)
+  //     $('#definePhoenixCoord').modal('open')
+  //   } else if ($('#bankPlacement').hasClass('selected')) {
+  //     const data = bpGetInformation(coord)
+  //     $('#defineBankCoord').data('coord', coord)
+  //     $('#mapIdOutSide').val(data.mapIdOutSide)
+  //     $('#doorIdOutSide').val(data.doorIdOutSide)
+  //     $('#mapIdInSide').val(data.mapIdInSide)
+  //     $('#sunIdInside').val(data.sunIdInside)
+  //     $('#defineBankCoord').modal('open')
+  //   }
+  // });
   console.log(coord, movementType);
 };
 
@@ -347,7 +407,7 @@ const generateScript = () => {
       fight: document.querySelector('#displayFightCountCheckbox').checked,
     },
     paths: {
-      move: JSON.stringify(generateMove('path')).replace(/({.+?}(?:,|))/g, '\n\t$&').replace(/}\]/g, '}\n]'),
+      move: JSON.stringify(generateMove('move')).replace(/({.+?}(?:,|))/g, '\n\t$&').replace(/}\]/g, '}\n]'),
       bank: JSON.stringify(generateMove('bank')).replace(/({.+?}(?:,|))/g, '\n\t$&').replace(/}\]/g, '}\n]'),
       phoenix: JSON.stringify(generateMove('phoenix')).replace(/({.+?}(?:,|))/g, '\n\t$&').replace(/}\]/g, '}\n]'),
     },

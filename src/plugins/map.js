@@ -30,8 +30,6 @@ const actualDofusCoords = {};
 let actualID;
 let dofusMapUnderMouse;
 
-// const mapList = require('./json/d2o/map.json');
-
 const amakna = L.tileLayer('./data/tiles/amakna/{z}/{x}/{y}.jpg', {
   minZoom: 0,
   maxZoom: 4,

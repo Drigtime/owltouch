@@ -1,22 +1,27 @@
 const { dialog } = require('electron').remote;
 const fs = require('fs')
 import { ipcRenderer } from 'electron';
+import { loadScript } from "./plugins/loadPath";
 
 M.AutoInit();
+
+function deleteAll() {
+  Object.keys(movementType).forEach((key) => {
+    const dataTypeBackup = movementType[key].slice(0);
+    movementType[key].forEach((index) => {
+      icon.move.forEach((name) => {
+        deleteAction(dataTypeBackup, index, name);
+      });
+    });
+    movementType[key] = dataTypeBackup.slice(0);
+  });
+  console.log(movementType);
+}
 
 ipcRenderer.on('newFile', () => {
   const rep = confirm('Voulez vous vraiment créer un nouveau trajet et supprimer toute les actions présente sur la map ?');
   if (rep) {
-    Object.keys(movementType).forEach((key) => {
-      const dataTypeBackup = movementType[key].slice(0);
-      movementType[key].forEach((index) => {
-        icon.move.forEach((name) => {
-          deleteAction(dataTypeBackup, index, name);
-        });
-      });
-      movementType[key] = dataTypeBackup.slice(0);
-    });
-    console.log(movementType);
+    deleteAll()
   }
 });
 
@@ -45,7 +50,9 @@ ipcRenderer.on('openFile', () => {
     properties: ['openFile'],
   }, (filename) => {
     fs.readFile(filename[0], (err, data) => {
-      console.log(data);
+      if (err) throw err;
+      deleteAll()
+      loadScript(data.toString('utf8'))
     });
   });
 });
@@ -76,7 +83,7 @@ $('#defineBankCoordConfirm').click(() => {
         mapIdInSide: $('#mapIdInSide').val(),
         sunIdInside: $('#sunIdInside').val()
       },
-      index.marker.bank = marker.addTo(map);
+        index.marker.bank = marker.addTo(map);
     }
   } else {
     movementType.bank.push({
@@ -118,7 +125,7 @@ $('#definePhoenixCoordConfirm').click(() => {
     } else {
       index.data.phoenix = {
         phoenix: true,
-        phoenixCellid : $('#phoenixCellid').val(),
+        phoenixCellid: $('#phoenixCellid').val(),
         actionAfterRevive: $('#actionAfterRevive')[0].selectedOptions[0].dataset.direction
       };
       index.marker.phoenix = marker.addTo(map);
@@ -129,7 +136,7 @@ $('#definePhoenixCoordConfirm').click(() => {
       data: {
         phoenix: {
           phoenix: true,
-          phoenixCellid : $('#phoenixCellid').val(),
+          phoenixCellid: $('#phoenixCellid').val(),
           actionAfterRevive: $('#actionAfterRevive')[0].selectedOptions[0].dataset.direction
         },
       },
