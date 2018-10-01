@@ -5,4 +5,4 @@
 git clone https://github.com/Drigtime/owltouch
 cd owltouch && yarn
 ```
-[Imgur](https://i.imgur.com/5zfKm5Y.jpg)
+![Imgur](https://i.imgur.com/5zfKm5Y.jpg)
