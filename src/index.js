@@ -59,7 +59,7 @@ app.on('activate', () => {
 
 
 const template = [{
-  label: 'File',
+  label: 'Fichier',
   submenu: [
     {label: 'Nouveau script', accelerator: 'CmdOrCtrl+N', click: ()=>{mainWindow.webContents.send('newFile')}},
     {label: 'Sauvegarder', accelerator: 'CmdOrCtrl+S', click: ()=>{mainWindow.webContents.send('saveFile')}},

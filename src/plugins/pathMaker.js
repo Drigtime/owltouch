@@ -357,7 +357,7 @@ const generateScript = () => {
     elementToGather: JSON.stringify(getIdOfChips(elementToGather, interactive)),
   };
 
-  const script =
+  let script =
     `//---------------------------------------------
 //-- Script created with OwlTouch
 //---------------------------------------------
@@ -367,40 +367,37 @@ const generateScript = () => {
 //-- Métier : ${config.information.job}
 //---------------------------------------------
 const config = {
-  MAX_PODS : ${config.maxPods},
-  MIN_MONSTERS : ${config.monster.min},
-  MAX_MONSTERS : ${config.monster.max},
-  MIN_MONSTERS_LEVEL: ${config.monster.minLevel},
-  MAX_MONSTERS_LEVEL: ${config.monster.maxLevel},
-  FORBIDDEN_MONSTERS : ${config.monster.forbiddenMonsters},
-  MANDATORY_MONSTERS : ${config.monster.mandatoryMonsters},
-  ${document.querySelector('#maxFightPerMapCheckbox').checked ? `MAX_FIGHTS_PER_MAP : ${config.monster.maxFightPerMap},` : `// MAX_FIGHTS_PER_MAP : ${config.monster.maxFightPerMap},`}
-  ELEMENTS_TO_GATHER : ${config.elementToGather},
-  BANK_PUT_ITEMS: ${config.bank.putItems},
-  BANK_GET_ITEMS: ${config.bank.getItems},
-  ${document.querySelector('#putKamasCheckbox').checked ? `BANK_PUT_KAMAS: ${config.bank.putKamas},` : `// BANK_PUT_KAMAS: ${config.bank.putKamas},`}
-  ${document.querySelector('#getKamasCheckbox').checked ? `BANK_GET_KAMAS: ${config.bank.getKamas},` : `// BANK_GET_KAMAS: ${config.bank.getKamas},`}
-  ${document.querySelector('#autoRegenCheckbox').checked ? `AUTO_REGEN: {
-    minLife: ${config.autoRegen.minLife},
-    maxLife: ${config.autoRegen.maxLife},
-    items: ${config.autoRegen.items},
-    store: ${config.autoRegen.store}
-  },` : `/* AUTO_REGEN: {
-    minLife: ${config.autoRegen.minLife},
-    maxLife: ${config.autoRegen.maxLife},
-    items: ${config.autoRegen.items},
-    store: ${config.autoRegen.store}
-  }, */`}
-  AUTO_DELETE: ${config.delete},
-  OPEN_BAGS : ${config.openBags},
-  DISPLAY_GATHER_COUNT: ${config.display.gather},
-  DISPLAY_FIGHT_COUNT: ${config.display.fight}
+  "MAX_PODS" : ${config.maxPods},
+  "MIN_MONSTERS" : ${config.monster.min},
+  "MAX_MONSTERS" : ${config.monster.max},
+  "MIN_MONSTERS_LEVEL": ${config.monster.minLevel},
+  "MAX_MONSTERS_LEVEL": ${config.monster.maxLevel},
+  "FORBIDDEN_MONSTERS" : ${config.monster.forbiddenMonsters},
+  "MANDATORY_MONSTERS" : ${config.monster.mandatoryMonsters},`;
+  if (document.querySelector('#maxFightPerMapCheckbox').checked) script += `"MAX_FIGHTS_PER_MAP" : ${config.monster.maxFightPerMap},`
+  script += `
+  "ELEMENTS_TO_GATHER" : ${config.elementToGather},
+  "BANK_PUT_ITEMS": ${config.bank.putItems},
+  "BANK_GET_ITEMS": ${config.bank.getItems},`
+  if (document.querySelector('#putKamasCheckbox').checked) script += `"BANK_PUT_KAMAS": ${config.bank.putKamas},`
+  if (document.querySelector('#getKamasCheckbox').checked) script += `"BANK_GET_KAMAS": ${config.bank.getKamas},`
+  if (document.querySelector('#autoRegenCheckbox').checked) script += `"AUTO_REGEN": {
+    "minLife": ${config.autoRegen.minLife},
+    "maxLife": ${config.autoRegen.maxLife},
+    "items": ${config.autoRegen.items},
+    "store": ${config.autoRegen.store}
+  },`
+  script += `
+  "AUTO_DELETE": ${config.delete},
+  "OPEN_BAGS" : ${config.openBags},
+  "DISPLAY_GATHER_COUNT": ${config.display.gather},
+  "DISPLAY_FIGHT_COUNT": ${config.display.fight}
 }
 
-const move = ${config.paths.move}
+const move = ${ config.paths.move}
 
-const bank = ${config.paths.bank}
+const bank = ${ config.paths.bank}
 
-const phoenix = ${config.paths.phoenix}`;
+const phoenix = ${ config.paths.phoenix}`;
   return script;
 };
