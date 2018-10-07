@@ -16,15 +16,12 @@ let mainWindow;
 const createWindow = () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1280,
+    height: 720,
   });
 
   // and load the index.html of the app.
   mainWindow.loadURL(`file://${__dirname}/index.html`);
-
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools();
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
@@ -74,3 +71,7 @@ const menu = Menu.buildFromTemplate(template)
 Menu.setApplicationMenu(menu)
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+if (process.env.NODE_ENV !== 'production') {
+  mainWindow.webContents.openDevTools();
+}

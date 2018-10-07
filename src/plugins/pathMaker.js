@@ -1,4 +1,13 @@
-const icon = {
+import L from 'leaflet';
+import { autoDelete, elementToGather, itemsBank, lifeMinMax, monsterForbidden, monsterMandatory, monsterQuantMinMax, regenItems } from './htmlElementInstance';
+import { dofusCoordsToGeoCoords, map, bankPos, phoenixPos } from './map';
+
+const items = require('../data/json/d2o/Items.json');
+const monsters = require('../data/json/d2o/Monsters.json');
+const interactive = require('../data/json/d2o/Interactive.json');
+const path = require('path')
+
+export const icon = {
   move: ['top', 'bottom', 'left', 'right', 'bank', 'phoenix'],
   type: ['move', 'gather', 'fight', 'bank', 'phoenix'],
   size: {
@@ -90,55 +99,56 @@ icon.move.forEach((name) => {
   icon[name] = {};
   icon.type.forEach((type) => {
     icon[name][type] = {
-      iconUrl: `./data/assets/path/${type}/${name}.svg`,
+      iconUrl: path.join(__dirname, `../data/assets/path/${type}/${name}.svg`),
     };
   });
 });
 
-const movementType = {
+export const movementType = {
   move: [],
   bank: [],
   phoenix: [],
 };
 
-const checkIfMapAlreadyExist = (coord, array) => {
-  for (const map of Object.values(array)) {
-    if (map.coord[0] === coord[0] && map.coord[1] === coord[1]) {
-      return map;
+export function checkIfMapAlreadyExist(coord, array) {
+  for (const mapInfo of Object.values(array)) {
+    if (mapInfo.coord[0] === coord[0] && mapInfo.coord[1] === coord[1]) {
+      return mapInfo;
     }
   }
   return null;
-};
+}
 
-const getScale = (size, zoom) => {
-  switch (zoom) {
+export function getScale(size, zoom) {
+  let newZoom = zoom;
+  switch (newZoom) {
     case 4:
-      zoom = 1;
+      newZoom = 1;
       break;
     case 3:
-      zoom = 0.5;
+      newZoom = 0.5;
       break;
     case 2:
-      zoom = 0.25;
+      newZoom = 0.25;
       break;
     case 1:
-      zoom = 0.125;
+      newZoom = 0.125;
       break;
     case 0:
-      zoom = 0.0625;
+      newZoom = 0.0625;
       break;
     default:
       break;
   }
   return {
-    width: size.width * zoom,
-    height: size.height * zoom,
-    marginLeft: size.marginLeft * zoom,
-    topMargin: size.topMargin * zoom,
+    width: size.width * newZoom,
+    height: size.height * newZoom,
+    marginLeft: size.marginLeft * newZoom,
+    topMargin: size.topMargin * newZoom,
   };
-};
+}
 
-const resizeMarker = () => {
+export function resizeMarker() {
   Object.keys(movementType).forEach((dataType) => {
     Object.values(movementType[dataType]).forEach((object) => {
       ['top', 'bottom', 'left', 'right'].forEach((name) => {
@@ -155,37 +165,38 @@ const resizeMarker = () => {
       });
     });
   });
-};
+}
 
-function bpGetInformation(coord) {
-  let data = {}
+export function bpGetInformation(coord) {
+  const data = {};
   for (const element of Object.values(bankPos)) {
-    if (element.posX = coord[0] && element.posY == coord[1]) {
-      data.mapIdOutSide = element.mapIdOutSide
-      data.mapIdInSide = element.mapIdInSide
-      data.doorIdOutSide = element.doorIdOutSide
-      data.sunIdInside = element.sunIdInside
+    if (element.posX === coord[0] && element.posY === coord[1]) {
+      data.mapIdOutSide = element.mapIdOutSide;
+      data.mapIdInSide = element.mapIdInSide;
+      data.doorIdOutSide = element.doorIdOutSide;
+      data.sunIdInside = element.sunIdInside;
       break;
     }
   }
   for (const element of Object.values(phoenixPos)) {
-    if (element.posX = coord[0] && element.posY == coord[1]) {
-      data.cellId = element.cellId
+    if (element.posX === coord[0] && element.posY === coord[1]) {
+      data.cellId = element.cellId;
       break;
     }
   }
-  return data
+  return data;
 }
 
-const deleteAction = (dataType, index, name) => {
-  if (!Object.prototype.hasOwnProperty.call(index.marker, name)) return;
-  index.marker[name].remove();
-  delete index.data[name];
-  delete index.marker[name];
-  if ($.isEmptyObject(index.data)) dataType.splice(dataType.indexOf(index), 1);
-};
+export function deleteAction(dataType, index, name) {
+  const newIndex = index;
+  if (!Object.prototype.hasOwnProperty.call(newIndex.marker, name)) return;
+  newIndex.marker[name].remove();
+  delete newIndex.data[name];
+  delete newIndex.marker[name];
+  if ($.isEmptyObject(newIndex.data)) dataType.splice(dataType.indexOf(newIndex), 1);
+}
 
-const onMapClick = (coord) => {
+export function onMapClick(coord) {
   for (const name of icon.move) {
     // loop through list of possible mouvement : ['top', 'bottom', 'left', 'right'],
     if ($(`#${name}`).hasClass('selected')) {
@@ -232,84 +243,24 @@ const onMapClick = (coord) => {
         if (index !== null) deleteAction(dataType, index, name);
       });
     } else if ($('#phoenixPlacement').hasClass('selected')) {
-      const data = bpGetInformation(coord)
-      $('#definePhoenixCoord').data('coord', coord)
-      $('#phoenixCellid').val(data.cellId)
-      $('#definePhoenixCoord').modal('open')
+      const data = bpGetInformation(coord);
+      $('#definePhoenixCoord').data('coord', coord);
+      $('#phoenixCellid').val(data.cellId);
+      $('#definePhoenixCoord').modal('open');
     } else if ($('#bankPlacement').hasClass('selected')) {
-      const data = bpGetInformation(coord)
-      $('#defineBankCoord').data('coord', coord)
-      $('#mapIdOutSide').val(data.mapIdOutSide)
-      $('#doorIdOutSide').val(data.doorIdOutSide)
-      $('#mapIdInSide').val(data.mapIdInSide)
-      $('#sunIdInside').val(data.sunIdInside)
-      $('#defineBankCoord').modal('open')
+      const data = bpGetInformation(coord);
+      $('#defineBankCoord').data('coord', coord);
+      $('#mapIdOutSide').val(data.mapIdOutSide);
+      $('#doorIdOutSide').val(data.doorIdOutSide);
+      $('#mapIdInSide').val(data.mapIdInSide);
+      $('#sunIdInside').val(data.sunIdInside);
+      $('#defineBankCoord').modal('open');
     }
-  };
-  // icon.move.forEach((name) => {
-  //   // loop through list of possible mouvement : ['top', 'bottom', 'left', 'right'],
-  //   if ($(`#${name}`).hasClass('selected')) {
-  //     const dataType = $('#type')[0].selectedOptions[0].dataset.arrayType;
-  //     const scale = getScale(icon.size[dataType][name], map.getZoom());
-  //     const type = $('#type')[0].selectedOptions[0].dataset.type;
-  //     const index = checkIfMapAlreadyExist(coord, movementType[dataType]);
-  //     const arrowMarker = L.marker(dofusCoordsToGeoCoords(coord), {
-  //       icon: L.icon({
-  //         iconUrl: icon[name][type].iconUrl,
-  //         iconSize: [scale.width, scale.height],
-  //         iconAnchor: [scale.marginLeft, scale.topMargin],
-  //         className: name,
-  //       }),
-  //       zIndexOffset: icon.size[dataType].zindex,
-  //       interactive: false,
-  //     });
-  //     if (index !== null) {
-  //       if (index.data[name]) {
-  //         deleteAction(movementType[dataType], index, name);
-  //       } else {
-  //         index.data[name] = {
-  //           [type]: true,
-  //         };
-  //         index.marker[name] = arrowMarker.addTo(map);
-  //       }
-  //     } else {
-  //       movementType[dataType].push({
-  //         coord: [coord[0], coord[1]],
-  //         data: {
-  //           [name]: {
-  //             [type]: true,
-  //           },
-  //         },
-  //         marker: {
-  //           [name]: arrowMarker.addTo(map),
-  //         },
-  //       });
-  //     }
-  //   } else if ($('#delete').hasClass('selected')) {
-  //     let index;
-  //     Object.values(movementType).forEach((dataType) => {
-  //       index = checkIfMapAlreadyExist(coord, dataType); // get the object {coord: Array(), data: {…}, marker: {…}}
-  //       if (index !== null) deleteAction(dataType, index, name);
-  //     });
-  //   } else if ($('#phoenixPlacement').hasClass('selected')) {
-  //     const data = bpGetInformation(coord)
-  //     $('#definePhoenixCoord').data('coord', coord)
-  //     $('#phoenixCellid').val(data.cellId)
-  //     $('#definePhoenixCoord').modal('open')
-  //   } else if ($('#bankPlacement').hasClass('selected')) {
-  //     const data = bpGetInformation(coord)
-  //     $('#defineBankCoord').data('coord', coord)
-  //     $('#mapIdOutSide').val(data.mapIdOutSide)
-  //     $('#doorIdOutSide').val(data.doorIdOutSide)
-  //     $('#mapIdInSide').val(data.mapIdInSide)
-  //     $('#sunIdInside').val(data.sunIdInside)
-  //     $('#defineBankCoord').modal('open')
-  //   }
-  // });
+  }
   console.log(coord, movementType);
-};
+}
 
-const getIdOfChips = (chips, database) => {
+function getIdOfChips(chips, database) {
   const elementIds = [];
   Object.values(chips.chipsData).forEach((data) => {
     Object.values(database).forEach((item) => {
@@ -319,60 +270,59 @@ const getIdOfChips = (chips, database) => {
     });
   });
   return elementIds;
-};
+}
 
-const getIdOfAutoComplete = (value, database) => {
-  let elementIds = {};
+export function getIdOfAutoComplete(value, database) {
   for (const iterator of Object.values(database)) {
-    if (value == iterator.nameId) {
-      elementIds = {
+    if (value === iterator.nameId) {
+      return {
         id: iterator.id,
         iconId: iterator.iconId,
       };
-      return elementIds;
     }
   }
-};
+  return null;
+}
 
-const generateMove = (type) => {
+function generateMove(type) {
   const maps = [];
   movementType[type].forEach((object) => {
-    const map = {};
+    const mapInfo = {};
     const secondarymap = {};
     let firstAction = true;
-    map.map = `${object.coord[0]},${object.coord[1]}`;
+    mapInfo.map = `${object.coord[0]},${object.coord[1]}`;
     Object.keys(object.data).forEach((key) => {
-      if (key == 'bank') {
-        map.map = parseInt(object.data[key].mapIdOutSide)
-        map.door = parseInt(object.data[key].doorIdOutSide)
-        secondarymap.map = parseInt(object.data[key].mapIdInSide)
-        secondarymap.path = object.data[key].sunIdInside
-        secondarymap.npcBank = true
+      if (key === 'bank') {
+        mapInfo.map = parseInt(object.data[key].mapIdOutSide, 10);
+        mapInfo.door = parseInt(object.data[key].doorIdOutSide, 10);
+        secondarymap.map = parseInt(object.data[key].mapIdInSide, 10);
+        secondarymap.path = object.data[key].sunIdInside;
+        secondarymap.npcBank = true;
         return;
       }
-      if (key == 'phoenix') {
-        map.path = object.data[key].actionAfterRevive
-        map.phoenix = parseInt(object.data[key].phoenixCellid)
+      if (key === 'phoenix') {
+        mapInfo.path = object.data[key].actionAfterRevive;
+        mapInfo.phoenix = parseInt(object.data[key].phoenixCellid, 10);
         return;
       }
       if (firstAction) {
-        map.path = `${key}`;
+        mapInfo.path = `${key}`;
       } else {
-        map.path += `|${key}`;
+        mapInfo.path += `|${key}`;
       }
       if (object.data[key].gather) {
-        map.gather = true;
+        mapInfo.gather = true;
       } else if (object.data[key].fight) {
-        map.fight = true;
+        mapInfo.fight = true;
       }
       firstAction = false;
     });
-    $.isEmptyObject(secondarymap) ? maps.push(map) : maps.push(map, secondarymap)
+    $.isEmptyObject(secondarymap) ? maps.push(mapInfo) : maps.push(mapInfo, secondarymap);
   });
   return maps;
-};
+}
 
-const generateScript = () => {
+export function generateScript() {
   const config = {
     information: {
       author: document.querySelector('#scriptAuthor').value,
@@ -434,19 +384,31 @@ const config = {
   "MAX_MONSTERS_LEVEL": ${config.monster.maxLevel},
   "FORBIDDEN_MONSTERS" : ${config.monster.forbiddenMonsters},
   "MANDATORY_MONSTERS" : ${config.monster.mandatoryMonsters},`;
-  if (document.querySelector('#maxFightPerMapCheckbox').checked) script += `"MAX_FIGHTS_PER_MAP" : ${config.monster.maxFightPerMap},`
+  if (document.querySelector('#maxFightPerMapCheckbox').checked) {
+    script += `
+  "MAX_FIGHTS_PER_MAP" : ${config.monster.maxFightPerMap},`;
+  }
   script += `
   "ELEMENTS_TO_GATHER" : ${config.elementToGather},
   "BANK_PUT_ITEMS": ${config.bank.putItems},
-  "BANK_GET_ITEMS": ${config.bank.getItems},`
-  if (document.querySelector('#putKamasCheckbox').checked) script += `"BANK_PUT_KAMAS": ${config.bank.putKamas},`
-  if (document.querySelector('#getKamasCheckbox').checked) script += `"BANK_GET_KAMAS": ${config.bank.getKamas},`
-  if (document.querySelector('#autoRegenCheckbox').checked) script += `"AUTO_REGEN": {
+  "BANK_GET_ITEMS": ${config.bank.getItems},`;
+  if (document.querySelector('#putKamasCheckbox').checked) {
+    script += `
+  "BANK_PUT_KAMAS": ${config.bank.putKamas},`;
+  }
+  if (document.querySelector('#getKamasCheckbox').checked) {
+    script += `
+  "BANK_GET_KAMAS": ${config.bank.getKamas},`;
+  }
+  if (document.querySelector('#autoRegenCheckbox').checked) {
+    script += `"AUTO_REGEN": {
     "minLife": ${config.autoRegen.minLife},
     "maxLife": ${config.autoRegen.maxLife},
     "items": ${config.autoRegen.items},
     "store": ${config.autoRegen.store}
   },`
+      ;
+  }
   script += `
   "AUTO_DELETE": ${config.delete},
   "OPEN_BAGS" : ${config.openBags},
@@ -454,10 +416,10 @@ const config = {
   "DISPLAY_FIGHT_COUNT": ${config.display.fight}
 }
 
-const move = ${ config.paths.move}
+const move = ${config.paths.move}
 
-const bank = ${ config.paths.bank}
+const bank = ${config.paths.bank}
 
-const phoenix = ${ config.paths.phoenix}`;
+const phoenix = ${config.paths.phoenix}`;
   return script;
-};
+}
