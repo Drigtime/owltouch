@@ -1,6 +1,6 @@
 {
-  "name": "owltouch-new",
-  "productName": "owltouch-new",
+  "name": "owltouch",
+  "productName": "owltouch",
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": "src/index.js",
@@ -10,19 +10,26 @@
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "eslint src --color",
-    "build": "build --linux appImage",
+    "build": "build --win",
     "ship": "build --win -p always",
     "pack": "electron-builder --dir",
     "dist": "electron-builder"
   },
   "build": {
-    "directories": {
-      "buildResources": "icons"
-    },
+    "appId": "com.drigtime.owltouch",
     "linux": {
-      "target": "AppImage",
-      "icon": "./icons/icon",
-      "category": "Utility"
+      "target": "appImage",
+      "icon": "./build/icon",
+      "category": "Game"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "./build/icon"
+    },
+    "mac": {
+      "target": "default",
+      "icon": "./build/icon",
+      "category": "public.app-category.games"
     }
   },
   "repository": "https://github.com/drigtime/owltouch",
