@@ -2,7 +2,7 @@
   "name": "owltouch",
   "productName": "owltouch",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "créateur de trajet pour cookieTouch",
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
@@ -18,16 +18,19 @@
   "build": {
     "appId": "com.drigtime.owltouch",
     "linux": {
-      "target": "appImage",
+      "target": "AppImage",
       "icon": "./build/icon",
       "category": "Game"
     },
     "win": {
-      "target": "nsis",
+      "target": [
+        "nsis",
+        "portable"
+      ],
       "icon": "./build/icon"
     },
     "mac": {
-      "target": "default",
+      "target": "tar.xz",
       "icon": "./build/icon",
       "category": "public.app-category.games"
     }
