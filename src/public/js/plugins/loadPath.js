@@ -150,11 +150,25 @@ function loadPath(paths, arrayType) {
 }
 
 export default function loadScript(script) {
+    script = script
+        .replace(/(?!")map(?!")/g, '"map"')
+        .replace(/(?!")path(?!")/g, '"path"')
+        .replace(/(?!")door(?!")/g, '"door"')
+        .replace(/(?!")gather(?!")/g, '"gather"')
+        .replace(/(?!")fight(?!")/g, '"fight"')
+        .replace(/(?!")phoenix(?!")/g, '"phoenix"')
+        .replace(/(?!")npcBank(?!")/g, '"npcBank"');
     const config = {
         paths: {
-            move: JSON.parse(`${/move(?:[\s\S]*?)=(?:[\s\S]*?)(\[[\s\S]*?\])/gm.exec(script)[1]}`),
-            bank: JSON.parse(`${/bank(?:[\s\S]*?)=(?:[\s\S]*?)(\[[\s\S]*?\])/gm.exec(script)[1]}`),
-            phoenix: JSON.parse(`${/phoenix(?:[\s\S]*?)=(?:[\s\S]*?)(\[[\s\S]*?\])/gm.exec(script)[1]}`)
+            move: /move(?:[\s\S]*?)=(?:[\s\S]*?)(\[[\s\S]*?\])/gm.exec(script)
+                ? JSON.parse(/move(?:[\s\S]*?)=(?:[\s\S]*?)(\[[\s\S]*?\])/gm.exec(script)[1])
+                : [],
+            bank: /bank(?:[\s\S]*?)=(?:[\s\S]*?)(\[[\s\S]*?\])/gm.exec(script)
+                ? JSON.parse(/bank(?:[\s\S]*?)=(?:[\s\S]*?)(\[[\s\S]*?\])/gm.exec(script)[1])
+                : [],
+            phoenix: /phoenix(?:[\s\S]*?)=(?:[\s\S]*?)(\[[\s\S]*?\])/gm.exec(script)
+                ? JSON.parse(/phoenix(?:[\s\S]*?)=(?:[\s\S]*?)(\[[\s\S]*?\])/gm.exec(script)[1])
+                : []
         }
     };
     console.log(config.paths.move, config.paths.bank, config.paths.phoenix);
