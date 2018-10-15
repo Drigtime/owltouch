@@ -1,0 +1,117 @@
+{
+    "author": "Drigtime",
+    "license": "MIT",
+    "name": "owltouch",
+    "productName": "owltouch",
+    "version": "1.0.0",
+    "description": "créateur de trajet pour cookieTouch",
+    "main": "src/index.js",
+    "repository": "https://github.com/drigtime/owltouch",
+    "scripts": {
+        "start": "electron-forge start",
+        "package": "electron-forge package",
+        "make": "electron-forge make",
+        "lint": "eslint src --color",
+        "dist:win32": "electron-builder -w --ia32 --config.nsis.artifactName=\"${productName} ${version} Setup x32.${ext}\" --config.portable.artifactName=\"${productName} ${version} x32.${ext}\"",
+        "dist:win64": "electron-builder -w --x64",
+        "dist:linux": "electron-builder -l",
+        "dist:macOS": "electron-builder -m",
+        "publish": "build --linux --mac --win -p always"
+    },
+    "build": {
+        "appId": "com.drigtime.owltouch",
+        "files": [
+            "!src/public/css/sass"
+        ],
+        "linux": {
+            "target": [
+                "AppImage",
+                "tar.xz"
+            ],
+            "icon": "./build/icon",
+            "category": "Utility"
+        },
+        "win": {
+            "target": [
+                "nsis",
+                "portable"
+            ],
+            "icon": "./build/icon"
+        },
+        "mac": {
+            "target": "tar.xz",
+            "icon": "./build/icon",
+            "category": "public.app-category.utilities"
+        },
+        "nsis": {
+            "artifactName": "${productName} ${version} Setup.${ext}",
+            "oneClick": false,
+            "allowToChangeInstallationDirectory": true,
+            "uninstallDisplayName": "${productName} ${version}",
+            "deleteAppDataOnUninstall": true
+        },
+        "portable": {
+            "artifactName": "${productName} ${version}.${ext}",
+            "requestExecutionLevel": "user"
+        }
+    },
+    "config": {
+        "forge": {
+            "make_targets": {
+                "win32": [
+                    "squirrel"
+                ],
+                "darwin": [
+                    "zip"
+                ],
+                "linux": [
+                    "deb",
+                    "rpm"
+                ]
+            },
+            "electronPackagerConfig": {
+                "packageManager": "yarn"
+            },
+            "electronWinstallerConfig": {
+                "name": "owltouch_new"
+            },
+            "electronInstallerDebian": {},
+            "electronInstallerRedhat": {},
+            "github_repository": {
+                "owner": "",
+                "name": ""
+            },
+            "windowsStoreConfig": {
+                "packageName": "",
+                "name": "owltouchnew"
+            }
+        }
+    },
+    "dependencies": {
+        "electron-compile": "^6.4.3",
+        "electron-squirrel-startup": "^1.0.0",
+        "electron-updater": "^3.1.2",
+        "graceful-fs": "^4.1.11",
+        "image-size": "^0.6.3",
+        "jquery": "^3.3.1",
+        "leaflet": "^1.3.4",
+        "leaflet.markercluster": "^1.4.1",
+        "leaflet.markercluster.layersupport": "^2.0.1",
+        "material-design-icons": "^3.0.1",
+        "materialize-css": "^1.0.0",
+        "typeface-roboto": "^0.0.54"
+    },
+    "devDependencies": {
+        "babel-plugin-transform-async-to-generator": "^6.24.1",
+        "babel-preset-env": "^1.7.0",
+        "babel-preset-react": "^6.24.1",
+        "electron-builder": "^20.28.4",
+        "electron-forge": "^5.2.2",
+        "electron-prebuilt-compile": "2.0.7",
+        "eslint": "^3",
+        "eslint-config-airbnb": "^15",
+        "eslint-plugin-import": "^2",
+        "eslint-plugin-jsx-a11y": "^5",
+        "eslint-plugin-react": "^7"
+    }
+}

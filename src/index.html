@@ -1,0 +1,350 @@
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <link rel="stylesheet" href="public/css/materialize.min.css">
+  <link rel="stylesheet" href="public/css/material-icons.css">
+  <link rel="stylesheet" href="../node_modules/typeface-roboto/index.css">
+  <link rel="stylesheet" href="public/css/nouislider.css">
+  <link rel="stylesheet" href="../node_modules/leaflet/dist/leaflet.css">
+  <link rel="stylesheet" href="../node_modules/leaflet.markercluster/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="../node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+  <link rel="stylesheet" href="public/css/style.css">
+  <title>Owl</title>
+</head>
+
+<body>
+  <nav>
+    <div class="nav-wrapper">
+      <ul>
+        <li>
+          <div class=" input-field">
+            <select id="type">
+              <option data-array-type="move" data-type="move" value="move">Déplacement</option>
+              <option data-array-type="move" data-type="gather" value="move">Récolte</option>
+              <option data-array-type="move" data-type="fight" value="move">Combat</option>
+              <option data-array-type="bank" data-type="bank" value="bank">Banque</option>
+              <option data-array-type="phoenix" data-type="phoenix" value="phoenix">Phoenix</option>
+            </select>
+          </div>
+        </li>
+        <li>
+          <span class="btn-group">
+            <a class="waves-effect btn-flat" id="top"><i class="material-icons">arrow_upward</i></a>
+            <a class="waves-effect btn-flat" id="bottom"><i class="material-icons">arrow_downward</i></a>
+            <a class="waves-effect btn-flat" id="left"><i class="material-icons">arrow_back</i></a>
+            <a class="waves-effect btn-flat" id="right"><i class="material-icons">arrow_forward</i></a>
+          </span>
+        </li>
+        <li>
+          <span class="btn-group">
+            <a class="waves-effect btn-flat" id="delete"><i class="material-icons">delete</i></a>
+          </span>
+        </li>
+        <li>
+          <span class="btn-group">
+            <a class="waves-effect btn-flat tooltipped" data-position="bottom" data-tooltip="Position de la banque" id="bankPlacement"><i
+                class="material-icons">account_balance</i></a>
+            <a class="waves-effect btn-flat tooltipped" data-position="bottom" data-tooltip="Position du phoenix" id="phoenixPlacement"><i
+                class="material-icons">whatshot</i></a>
+          </span>
+        </li>
+      </ul>
+      <ul class="right">
+        <li><a class="waves-effect btn-floating btn-flat modal-trigger" href="#information"><i class="material-icons">settings</i></a></li>
+      </ul>
+    </div>
+  </nav>
+  <div id="information" class="modal modal-fixed-footer" style="max-height: 71%;height: 71%;">
+    <div class="modal-content">
+      <div class="row">
+        <div class="col s12">
+          <ul class="tabs">
+            <li class="tab col s3"><a class="active" href="#gatherTab">Récolte</a></li>
+            <li class="tab col s3"><a class="" href="#fightTab">Combat</a></li>
+            <li class="tab col s3"><a class="" href="#bankTab">Banque</a></li>
+            <li class="tab col s3"><a class="" href="#informationTab">Information</a></li>
+          </ul>
+        </div>
+        <div class="col s12">
+          <div class="row">
+            <div class="col s12">
+              <div id="gatherTab" class="card-panel ">
+                <div class="switch">
+                  <label>
+                    <input type="checkbox" id="displayGatherCountCheckbox" checked>
+                    <span class="lever"></span>
+                    Afficher le compteur de récoltes
+                  </label>
+                </div>
+                <div class="switch">
+                  <label>
+                    <input type="checkbox" id="openBagsCheckbox" checked>
+                    <span class="lever"></span>
+                    Ouverture automatique des sacs de récolte
+                  </label>
+                </div>
+                <div>
+                  <span>Ressources à récolter</span>
+                  <div class="chips chips-autocomplete" id="gatherElementChips"></div>
+                </div>
+              </div>
+              <div id="fightTab" class="card-panel ">
+                <div class="switch">
+                  <label>
+                    <input type="checkbox" id="displayFightCountCheckbox" checked>
+                    <span class="lever"></span>
+                    Afficher le compteur de combats
+                  </label>
+                </div>
+                <div class="row">
+                  <div class="col s12">
+                    <ul class="collapsible expandable">
+                      <li>
+                        <div class="collapsible-header  white-text" style="font-size: small">
+                          <span>Régénération de vie automatique</span>
+                        </div>
+                        <div class="collapsible-body ">
+                          <div class="switch">
+                            <label>
+                              <input type="checkbox" id="autoRegenCheckbox" checked>
+                              <span class="lever"></span>
+                              Activer la régénération de vie automatique
+                            </label>
+                          </div>
+                          <div>
+                            <span>Régénération minimum / maximum</span>
+                            <div id="lifeMinMax"></div>
+                          </div>
+                          <div>
+                            <span>Objets à récupérer en banque pour se régénérer</span>
+                            <div class="chips chips-placeholder chips-autocomplete" id="regenItemChips"></div>
+                          </div>
+                          <div>
+                            <span>Quantité d'objets à récupérer en banque</span>
+                            <div class="input-field"><input type="number" min="0" value="0" id="regenItemValue"></div>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div>
+                  <span>Nombre de monstres minimum / maximum</span>
+                  <div id="monsterQuantMinMax"></div>
+                </div>
+                <div>
+                  <span>Niveau des groupes de monstres</span>
+                  <div class="row">
+                    <div class="input-field col s6"><span>Minimum</span>
+                      <input id="monsterMin" type="number" min="1" value="1"></div>
+                    <div class="input-field col s6"><span>Maximum</span>
+                      <input id="monsterMax" type="number" min="1" value="1000"></div>
+                  </div>
+                </div>
+                <div>
+                  <span>Monstres obligatoires</span>
+                  <div class="chips chips-autocomplete" id="monsterMandatory"></div>
+                </div>
+                <div>
+                  <span>Monstres interdits</span>
+                  <div class="chips chips-autocomplete" id="monsterForbidden"></div>
+                </div>
+                <div class="switch">
+                  <label>
+                    <input type="checkbox" id="maxFightPerMapCheckbox">
+                    <span class="lever"></span>
+                    Nombre maximum de combats par map
+                  </label>
+                </div>
+                <input class="input-field" id="maxFightPerMapValue" type="number" min="0" value="10">
+              </div>
+              <div id="bankTab" class="card-panel ">
+                <div>
+                  <span>Pods maximum avant retour en banque</span>
+                  <form action="#">
+                    <p class="range-field">
+                      <input type="range" id="maxPods" min="0" max="100" value="90" id="podMax" />
+                    </p>
+                  </form>
+                </div>
+                <div>
+                  <span>Suppression automatique</span>
+                  <div class="chips chips-autocomplete" id="autoDelete"></div>
+                </div>
+                <div class="switch">
+                  <label>
+                    <input type="checkbox" id="putKamasCheckbox">
+                    <span class="lever"></span>
+                    Déposer des kamas
+                  </label>
+                </div>
+                <div class="input-field">
+                  <input id="putKamasValue" type="number" min="0" value="0">
+                  <span class="helper-text">Si vous mettez 0, tous les kamas seront déposés.</span>
+                </div>
+                <div>
+                  <div class="switch">
+                    <label>
+                      <input type="checkbox" id="getKamasCheckbox">
+                      <span class="lever"></span>
+                      Prendre des kamas
+                    </label>
+                  </div>
+                  <div class="input-field">
+                    <input id="getKamasValue" type="number" min="0" value="0">
+                    <span class="helper-text">Si vous mettez 0, tous les kamas seront récupérés.</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col s12">
+                    <ul class="collapsible expandable">
+                      <li>
+                        <div class="collapsible-header  white-text" style="font-size: small">
+                          <span>Objets a déposer dans la banque</span>
+                        </div>
+                        <div class="collapsible-body ">
+                          <div class="row">
+                            <div class="input-field col s6">
+                              <span>Nom de l'objet à déposer</span>
+                              <input class="autocomplete" type="text" id="putItemName">
+                            </div>
+                            <div class="input-field col s4">
+                              <span>Quantité</span><input type="number" min="0" value="0" id="putItemQuant">
+                              <span class="helper-text">Si vous mettez 0, toute la quantité de l’élément sera déposée</span>
+                            </div>
+                            <a class="col s2 waves-effect waves-light btn " id="addPutItem">Ajouter</a>
+                          </div>
+                          <table class="white-text">
+                            <thead>
+                              <tr>
+                                <th>Icone</th>
+                                <th>Nom</th>
+                                <th>Quantité</th>
+                                <th>Action</th>
+                              </tr>
+                            </thead>
+                            <tbody id="putItemTable">
+                            </tbody>
+                          </table>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="collapsible-header  white-text" style="font-size: small">
+                          <span>Objets a récupérer de la banque</span>
+                        </div>
+                        <div class="collapsible-body ">
+                          <div class="row">
+                            <div class="input-field col s6">
+                              <span>Nom de l'objet à récupérer</span>
+                              <input class="autocomplete" type="text" id="getItemName">
+                            </div>
+                            <div class="input-field col s4">
+                              <span>Quantité</span><input type="number" min="0" value="0" id="getItemQuant">
+                              <span class="helper-text">Si vous mettez 0, toute la quantité de l’élément sera récupéré</span>
+                            </div>
+                            <a class="col s2 waves-effect waves-light btn " id="addGetItem">Ajouter</a>
+                          </div>
+                          <table class="white-text">
+                            <thead>
+                              <tr>
+                                <th>Icone</th>
+                                <th>Nom</th>
+                                <th>Quantité</th>
+                                <th>Action</th>
+                              </tr>
+                            </thead>
+                            <tbody id="getItemTable">
+                            </tbody>
+                          </table>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div id="informationTab" class="card-panel ">
+                <div class="input-field"><span>Nom de l'auteur du trajet</span>
+                  <input id="scriptAuthor" type="text">
+                </div>
+                <div class="input-field"><span>Nom du trajet</span>
+                  <input id="scriptName" type="text">
+                </div>
+                <div class="input-field"><span>Type de trajet</span>
+                  <input id="scriptType" type="text">
+                </div>
+                <div class="input-field"><span>Zone du trajet</span>
+                  <input id="scriptArea" type="text">
+                </div>
+                <div class="input-field"><span>Métier du trajet</span>
+                  <input id="scriptJob" type="text">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#information" class="modal-close waves-effect btn ">Confirmer</a>
+    </div>
+  </div>
+  <div id="defineBankCoord" class="modal">
+    <div class="modal-content">
+      <div class="input-field">
+        <span for="mapIdOutSide">mapid extérieur de la banque</span>
+        <input id="mapIdOutSide" type="number">
+      </div>
+      <div class="input-field">
+        <span for="sunIdInside">cellid du soleil pour sortir de la banque</span>
+        <input id="sunIdInside" type="number">
+      </div>
+      <div class="input-field">
+        <span for="mapIdInSide">mapid intérieur de la banque</span>
+        <input id="mapIdInSide" type="number">
+      </div>
+      <div class="input-field">
+        <span for="doorIdOutSide">cellid de la porte pour rentrer dans la banque</span>
+        <input id="doorIdOutSide" type="number">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect btn-flat">Annuler</a>
+      <a href="#!" id="defineBankCoordConfirm" class="modal-close waves-effect waves-green btn ">Confirmer</a>
+    </div>
+  </div>
+  <div id="definePhoenixCoord" class="modal">
+    <div class="modal-content">
+      <div class="input-field">
+        <span>cellid du phoenix</span>
+        <input id="phoenixCellid" type="number">
+      </div>
+      <div class="input-field">
+        <span>Direction a prendre aprés être revenu à la vie</span>
+        <select id="actionAfterRevive">
+          <option data-direction="top" selected>haut</option>
+          <option data-direction="bottom">bas</option>
+          <option data-direction="left">gauche</option>
+          <option data-direction="right">droite</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect btn-flat">Annuler</a>
+      <a href="#!" id="definePhoenixCoordConfirm" class="modal-close waves-effect waves-green btn ">Confirmer</a>
+    </div>
+  </div>
+  <div id="map"></div>
+</body>
+<!-- Insert this line above script imports  -->
+<script>if (typeof module === 'object') { window.module = module; module = undefined; }</script>
+
+<script src="public/js/jquery-3.3.1.min.js"></script>
+<script src="public/js/materialize.min.js"></script>
+<script src="public/js/nouislider.js"> </script>
+<script src="public/js/app.js"></script>
+
+<!-- Insert this line after script imports -->
+<script>if (window.module) module = window.module;</script>
+
+</html>

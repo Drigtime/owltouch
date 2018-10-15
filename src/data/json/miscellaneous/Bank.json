@@ -1,0 +1,82 @@
+[
+    {
+        "gfx": 401,
+        "nameId": "Le Village",
+        "mapIdOutSide" : 88081177,
+        "mapIdInSide": 99095051,
+        "doorIdOutSide": 216,
+        "sunIdInside" : 410,
+        "posX": 2,
+        "posY": -2
+    },
+    {
+        "gfx": 401,
+        "nameId": "Astrub",
+        "mapIdOutSide" : 84674566,
+        "mapIdInSide": 83887104,
+        "doorIdOutSide": 303,
+        "sunIdInside": 356,
+        "posX": 4,
+        "posY": -16
+    },
+    {
+        "gfx": 401,
+        "nameId": "Village de Pandala",
+        "mapIdOutSide" : 12580,
+        "mapIdInSide": 8129542,
+        "doorIdOutSide": 284,
+        "sunIdInside": 469,
+        "posX": 24,
+        "posY": -36
+    },
+    {
+        "gfx": 401,
+        "nameId": "Bonta",
+        "mapIdOutSide" : 147254,
+        "mapIdInSide": 2885641,
+        "doorIdOutSide": 383,
+        "sunIdInside": 469,
+        "posX": -31,
+        "posY": -54
+    },
+    {
+        "gfx": 401,
+        "nameId": "Village des Eleveurs",
+        "mapIdOutSide" : 73400323,
+        "mapIdInSide": 84935175,
+        "doorIdOutSide": 330,
+        "sunIdInside": 410,
+        "posX": -16,
+        "posY": 4
+    },
+    {
+        "gfx": 401,
+        "nameId": "Le village côtier",
+        "mapIdOutSide" : 155157,
+        "mapIdInSide": 24379394,
+        "doorIdOutSide": 355,
+        "sunIdInside": 469,
+        "posX": -47,
+        "posY": 21
+    },
+    {
+        "gfx": 401,
+        "nameId": "Brâkmar",
+        "mapIdOutSide" : 144931,
+        "mapIdInSide": 8912911,
+        "doorIdOutSide": 175,
+        "sunIdInside": 469,
+        "posX": -27,
+        "posY": 35
+    },
+    {
+        "gfx": 401,
+        "nameId": "La bourgade",
+        "mapIdOutSide" : 54172457,
+        "mapIdInSide": 54534165,
+        "doorIdOutSide": 358,
+        "sunIdInside": 469,
+        "posX": -77,
+        "posY": -41
+    }
+]
