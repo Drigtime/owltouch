@@ -1,5 +1,20 @@
+.title-bar {
+    height: 32px;
+    line-height: 32px;
+    -webkit-app-region: drag;
+    background-color: #1e2329 !important;
+}
+
+.title-bar a i {
+    height: 32px;
+    line-height: 32px;
+}
+.title-bar li a {
+    -webkit-app-region: no-drag;
+}
+
 #map {
-    height: calc(100% - 64px);
+    height: calc(100% - 96px);
     width: 100%;
     background-color: #000;
 }
@@ -228,4 +243,8 @@ svg.caret {
 #addPutItem,
 #addGetItem {
     margin-top: 47px;
+}
+
+.tabs .tab.disabled a:focus, .tabs .tab.disabled a:focus.active {
+    background-color: rgba(255, 255, 255, 0);
 }
