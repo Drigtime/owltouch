@@ -1,3 +1,7 @@
+* {
+    font-family: roboto;
+  }
+
 .title-bar {
     height: 32px;
     line-height: 32px;
@@ -11,6 +15,46 @@
 }
 .title-bar li a {
     -webkit-app-region: no-drag;
+}
+
+.dropdown-trigger {
+    user-select: none;
+}
+
+#menu-dropdown {
+    top: 32px !important;
+    width: auto !important;
+}
+
+#menu-dropdown li {
+    min-height: 38px;
+}
+
+#menu-dropdown li a {
+    padding: 8px 10px;
+    font-size: 14px
+}
+
+#menu-dropdown a i {
+    font-size: 20px
+}
+
+#menu-dropdown a span {
+    float: right;
+    margin: 0 0 0 24px;
+    color: #ffffff45!important;
+}
+
+.app-icon {
+    height: 32px;
+    padding: 3px;
+    float: left;
+}
+
+.app-version {
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 
 #map {

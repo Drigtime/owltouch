@@ -14,6 +14,42 @@
 </head>
 
 <body>
+  <nav class="title-bar">
+    <div>
+      <img class="app-icon" src="icon.png" alt="">
+      <ul>
+        <li>
+          <a class="dropdown-trigger" data-target="menu-dropdown">Fichier</a>
+        </li>
+      </ul>
+    </div>
+    <ul class="right">
+      <li><a id="minimize-button"><i class="material-icons">remove</i></a></li>
+      <li><a id="min-max-button"><i class="material-icons">add</i></a></li>
+      <li><a id="close-button"><i class="material-icons">close</i></a></li>
+    </ul>
+    <div class="app-version">
+      <span>OlwTouch 1.2.0</span>
+    </div>
+  </nav>
+
+  <!-- Dropdown Structure -->
+  <ul id="settings-dropdown" class="dropdown-content">
+    <!-- <li><a class="modal-trigger" href="#settings-global">Paramétres<i class="material-icons">settings</i></a></li> -->
+    <li><a class="modal-trigger" href="#information">Paramétres du trajet<i class="material-icons">map</i></a></li>
+  </ul>
+  <!-- Dropdown Structure -->
+  <ul id="menu-dropdown" class="dropdown-content">
+    <li><a id="NewFile">Nouveau trajet<i class="material-icons">insert_drive_file</i><span style="float: right;">
+          Ctrl + N</span></a></li>
+    <li><a id="SaveFile">Sauvegarder le trajet<i class="material-icons">save</i><span style="float: right;">
+          Ctrl + S</span></a></li>
+    <li><a id="LoadFile">Charger un trajet<i class="material-icons">folder_open</i><span style="float: right;">
+          Ctrl + O</span></a></li>
+    <li><a id="RealoadApp">Relancer<i class="material-icons">refresh</i><span style="float: right;">
+          Ctrl + R</span></a></li>
+    <li><a id="DevTools">Ouvrir les outils de developper<i class="material-icons">code</i><span> Ctrl + Shift + I</span></a></li>
+  </ul>
   <nav>
     <div class="nav-wrapper">
       <ul>
@@ -23,6 +59,7 @@
               <option data-array-type="move" data-type="move" value="move">Déplacement</option>
               <option data-array-type="move" data-type="gather" value="move">Récolte</option>
               <option data-array-type="move" data-type="fight" value="move">Combat</option>
+              <option data-array-type="move" data-type="gatherfight" value="move">Récolte & Combat</option>
               <option data-array-type="bank" data-type="bank" value="bank">Banque</option>
               <option data-array-type="phoenix" data-type="phoenix" value="phoenix">Phoenix</option>
             </select>
@@ -51,10 +88,65 @@
         </li>
       </ul>
       <ul class="right">
-        <li><a class="waves-effect btn-floating btn-flat modal-trigger" href="#information"><i class="material-icons">settings</i></a></li>
+        <!-- Dropdown Trigger -->
+        <li><a class="waves-effect btn-floating btn-flat dropdown-trigger" href="#!" data-target="settings-dropdown"><i
+              class="material-icons right">more_vert</i></a></li>
       </ul>
     </div>
   </nav>
+  <div id="settings-global" class="modal">
+    <div class="modal-content">
+      <div class="row">
+        <div class="col s12">
+          <ul class="tabs">
+            <li class="tab col s3 selected"><a href="#keyboard-shortcut">raccourcis clavier</a></li>
+            <li class="tab col s3 disabled"><a href="">langage</a></li>
+            <li class="tab col s3 disabled"><a href="">à propos</a></li>
+          </ul>
+        </div>
+        <div class="col s12">
+          <div class="row">
+            <div class="col s12">
+              <div id="keyboard-shortcut" class="card-panel row">
+                <div class="input-field col s3">
+                  <input id="topKeyBinding" type="text">
+                  <label for="topKeyBinding" class="">Haut</label>
+                </div>
+                <div class="input-field col s3">
+                  <input id="bottomKeyBinding" type="text">
+                  <label for="bottomKeyBinding" class="">Bas</label>
+                </div>
+                <div class="input-field col s3">
+                  <input id="leftKeyBinding" type="text">
+                  <label for="leftKeyBinding" class="">Gauche</label>
+                </div>
+                <div class="input-field col s3">
+                  <input id="rightKeyBinding" type="text">
+                  <label for="rightKeyBinding" class="">Droite</label>
+                </div>
+                <div class="input-field col s3">
+                  <input id="deleteKeyBinding" type="text">
+                  <label for="deleteKeyBinding" class="">Supprimer</label>
+                </div>
+                <div class="input-field col s3">
+                  <input id="bankKeyBinding" type="text">
+                  <label for="bankKeyBinding" class="">Placement de banque</label>
+                </div>
+                <div class="input-field col s3">
+                  <input id="phoenixKeyBinding" type="text">
+                  <label for="phoenixKeyBinding" class="">Placement de phoenix</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect btn-flat">Annuler</a>
+      <a href="#!" id="" class="modal-close waves-effect waves-green btn ">Confirmer</a>
+    </div>
+  </div>
   <div id="information" class="modal modal-fixed-footer" style="max-height: 71%;height: 71%;">
     <div class="modal-content">
       <div class="row">
@@ -172,28 +264,32 @@
                   <span>Suppression automatique</span>
                   <div class="chips chips-autocomplete" id="autoDelete"></div>
                 </div>
-                <div class="switch">
-                  <label>
-                    <input type="checkbox" id="putKamasCheckbox">
-                    <span class="lever"></span>
-                    Déposer des kamas
-                  </label>
-                </div>
-                <div class="input-field">
-                  <input id="putKamasValue" type="number" min="0" value="0">
-                  <span class="helper-text">Si vous mettez 0, tous les kamas seront déposés.</span>
-                </div>
-                <div>
-                  <div class="switch">
+                <div class="row" style="display:flex;align-items: center">
+                  <div class="switch col s3">
                     <label>
-                      <input type="checkbox" id="getKamasCheckbox">
+                      <input type="checkbox" id="putKamasCheckbox">
                       <span class="lever"></span>
-                      Prendre des kamas
+                      Déposer des kamas
                     </label>
                   </div>
-                  <div class="input-field">
-                    <input id="getKamasValue" type="number" min="0" value="0">
-                    <span class="helper-text">Si vous mettez 0, tous les kamas seront récupérés.</span>
+                  <div class="input-field col s9">
+                    <input id="putKamasValue" type="number" min="0" value="0">
+                    <span class="helper-text">Si vous mettez 0, tous les kamas seront déposés.</span>
+                  </div>
+                </div>
+                <div>
+                  <div class="row" style="display:flex;align-items: center">
+                    <div class="switch col s3">
+                      <label>
+                        <input type="checkbox" id="getKamasCheckbox">
+                        <span class="lever"></span>
+                        Prendre des kamas
+                      </label>
+                    </div>
+                    <div class="input-field col s9">
+                      <input id="getKamasValue" type="number" min="0" value="0">
+                      <span class="helper-text">Si vous mettez 0, tous les kamas seront récupérés.</span>
+                    </div>
                   </div>
                 </div>
                 <div class="row">
@@ -241,7 +337,8 @@
                             </div>
                             <div class="input-field col s4">
                               <span>Quantité</span><input type="number" min="0" value="0" id="getItemQuant">
-                              <span class="helper-text">Si vous mettez 0, toute la quantité de l’élément sera récupéré</span>
+                              <span class="helper-text">Si vous mettez 0, toute la quantité de l’élément sera
+                                récupéré</span>
                             </div>
                             <a class="col s2 waves-effect waves-light btn " id="addGetItem">Ajouter</a>
                           </div>
@@ -296,21 +393,21 @@
         <input id="mapIdOutSide" type="number">
       </div>
       <div class="input-field">
-        <span for="sunIdInside">cellid du soleil pour sortir de la banque</span>
-        <input id="sunIdInside" type="number">
+        <span for="doorIdOutSide">cellid de la porte pour rentrer dans la banque</span>
+        <input id="doorIdOutSide" type="number">
       </div>
       <div class="input-field">
         <span for="mapIdInSide">mapid intérieur de la banque</span>
         <input id="mapIdInSide" type="number">
       </div>
       <div class="input-field">
-        <span for="doorIdOutSide">cellid de la porte pour rentrer dans la banque</span>
-        <input id="doorIdOutSide" type="number">
+        <span for="sunIdInside">cellid du soleil pour sortir de la banque</span>
+        <input id="sunIdInside" type="number">
       </div>
     </div>
     <div class="modal-footer">
       <a href="#!" class="modal-close waves-effect btn-flat">Annuler</a>
-      <a href="#!" id="defineBankCoordConfirm" class="modal-close waves-effect waves-green btn ">Confirmer</a>
+      <a href="#!" id="defineBankCoordConfirm" class="modal-close waves-effect waves-green btn">Confirmer</a>
     </div>
   </div>
   <div id="definePhoenixCoord" class="modal">
@@ -319,19 +416,10 @@
         <span>cellid du phoenix</span>
         <input id="phoenixCellid" type="number">
       </div>
-      <div class="input-field">
-        <span>Direction a prendre aprés être revenu à la vie</span>
-        <select id="actionAfterRevive">
-          <option data-direction="top" selected>haut</option>
-          <option data-direction="bottom">bas</option>
-          <option data-direction="left">gauche</option>
-          <option data-direction="right">droite</option>
-        </select>
-      </div>
     </div>
     <div class="modal-footer">
       <a href="#!" class="modal-close waves-effect btn-flat">Annuler</a>
-      <a href="#!" id="definePhoenixCoordConfirm" class="modal-close waves-effect waves-green btn ">Confirmer</a>
+      <a href="#!" id="definePhoenixCoordConfirm" class="modal-close waves-effect waves-green btn">Confirmer</a>
     </div>
   </div>
   <div id="map"></div>
@@ -340,8 +428,8 @@
 <script>if (typeof module === 'object') { window.module = module; module = undefined; }</script>
 
 <script src="public/js/jquery-3.3.1.min.js"></script>
-<script src="public/js/materialize.min.js"></script>
-<script src="public/js/nouislider.js"> </script>
+<!-- <script src="public/js/materialize.min.js"></script>
+<script src="public/js/nouislider.js"></script> -->
 <script src="public/js/app.js"></script>
 
 <!-- Insert this line after script imports -->
