@@ -2,47 +2,47 @@
     {
         "gfx": 401,
         "nameId": "Le Village",
-        "mapIdOutSide" : 88081177,
+        "mapIdOutSide": 88081177,
         "mapIdInSide": 99095051,
         "doorIdOutSide": 216,
-        "sunIdInside" : 410,
+        "sunIdInside": 410,
         "posX": 2,
         "posY": -2
     },
     {
         "gfx": 401,
         "nameId": "Astrub",
-        "mapIdOutSide" : 84674566,
+        "mapIdOutSide": 84674566,
         "mapIdInSide": 83887104,
         "doorIdOutSide": 303,
-        "sunIdInside": 356,
+        "sunIdInside": 396,
         "posX": 4,
         "posY": -16
     },
     {
         "gfx": 401,
         "nameId": "Village de Pandala",
-        "mapIdOutSide" : 12580,
+        "mapIdOutSide": 12580,
         "mapIdInSide": 8129542,
         "doorIdOutSide": 284,
-        "sunIdInside": 469,
+        "sunIdInside": 424,
         "posX": 24,
         "posY": -36
     },
     {
         "gfx": 401,
         "nameId": "Bonta",
-        "mapIdOutSide" : 147254,
+        "mapIdOutSide": 147254,
         "mapIdInSide": 2885641,
         "doorIdOutSide": 383,
-        "sunIdInside": 469,
+        "sunIdInside": 424,
         "posX": -31,
         "posY": -54
     },
     {
         "gfx": 401,
         "nameId": "Village des Eleveurs",
-        "mapIdOutSide" : 73400323,
+        "mapIdOutSide": 73400323,
         "mapIdInSide": 84935175,
         "doorIdOutSide": 330,
         "sunIdInside": 410,
@@ -52,30 +52,30 @@
     {
         "gfx": 401,
         "nameId": "Le village côtier",
-        "mapIdOutSide" : 155157,
+        "mapIdOutSide": 155157,
         "mapIdInSide": 24379394,
         "doorIdOutSide": 355,
-        "sunIdInside": 469,
+        "sunIdInside": 409,
         "posX": -47,
         "posY": 21
     },
     {
         "gfx": 401,
         "nameId": "Brâkmar",
-        "mapIdOutSide" : 144931,
+        "mapIdOutSide": 144931,
         "mapIdInSide": 8912911,
         "doorIdOutSide": 175,
-        "sunIdInside": 469,
+        "sunIdInside": 424,
         "posX": -27,
         "posY": 35
     },
     {
         "gfx": 401,
         "nameId": "La bourgade",
-        "mapIdOutSide" : 54172457,
+        "mapIdOutSide": 54172457,
         "mapIdInSide": 54534165,
         "doorIdOutSide": 358,
-        "sunIdInside": 469,
+        "sunIdInside": 424,
         "posX": -77,
         "posY": -41
     }
