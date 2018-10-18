@@ -3,7 +3,7 @@
     "license": "MIT",
     "name": "owltouch",
     "productName": "owltouch",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "description": "créateur de trajet pour cookieTouch",
     "main": "src/index.js",
     "repository": "https://github.com/drigtime/owltouch",
@@ -33,10 +33,7 @@
             "category": "Utility"
         },
         "win": {
-            "target": [
-                "nsis",
-                "portable"
-            ],
+            "target": "nsis",
             "icon": "./build/icon"
         },
         "mac": {
