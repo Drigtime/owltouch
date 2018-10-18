@@ -15,7 +15,7 @@ function createMainWindow() {
     minWidth: 700,
     minHeight: 500,
     frame: false,
-    backgroundColor: '#282c34'
+    backgroundColor: '#282c34',
   });
 
   window.loadURL(

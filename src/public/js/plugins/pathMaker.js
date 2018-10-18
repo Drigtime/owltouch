@@ -353,8 +353,8 @@ export function generateScript() {
       job: $('#scriptJob').val(),
     },
     monster: {
-      min: parseInt(monsterQuantMinMax.noUiSlider.get()[0]),
-      max: parseInt(monsterQuantMinMax.noUiSlider.get()[1]),
+      min: parseInt(monsterQuantMinMax.noUiSlider.get()[0], 10),
+      max: parseInt(monsterQuantMinMax.noUiSlider.get()[1], 10),
       minLevel: parseInt($('#monsterMin').val(), 10),
       maxLevel: parseInt($('#monsterMax').val(), 10),
       forbiddenMonsters: getIdOfChips(monsterForbidden, monsters),
@@ -368,8 +368,8 @@ export function generateScript() {
       getItems: itemsBank.get,
     },
     autoRegen: {
-      minLife: parseInt(lifeMinMax.noUiSlider.get()[0]),
-      maxLife: parseInt(lifeMinMax.noUiSlider.get()[1]),
+      minLife: parseInt(lifeMinMax.noUiSlider.get()[0], 10),
+      maxLife: parseInt(lifeMinMax.noUiSlider.get()[1], 10),
       items: getIdOfChips(regenItems, items),
       store: parseInt($('#regenItemValue').val(), 10),
     },
@@ -431,6 +431,7 @@ export function generateScript() {
 //-- Script created with OwlTouch
 //---------------------------------------------
 //-- Créateur : ${config.information.author}
+//-- Nom : ${config.information.name}
 //-- Type : ${config.information.type}
 //-- Zone : ${config.information.area}
 //-- Métier : ${config.information.job}

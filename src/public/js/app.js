@@ -2,7 +2,7 @@ import { remote, ipcRenderer } from 'electron';
 import L from 'leaflet';
 import items from './data/json/d2o/Items.json';
 import { itemsBank } from './public/js/plugins/htmlElementInstance';
-import loadScript from './public/js/plugins/loadPath';
+import loadScript, { putGetItem } from './public/js/plugins/loadPath';
 import {
   bankLayerGroup,
   dofusCoordsToGeoCoords,
@@ -16,7 +16,6 @@ import {
   checkIfMapAlreadyExist,
   deleteAction,
   generateScript,
-  getIdOfAutoComplete,
   icon,
   movementType,
   onMapClick,
@@ -259,55 +258,11 @@ $('#top, #bottom, #left, #right').on('click', (e) => {
 });
 
 $('#addPutItem').on('click', () => {
-  $('.delete-item').off();
-  const name = $('#putItemName').val();
-  const ids = getIdOfAutoComplete(name, items);
-  const quant = $('#putItemQuant').val();
-  if (name.length > 0) {
-    const html = `<tr>
-    <td><img src="https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/items/${ids.iconId}.png" width="40" height="40"/></td>
-    <td>${name}</td>
-    <td>${quant}</td>
-    <td><a class="waves-effect waves-light btn amber accent-3 delete-item" data-id="${ids.id}">X</a></td>
-    </tr>`;
-    itemsBank.put.push({
-      item: ids.id,
-      quantity: parseInt(quant),
-    });
-    console.log(itemsBank.put);
-    $('#putItemTable').append(html);
-    $('.delete-item').on('click', (e) => {
-      itemsBank.put.splice(itemsBank.put.indexOf(parseInt({ item: e.target.dataset.id }, 10)), 1);
-      console.log(itemsBank.put);
-      $(e.target.parentNode.parentNode).remove();
-    });
-  }
+  putGetItem('put');
 });
 
 $('#addGetItem').on('click', () => {
-  $('.delete-item').off();
-  const name = $('#getItemName').val();
-  const ids = getIdOfAutoComplete(name, items);
-  const quant = $('#getItemQuant').val();
-  if (name.length > 0) {
-    const html = `<tr>
-    <td><img src="https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/items/${ids.iconId}.png" width="40" height="40"/></td>
-    <td>${name}</td>
-    <td>${quant}</td>
-    <td><a class="waves-effect waves-light btn amber accent-3 delete-item" data-id="${ids.id}">X</a></td>
-    </tr>`;
-    itemsBank.get.push({
-      item: ids.id,
-      quantity: parseInt(quant),
-    });
-    console.log(itemsBank.get);
-    $('#getItemTable').append(html);
-    $('.delete-item').on('click', (e) => {
-      itemsBank.get.splice(itemsBank.get.indexOf(parseInt({ item: e.target.dataset.id }, 10)), 1);
-      console.log(itemsBank.get);
-      $(e.target.parentNode.parentNode).remove();
-    });
-  }
+  putGetItem('get');
 });
 
 $('#minimize-button').on('click', () => {
