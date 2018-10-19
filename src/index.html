@@ -19,7 +19,7 @@
       <img class="app-icon" src="icon.png" alt="">
       <ul>
         <li>
-          <a class="dropdown-trigger" data-target="menu-dropdown">Fichier</a>
+          <a class="dropdown-trigger" data-target="menu-dropdown" data-i18n="titlebar.dropdownTrigger">Fichier</a>
         </li>
       </ul>
     </div>
@@ -29,26 +29,27 @@
       <li><a id="close-button"><i class="material-icons">close</i></a></li>
     </ul>
     <div class="app-version">
-      <span>OlwTouch 1.2.1</span>
+      <span>OwlTouch 1.2.1</span>
     </div>
   </nav>
 
   <!-- Dropdown Structure -->
   <ul id="settings-dropdown" class="dropdown-content">
-    <!-- <li><a class="modal-trigger" href="#settings-global">Paramétres<i class="material-icons">settings</i></a></li> -->
-    <li><a class="modal-trigger" href="#information">Paramétres du trajet<i class="material-icons">map</i></a></li>
+    <li><a class="modal-trigger" href="#settings-global" data-i18n="dropdown.settings"><i class="material-icons">settings</i></a></li>
+    <li><a class="modal-trigger" href="#information" data-i18n="dropdown.config"><i class="material-icons">map</i></a></li>
   </ul>
   <!-- Dropdown Structure -->
   <ul id="menu-dropdown" class="dropdown-content">
-    <li><a id="NewFile">Nouveau trajet<i class="material-icons">insert_drive_file</i><span style="float: right;">
+    <li><a id="NewFile" data-i18n="titlebar.newFile"><i class="material-icons">insert_drive_file</i><span style="float: right;">
           Ctrl + N</span></a></li>
-    <li><a id="SaveFile">Sauvegarder le trajet<i class="material-icons">save</i><span style="float: right;">
+    <li><a id="SaveFile" data-i18n="titlebar.saveFile"><i class="material-icons">save</i><span style="float: right;">
           Ctrl + S</span></a></li>
-    <li><a id="LoadFile">Charger un trajet<i class="material-icons">folder_open</i><span style="float: right;">
+    <li><a id="LoadFile" data-i18n="titlebar.loadFile"><i class="material-icons">folder_open</i><span style="float: right;">
           Ctrl + O</span></a></li>
-    <li><a id="RealoadApp">Relancer<i class="material-icons">refresh</i><span style="float: right;">
+    <li><a id="RealoadApp" data-i18n="titlebar.restart"><i class="material-icons">refresh</i><span style="float: right;">
           Ctrl + R</span></a></li>
-    <li><a id="DevTools">Ouvrir les outils de developper<i class="material-icons">code</i><span> Ctrl + Shift + I</span></a></li>
+    <li><a id="DevTools" data-i18n="titlebar.devTools"><i class="material-icons">code</i><span>
+          Ctrl + Shift + I</span></a></li>
   </ul>
   <nav>
     <div class="nav-wrapper">
@@ -56,12 +57,12 @@
         <li>
           <div class=" input-field">
             <select id="type">
-              <option data-array-type="move" data-type="move" value="move">Déplacement</option>
-              <option data-array-type="move" data-type="gather" value="move">Récolte</option>
-              <option data-array-type="move" data-type="fight" value="move">Combat</option>
-              <option data-array-type="move" data-type="gatherfight" value="move">Récolte & Combat</option>
-              <option data-array-type="bank" data-type="bank" value="bank">Banque</option>
-              <option data-array-type="phoenix" data-type="phoenix" value="phoenix">Phoenix</option>
+              <option data-array-type="move" data-type="move" value="move" data-i18n="movement.type.move"></option>
+              <option data-array-type="move" data-type="gather" value="move" data-i18n="movement.type.gather"></option>
+              <option data-array-type="move" data-type="fight" value="move" data-i18n="movement.type.fight"></option>
+              <option data-array-type="move" data-type="gatherfight" value="move" data-i18n="movement.type.gatherfight"></option>
+              <option data-array-type="bank" data-type="bank" value="bank" data-i18n="movement.type.bank"></option>
+              <option data-array-type="phoenix" data-type="phoenix" value="phoenix" data-i18n="movement.type.phoenix"></option>
             </select>
           </div>
         </li>
@@ -80,17 +81,18 @@
         </li>
         <li>
           <span class="btn-group">
-            <a class="waves-effect btn-flat tooltipped" data-position="bottom" data-tooltip="Position de la banque" id="bankPlacement"><i
+            <a class="waves-effect btn-flat tooltipped" data-position="bottom" id="bankPlacement" data-i18n="[data-tooltip]movement.special.bank.label"><i
                 class="material-icons">account_balance</i></a>
-            <a class="waves-effect btn-flat tooltipped" data-position="bottom" data-tooltip="Position du phoenix" id="phoenixPlacement"><i
+            <a class="waves-effect btn-flat tooltipped" data-position="bottom" id="phoenixPlacement" data-i18n="[data-tooltip]movement.special.phoenix.label"><i
                 class="material-icons">whatshot</i></a>
+            <a class="waves-effect btn-flat tooltipped" data-position="bottom" id="zaapPlacement" data-i18n="[data-tooltip]movement.special.zaap.label"><i
+                class="material-icons">filter_tilt_shift</i></a>
           </span>
         </li>
       </ul>
       <ul class="right">
         <!-- Dropdown Trigger -->
-        <li><a class="waves-effect btn-floating btn-flat dropdown-trigger" href="#!" data-target="settings-dropdown"><i
-              class="material-icons right">more_vert</i></a></li>
+        <li><a class="waves-effect btn-floating btn-flat dropdown-trigger" data-target="settings-dropdown"><i class="material-icons right">more_vert</i></a></li>
       </ul>
     </div>
   </nav>
@@ -143,8 +145,8 @@
       </div>
     </div>
     <div class="modal-footer">
-      <a href="#!" class="modal-close waves-effect btn-flat">Annuler</a>
-      <a href="#!" id="" class="modal-close waves-effect waves-green btn ">Confirmer</a>
+      <a class="modal-close waves-effect btn-flat">Annuler</a>
+      <a id="" class="modal-close waves-effect waves-green btn ">Confirmer</a>
     </div>
   </div>
   <div id="information" class="modal modal-fixed-footer" style="max-height: 71%;height: 71%;">
@@ -152,10 +154,10 @@
       <div class="row">
         <div class="col s12">
           <ul class="tabs">
-            <li class="tab col s3"><a class="active" href="#gatherTab">Récolte</a></li>
-            <li class="tab col s3"><a class="" href="#fightTab">Combat</a></li>
-            <li class="tab col s3"><a class="" href="#bankTab">Banque</a></li>
-            <li class="tab col s3"><a class="" href="#informationTab">Information</a></li>
+            <li class="tab col s3"><a class="active" href="#gatherTab" data-i18n="config.gather.label"></a></li>
+            <li class="tab col s3"><a class="" href="#fightTab" data-i18n="config.fight.label"></a></li>
+            <li class="tab col s3"><a class="" href="#bankTab" data-i18n="config.bank.label"></a></li>
+            <li class="tab col s3"><a class="" href="#informationTab" data-i18n="config.information.label"></a></li>
           </ul>
         </div>
         <div class="col s12">
@@ -166,18 +168,18 @@
                   <label>
                     <input type="checkbox" id="displayGatherCountCheckbox" checked>
                     <span class="lever"></span>
-                    Afficher le compteur de récoltes
+                    <span data-i18n="config.gather.count"></span>
                   </label>
                 </div>
                 <div class="switch">
                   <label>
                     <input type="checkbox" id="openBagsCheckbox" checked>
                     <span class="lever"></span>
-                    Ouverture automatique des sacs de récolte
+                    <span data-i18n="config.gather.openbag"></span>
                   </label>
                 </div>
                 <div>
-                  <span>Ressources à récolter</span>
+                  <span data-i18n="config.gather.gather.label"></span>
                   <div class="chips chips-autocomplete" id="gatherElementChips"></div>
                 </div>
               </div>
@@ -186,7 +188,7 @@
                   <label>
                     <input type="checkbox" id="displayFightCountCheckbox" checked>
                     <span class="lever"></span>
-                    Afficher le compteur de combats
+                    <span data-i18n="config.fight.count"></span>
                   </label>
                 </div>
                 <div class="row">
@@ -194,26 +196,26 @@
                     <ul class="collapsible expandable">
                       <li>
                         <div class="collapsible-header  white-text" style="font-size: small">
-                          <span>Régénération de vie automatique</span>
+                          <span data-i18n="config.fight.regen.label"></span>
                         </div>
                         <div class="collapsible-body ">
                           <div class="switch">
                             <label>
                               <input type="checkbox" id="autoRegenCheckbox" checked>
                               <span class="lever"></span>
-                              Activer la régénération de vie automatique
+                              <span data-i18n="config.fight.regen.toggleAutoRegen"></span>
                             </label>
                           </div>
                           <div>
-                            <span>Régénération minimum / maximum</span>
+                            <span data-i18n="config.fight.regen.regenMinMax"></span>
                             <div id="lifeMinMax"></div>
                           </div>
                           <div>
-                            <span>Objets à récupérer en banque pour se régénérer</span>
+                            <span data-i18n="config.fight.regen.items.label"></span>
                             <div class="chips chips-placeholder chips-autocomplete" id="regenItemChips"></div>
                           </div>
                           <div>
-                            <span>Quantité d'objets à récupérer en banque</span>
+                            <span data-i18n="config.fight.regen.quantity"></span>
                             <div class="input-field"><input type="number" min="0" value="0" id="regenItemValue"></div>
                           </div>
                         </div>
@@ -222,38 +224,38 @@
                   </div>
                 </div>
                 <div>
-                  <span>Nombre de monstres minimum / maximum</span>
+                  <span data-i18n="config.fight.monster.minMax"></span>
                   <div id="monsterQuantMinMax"></div>
                 </div>
                 <div>
-                  <span>Niveau des groupes de monstres</span>
+                  <span data-i18n="config.fight.monster.minMaxLevel"></span>
                   <div class="row">
-                    <div class="input-field col s6"><span>Minimum</span>
+                    <div class="input-field col s6"><span data-i18n="config.fight.monster.min"></span>
                       <input id="monsterMin" type="number" min="1" value="1"></div>
-                    <div class="input-field col s6"><span>Maximum</span>
+                    <div class="input-field col s6"><span data-i18n="config.fight.monster.max"></span>
                       <input id="monsterMax" type="number" min="1" value="1000"></div>
                   </div>
                 </div>
                 <div>
-                  <span>Monstres obligatoires</span>
+                  <span data-i18n="config.fight.monster.mandatory.label"></span>
                   <div class="chips chips-autocomplete" id="monsterMandatory"></div>
                 </div>
                 <div>
-                  <span>Monstres interdits</span>
+                  <span data-i18n="config.fight.monster.forbidden.label"></span>
                   <div class="chips chips-autocomplete" id="monsterForbidden"></div>
                 </div>
                 <div class="switch">
                   <label>
                     <input type="checkbox" id="maxFightPerMapCheckbox">
                     <span class="lever"></span>
-                    Nombre maximum de combats par map
+                    <span data-i18n="config.fight.monster.fightPerMap"></span>
                   </label>
                 </div>
                 <input class="input-field" id="maxFightPerMapValue" type="number" min="0" value="10">
               </div>
               <div id="bankTab" class="card-panel ">
                 <div>
-                  <span>Pods maximum avant retour en banque</span>
+                  <span data-i18n="config.bank.pods"></span>
                   <form action="#">
                     <p class="range-field">
                       <input type="range" id="maxPods" min="0" max="100" value="90" id="podMax" />
@@ -261,7 +263,7 @@
                   </form>
                 </div>
                 <div>
-                  <span>Suppression automatique</span>
+                  <span data-i18n="config.bank.autoDelete.label"></span>
                   <div class="chips chips-autocomplete" id="autoDelete"></div>
                 </div>
                 <div class="row" style="display:flex;align-items: center">
@@ -269,12 +271,12 @@
                     <label>
                       <input type="checkbox" id="putKamasCheckbox">
                       <span class="lever"></span>
-                      Déposer des kamas
+                      <span data-i18n="config.bank.putKamas.label"></span>
                     </label>
                   </div>
                   <div class="input-field col s9">
                     <input id="putKamasValue" type="number" min="0" value="0">
-                    <span class="helper-text">Si vous mettez 0, tous les kamas seront déposés.</span>
+                    <span class="helper-text" data-i18n="config.bank.putKamas.helperText"></span>
                   </div>
                 </div>
                 <div>
@@ -283,12 +285,12 @@
                       <label>
                         <input type="checkbox" id="getKamasCheckbox">
                         <span class="lever"></span>
-                        Prendre des kamas
+                        <span data-i18n="config.bank.getKamas.label"></span>
                       </label>
                     </div>
                     <div class="input-field col s9">
                       <input id="getKamasValue" type="number" min="0" value="0">
-                      <span class="helper-text">Si vous mettez 0, tous les kamas seront récupérés.</span>
+                      <span class="helper-text" data-i18n="config.bank.getKamas.helperText"></span>
                     </div>
                   </div>
                 </div>
@@ -297,27 +299,29 @@
                     <ul class="collapsible expandable">
                       <li>
                         <div class="collapsible-header  white-text" style="font-size: small">
-                          <span>Objets a déposer dans la banque</span>
+                          <span data-i18n="config.bank.putItems.label"></span>
                         </div>
                         <div class="collapsible-body ">
                           <div class="row">
                             <div class="input-field col s6">
-                              <span>Nom de l'objet à déposer</span>
+                              <span data-i18n="config.bank.putItems.itemName"></span>
                               <input class="autocomplete" type="text" id="putItemName">
                             </div>
                             <div class="input-field col s4">
-                              <span>Quantité</span><input type="number" min="0" value="0" id="putItemQuant">
-                              <span class="helper-text">Si vous mettez 0, toute la quantité de l’élément sera déposée</span>
+                              <span data-i18n="config.bank.putItems.quantity.label"></span><input type="number" min="0"
+                                value="0" id="putItemQuant">
+                              <span class="helper-text" data-i18n="config.bank.putItems.quantity.helperText"></span>
                             </div>
-                            <a class="col s2 waves-effect waves-light btn " id="addPutItem">Ajouter</a>
+                            <a class="col s2 waves-effect waves-light btn" id="addPutItem" data-i18n="config.bank.putItems.btnAdd"></a>
                           </div>
-                          <table class="white-text">
+                          <table class="
+                              white-text">
                             <thead>
                               <tr>
-                                <th>Icone</th>
-                                <th>Nom</th>
-                                <th>Quantité</th>
-                                <th>Action</th>
+                                <th data-i18n="config.bank.putItems.table.icon"></th>
+                                <th data-i18n="config.bank.putItems.table.name"></th>
+                                <th data-i18n="config.bank.putItems.table.quantity"></th>
+                                <th data-i18n="config.bank.putItems.table.action"></th>
                               </tr>
                             </thead>
                             <tbody id="putItemTable">
@@ -327,28 +331,28 @@
                       </li>
                       <li>
                         <div class="collapsible-header  white-text" style="font-size: small">
-                          <span>Objets a récupérer de la banque</span>
+                          <span data-i18n="config.bank.getItems.label"></span>
                         </div>
                         <div class="collapsible-body ">
                           <div class="row">
                             <div class="input-field col s6">
-                              <span>Nom de l'objet à récupérer</span>
+                              <span data-i18n="config.bank.getItems.itemName"></span>
                               <input class="autocomplete" type="text" id="getItemName">
                             </div>
                             <div class="input-field col s4">
-                              <span>Quantité</span><input type="number" min="0" value="0" id="getItemQuant">
-                              <span class="helper-text">Si vous mettez 0, toute la quantité de l’élément sera
-                                récupéré</span>
+                              <span data-i18n="config.bank.getItems.quantity.label"></span><input type="number" min="0"
+                                value="0" id="getItemQuant">
+                              <span class="helper-text" data-i18n="config.bank.getItems.quantity.helperText"></span>
                             </div>
-                            <a class="col s2 waves-effect waves-light btn " id="addGetItem">Ajouter</a>
+                            <a class="col s2 waves-effect waves-light btn " id="addGetItem" data-i18n="config.bank.getItems.btnAdd">Ajouter</a>
                           </div>
                           <table class="white-text">
                             <thead>
                               <tr>
-                                <th>Icone</th>
-                                <th>Nom</th>
-                                <th>Quantité</th>
-                                <th>Action</th>
+                                <th data-i18n="config.bank.getItems.table.icon"></th>
+                                <th data-i18n="config.bank.getItems.table.name"></th>
+                                <th data-i18n="config.bank.getItems.table.quantity"></th>
+                                <th data-i18n="config.bank.getItems.table.action"></th>
                               </tr>
                             </thead>
                             <tbody id="getItemTable">
@@ -360,20 +364,20 @@
                   </div>
                 </div>
               </div>
-              <div id="informationTab" class="card-panel ">
-                <div class="input-field"><span>Nom de l'auteur du trajet</span>
+              <div id="informationTab" class="card-panel">
+                <div class="input-field"><span data-i18n="config.information.author"></span>
                   <input id="scriptAuthor" type="text">
                 </div>
-                <div class="input-field"><span>Nom du trajet</span>
+                <div class="input-field"><span data-i18n="config.information.name"></span>
                   <input id="scriptName" type="text">
                 </div>
-                <div class="input-field"><span>Type de trajet</span>
+                <div class="input-field"><span data-i18n="config.information.type"></span>
                   <input id="scriptType" type="text">
                 </div>
-                <div class="input-field"><span>Zone du trajet</span>
+                <div class="input-field"><span data-i18n="config.information.area"></span>
                   <input id="scriptArea" type="text">
                 </div>
-                <div class="input-field"><span>Métier du trajet</span>
+                <div class="input-field"><span data-i18n="config.information.job"></span>
                   <input id="scriptJob" type="text">
                 </div>
               </div>
@@ -383,43 +387,44 @@
       </div>
     </div>
     <div class="modal-footer">
-      <a href="#information" class="modal-close waves-effect btn ">Confirmer</a>
+      <a class="waves-effect btn-flat" data-i18n="config.btn.default"></a>
+      <a href="#information" class="modal-close waves-effect btn" data-i18n="config.btn.confirm"></a>
     </div>
   </div>
   <div id="defineBankCoord" class="modal">
     <div class="modal-content">
       <div class="input-field">
-        <span for="mapIdOutSide">mapid extérieur de la banque</span>
+        <span for="mapIdOutSide" data-i18n="movement.special.bank.mapidOutSide"></span>
         <input id="mapIdOutSide" type="number">
       </div>
       <div class="input-field">
-        <span for="doorIdOutSide">cellid de la porte pour rentrer dans la banque</span>
+        <span for="doorIdOutSide" data-i18n="movement.special.bank.doorIdOutSide"></span>
         <input id="doorIdOutSide" type="number">
       </div>
       <div class="input-field">
-        <span for="mapIdInSide">mapid intérieur de la banque</span>
+        <span for="mapIdInSide" data-i18n="movement.special.bank.mapidInside"></span>
         <input id="mapIdInSide" type="number">
       </div>
       <div class="input-field">
-        <span for="sunIdInside">cellid du soleil pour sortir de la banque</span>
+        <span for="sunIdInside" data-i18n="movement.special.bank.sunIdInside"></span>
         <input id="sunIdInside" type="number">
       </div>
     </div>
     <div class="modal-footer">
-      <a href="#!" class="modal-close waves-effect btn-flat">Annuler</a>
-      <a href="#!" id="defineBankCoordConfirm" class="modal-close waves-effect waves-green btn">Confirmer</a>
+      <a class="modal-close waves-effect btn-flat" data-i18n="movement.special.bank.cancel"></a>
+      <a id="defineBankCoordConfirm" class="modal-close waves-effect waves-green btn" data-i18n="movement.special.bank.confirm"></a>
     </div>
   </div>
   <div id="definePhoenixCoord" class="modal">
     <div class="modal-content">
       <div class="input-field">
-        <span>cellid du phoenix</span>
+        <span data-i18n="movement.special.phoenix.cellid"></span>
         <input id="phoenixCellid" type="number">
       </div>
     </div>
     <div class="modal-footer">
-      <a href="#!" class="modal-close waves-effect btn-flat">Annuler</a>
-      <a href="#!" id="definePhoenixCoordConfirm" class="modal-close waves-effect waves-green btn">Confirmer</a>
+      <a class="modal-close waves-effect btn-flat" data-i18n="movement.special.phoenix.cancel"></a>
+      <a id="definePhoenixCoordConfirm" class="modal-close waves-effect waves-green btn" data-i18n="movement.special.phoenix.confirm"></a>
     </div>
   </div>
   <div id="map"></div>
@@ -428,8 +433,9 @@
 <script>if (typeof module === 'object') { window.module = module; module = undefined; }</script>
 
 <script src="public/js/jquery-3.3.1.min.js"></script>
-<!-- <script src="public/js/materialize.min.js"></script>
-<script src="public/js/nouislider.js"></script> -->
+<script src="../node_modules/i18next/i18next.min.js"></script>
+<script src="../node_modules/jquery-i18next/jquery-i18next.min.js"></script>
+<script src="public/js/i18n.js"></script>
 <script src="public/js/app.js"></script>
 
 <!-- Insert this line after script imports -->

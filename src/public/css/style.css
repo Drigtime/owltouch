@@ -247,7 +247,7 @@ ul > li > .input-field {
 }
 
 .btn-flat.selected {
-    background-color: rgba(0, 0, 0, 0.25);
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .btn-flat.selected:hover {

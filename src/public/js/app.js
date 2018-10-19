@@ -1,39 +1,44 @@
-import { remote, ipcRenderer } from 'electron';
+import { remote } from 'electron';
+// import i18next from 'i18next';
+// import jqueryI18next from 'jquery-i18next';
 import L from 'leaflet';
-import items from './data/json/d2o/Items.json';
-import { itemsBank } from './public/js/plugins/htmlElementInstance';
 import loadScript, { putGetItem } from './public/js/plugins/loadPath';
-import {
-  bankLayerGroup,
-  dofusCoordsToGeoCoords,
-  drawDofusMapBoundsOnMouseMove,
-  geoCoordsToDofusCoords,
-  highlightSubArea,
-  map,
-  phoenixLayerGroup,
-} from './public/js/plugins/map';
-import {
-  checkIfMapAlreadyExist,
-  deleteAction,
-  generateScript,
-  icon,
-  movementType,
-  onMapClick,
-  resizeMarker,
-} from './public/js/plugins/pathMaker';
+import { bankLayerGroup, dofusCoordsToGeoCoords, drawDofusMapBoundsOnMouseMove, geoCoordsToDofusCoords, highlightSubArea, map, phoenixLayerGroup } from './public/js/plugins/map';
+import { checkIfMapAlreadyExist, deleteAction, generateScript, icon, movementType, onMapClick, resizeMarker } from './public/js/plugins/pathMaker';
+// import en from './data/i18n/en';
+// import fr from './data/i18n/fr';
+// import es from './data/i18n/es';
 
 const sizeOf = require('image-size');
 const { dialog } = require('electron').remote;
 const { writeFile, readFile } = require('fs');
 const path = require('path');
 
+let mouseState;
+
 map.on('mousemove', (e) => {
+  mouseState ? console.log('mouse down') : console.log('mouse up');
+  
+
+
   drawDofusMapBoundsOnMouseMove(e);
   highlightSubArea(e);
 });
 
 map.on('click', (e) => {
   onMapClick(geoCoordsToDofusCoords(e.latlng));
+});
+
+map.on('contextmenu', (e) => {
+  map.dragging.enabled() ? map.dragging.disable() : map.dragging.enable();
+});
+
+map.on('mousedown', (e) => {
+  mouseState = true;
+});
+
+map.on('mouseup', (e) => {
+  mouseState = false;
 });
 
 map.on('zoom', () => {
@@ -281,3 +286,21 @@ $('#min-max-button').on('click', () => {
 $('#close-button').on('click', () => {
   remote.app.quit();
 });
+
+// // use plugins and options as needed, for options, detail see
+// // http://i18next.com/docs/
+// i18next.init({
+//   lng: 'fr', // evtl. use language-detector https://github.com/i18next/i18next-browser-languageDetector
+//   resources: { // evtl. load via xhr https://github.com/i18next/i18next-xhr-backend
+//     en,
+//     fr,
+//     es,
+//   },
+// }, (err, t) => {
+//   // for options see
+//   // https://github.com/i18next/jquery-i18next#initialize-the-plugin
+//   jqueryI18next.init(i18next, $);
+//   // start localizing, details:
+//   // https://github.com/i18next/jquery-i18next#usage-of-selector-function
+//   $('#informationTab').localize();
+// });

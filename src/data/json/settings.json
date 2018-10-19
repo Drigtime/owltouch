@@ -1,0 +1,29 @@
+{
+    "script": {
+        "config": {
+            "MAX_PODS": 90,
+            "MIN_MONSTERS": 1,
+            "MAX_MONSTERS": 8,
+            "MIN_MONSTERS_LEVEL": 1,
+            "MAX_MONSTERS_LEVEL": 1000,
+            "FORBIDDEN_MONSTERS": [],
+            "MANDATORY_MONSTERS": [],
+            "MAX_FIGHTS_PER_MAP": 10,
+            "ELEMENTS_TO_GATHER": [],
+            "BANK_PUT_ITEMS": [],
+            "BANK_GET_ITEMS": [],
+            "BANK_PUT_KAMAS": 0,
+            "BANK_GET_KAMAS": 0,
+            "AUTO_REGEN": {
+                "minLife": 90,
+                "manLife": 100,
+                "items": [],
+                "store": 0
+            },
+            "AUTO_DELETE": [],
+            "OPEN_BAGS": false,
+            "DISPLAY_GATHER_COUNT": false,
+            "DISPLAY_FIGHT_COUNT": false,
+        }
+    }
+}

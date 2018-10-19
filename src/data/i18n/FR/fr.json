@@ -1,0 +1,147 @@
+{
+    "translation": {
+        "titlebar": {
+            "dropdownTrigger": "Fichier",
+            "newFile": "Nouveau trajet",
+            "saveFile": "Sauvegarder le trajet",
+            "loadFile": "Charger un trajet",
+            "restart": "Relancer",
+            "devTools": "Ouvrir les outils de developper"
+        },
+        "dropdown": {
+            "settings": "Paramétres",
+            "config": "Paramétres du trajet"
+        },
+        "config": {
+            "gather": {
+                "label": "Récolte",
+                "count": "Afficher le compteur de récoltes",
+                "openbag": "Ouverture automatique des sacs de récolte",
+                "gather": {
+                    "label": "Ressources à récolter",
+                    "placeholder": "ex: Blé"
+                }
+            },
+            "fight": {
+                "label": "Combat",
+                "count": "Afficher le compteur de combats",
+                "regen": {
+                    "label": "Régénération de vie automatique",
+                    "toggleAutoRegen": "Activer la régénération de vie automatique",
+                    "regenMinMax": "Régénération minimum / maximum",
+                    "items": {
+                        "label": "Objets à récupérer en banque pour se régénérer",
+                        "placeholder": "ex: Pain"
+                    },
+                    "quantity": "Quantité d'objets à récupérer en banque"
+                },
+                "monster": {
+                    "minMax": "Nombre de monstres minimum / maximum",
+                    "minMaxLevel": "Niveau des groupes de monstres",
+                    "min": "Minimum",
+                    "max": "Maximum",
+                    "forbidden": {
+                        "label": "Monstres obligatoires",
+                        "placeholder": "ex: Piou"
+                    },
+                    "mandatory": {
+                        "label": "Monstres interdits",
+                        "placeholder": "ex: Piou"
+                    },
+                    "fightPerMap": "Nombre maximum de combats par map"
+                }
+            },
+            "bank": {
+                "label": "Banque",
+                "pods": "Pods maximum avant retour en banque",
+                "autoDelete": {
+                    "label": "Suppression automatique",
+                    "placeholder": "ex: Feather"
+                },
+                "putKamas": {
+                    "label": "Déposer des kamas",
+                    "helperText": "Si vous mettez 0, tous les kamas seront déposés."
+                },
+                "getKamas": {
+                    "label": "Prendre des kamas",
+                    "helperText": "Si vous mettez 0, tous les kamas seront récupérés."
+                },
+                "putItems": {
+                    "label": "Objets a déposer dans la banque",
+                    "itemName": "Nom de l'objet à déposer",
+                    "quantity": {
+                        "label": "Quantité",
+                        "helperText": "Si vous mettez 0, toute la quantité de l'objet sera déposée"
+                    },
+                    "btnAdd": "Ajouter",
+                    "table": {
+                        "icon": "Icone",
+                        "name": "Nom",
+                        "quantity": "Quantité",
+                        "action": "Action"
+                    }
+                },
+                "getItems": {
+                    "label": "Objets a récupérer de la banque",
+                    "itemName": "Nom de l'objet à récupérer",
+                    "quantity": {
+                        "label": "Quantité",
+                        "helperText": "Si vous mettez 0, toute la quantité de l'objet sera récupéré"
+                    },
+                    "btnAdd": "Ajouter",
+                    "table": {
+                        "icon": "Icone",
+                        "name": "Nom",
+                        "quantity": "Quantité",
+                        "action": "Action"
+                    }
+                }
+            },
+            "information": {
+                "label": "Information",
+                "author": "Nom de l'auteur du trajet",
+                "name": "Nom du trajet",
+                "type": "Type de trajet",
+                "area": "Zone du trajet",
+                "job": "Métier du trajet"
+            },
+            "btn": {
+                "default": "Restaurer par défault",
+                "confirm": "Confirmer"
+            }
+        },
+        "movement": {
+            "type": {
+                "move": "Déplacement",
+                "gather": "Récolte",
+                "fight": "Combat",
+                "gatherfight": "Récolte & Combat",
+                "bank": "Banque",
+                "phoenix": "Phoenix"
+            },
+            "special": {
+                "bank": {
+                    "label": "Position de la banque",
+                    "mapidOutSide": "mapid extérieur de la banque",
+                    "doorIdOutSide": "cellid de la porte pour rentrer dans la banque",
+                    "mapidInside": "mapid intérieur de la banque",
+                    "sunIdInside": "cellid du soleil pour sortir de la banque",
+                    "cancel": "Annuler",
+                    "confirm": "Confirmer"
+                },
+                "phoenix": {
+                    "label": "Position du phoenix",
+                    "cellid": "cellid du phoenix",
+                    "cancel": "Annuler",
+                    "confirm": "Confirmer"
+                },
+                "zaap": {
+                    "label": "Position du zaap",
+                    "zaap": "Zone de destination",
+                    "cancel": "Annuler",
+                    "confirm": "Confirmer"
+                }
+            }
+        }
+    }
+}
