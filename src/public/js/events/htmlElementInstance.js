@@ -6,7 +6,7 @@ import M from '../materialize.min.js';
 
 M.AutoInit();
 
-function objectMap(object, imageUrl, imageProperty) {
+export function objectMap(object, imageUrl, imageProperty) {
   const list = {};
   Object.values(object).forEach((element) => {
     if (imageUrl !== null) {
@@ -16,6 +16,25 @@ function objectMap(object, imageUrl, imageProperty) {
     }
   });
   return list;
+}
+
+export function setChipsNewData(instance, id, object, iconUrl, iconProperty, placeholder) {
+  instance = $(id).chips({
+    autocompleteOptions: {
+      data: objectMap(object, iconUrl, iconProperty),
+      limit: 5,
+      minLength: 1,
+    },
+    placeholder,
+  });
+}
+
+export function setAutoCompleteNewData(instance, id, object, iconUrl, iconProperty) {
+  instance = $(id).autocomplete({
+    data: objectMap(object, iconUrl, iconProperty),
+    limit: 5,
+    minLength: 1,
+  });
 }
 
 export const elementToGather = M.Chips.init(document.querySelector('#gatherElementChips'), {
@@ -29,7 +48,11 @@ export const elementToGather = M.Chips.init(document.querySelector('#gatherEleme
 
 export const regenItems = M.Chips.init(document.querySelector('#regenItemChips'), {
   autocompleteOptions: {
-    data: objectMap(items, 'https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/items/', 'iconId'),
+    data: objectMap(
+      items,
+      'https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/items/',
+      'iconId',
+    ),
     limit: 5,
     minLength: 1,
   },
@@ -38,7 +61,11 @@ export const regenItems = M.Chips.init(document.querySelector('#regenItemChips')
 
 export const monsterMandatory = M.Chips.init(document.querySelector('#monsterMandatory'), {
   autocompleteOptions: {
-    data: objectMap(monsters, 'https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/monsters/', 'id'),
+    data: objectMap(
+      monsters,
+      'https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/monsters/',
+      'id',
+    ),
     limit: 5,
     minLength: 1,
   },
@@ -47,7 +74,11 @@ export const monsterMandatory = M.Chips.init(document.querySelector('#monsterMan
 
 export const monsterForbidden = M.Chips.init(document.querySelector('#monsterForbidden'), {
   autocompleteOptions: {
-    data: objectMap(monsters, 'https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/monsters/', 'id'),
+    data: objectMap(
+      monsters,
+      'https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/monsters/',
+      'id',
+    ),
     limit: 5,
     minLength: 1,
   },
@@ -56,7 +87,11 @@ export const monsterForbidden = M.Chips.init(document.querySelector('#monsterFor
 
 export const autoDelete = M.Chips.init(document.querySelector('#autoDelete'), {
   autocompleteOptions: {
-    data: objectMap(items, 'https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/items/', 'iconId'),
+    data: objectMap(
+      items,
+      'https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/items/',
+      'iconId',
+    ),
     limit: 5,
     minLength: 1,
   },
@@ -64,13 +99,21 @@ export const autoDelete = M.Chips.init(document.querySelector('#autoDelete'), {
 });
 
 export const putItemName = M.Autocomplete.init(document.querySelector('#putItemName'), {
-  data: objectMap(items, 'https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/items/', 'iconId'),
+  data: objectMap(
+    items,
+    'https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/items/',
+    'iconId',
+  ),
   limit: 5,
   minLength: 1,
 });
 
 export const getItemName = M.Autocomplete.init(document.querySelector('#getItemName'), {
-  data: objectMap(items, 'https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/items/', 'iconId'),
+  data: objectMap(
+    items,
+    'https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/items/',
+    'iconId',
+  ),
   limit: 5,
   minLength: 1,
 });
@@ -105,9 +148,12 @@ noUiSlider.create(monsterQuantMinMax, {
   }),
 });
 
-export const collapsible = M.Collapsible.init(document.querySelectorAll('.collapsible.expandable'), {
-  accordion: false,
-});
+export const collapsible = M.Collapsible.init(
+  document.querySelectorAll('.collapsible.expandable'),
+  {
+    accordion: false,
+  },
+);
 
 export const itemsBank = {
   put: [],

@@ -1,17 +1,8 @@
 import sizeOf from 'image-size';
 import L from 'leaflet';
-import {
-  autoDelete,
-  elementToGather,
-  itemsBank,
-  lifeMinMax,
-  monsterForbidden,
-  monsterMandatory,
-  monsterQuantMinMax,
-  regenItems,
-} from './htmlElementInstance';
-import { dofusCoordsToGeoCoords, map, mapList } from './map';
-import { bpGetInformation, checkIfMapAlreadyExist, deleteAction, getScale, icon, movementType, getIdOfAutoComplete } from './pathMaker';
+import { autoDelete, elementToGather, itemsBank, lifeMinMax, monsterForbidden, monsterMandatory, monsterQuantMinMax, regenItems } from '../events/htmlElementInstance';
+import { dofusCoordsToGeoCoords, map, mapList } from '../map/map';
+import { bpGetInformation, checkIfMapAlreadyExist, deleteAction, getScale, icon, movementType, getIdOfAutoComplete } from '../scripts/pathMaker';
 
 const path = require('path');
 const { readFileSync } = require('fs');
