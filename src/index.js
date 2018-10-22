@@ -62,39 +62,39 @@ app.on('ready', () => {
   mainWindow = createMainWindow();
 });
 
-// const template = [
-//   {
-//     label: 'Fichier',
-//     submenu: [
-//       {
-//         label: 'Nouveau script',
-//         accelerator: 'CmdOrCtrl+N',
-//         click: () => {
-//           mainWindow.webContents.send('newFile');
-//         },
-//       },
-//       {
-//         label: 'Sauvegarder',
-//         accelerator: 'CmdOrCtrl+S',
-//         click: () => {
-//           mainWindow.webContents.send('saveFile');
-//         },
-//       },
-//       {
-//         label: 'Charger un script',
-//         accelerator: 'CmdOrCtrl+O',
-//         click: () => {
-//           mainWindow.webContents.send('openFile');
-//         },
-//       },
-//       { label: 'Reload', role: 'reload' },
-//       { label: 'toggle Dev Tools', role: 'toggleDevTools' },
-//     ],
-//   },
-// ];
+const template = [
+  {
+    label: 'Fichier',
+    submenu: [
+      {
+        label: 'Nouveau script',
+        accelerator: 'CmdOrCtrl+N',
+        click: () => {
+          mainWindow.webContents.send('newFile');
+        },
+      },
+      {
+        label: 'Sauvegarder',
+        accelerator: 'CmdOrCtrl+S',
+        click: () => {
+          mainWindow.webContents.send('saveFile');
+        },
+      },
+      {
+        label: 'Charger un script',
+        accelerator: 'CmdOrCtrl+O',
+        click: () => {
+          mainWindow.webContents.send('openFile');
+        },
+      },
+      { label: 'Reload', role: 'reload' },
+      { label: 'toggle Dev Tools', role: 'toggleDevTools' },
+    ],
+  },
+];
 
-// const menu = Menu.buildFromTemplate(template);
-// Menu.setApplicationMenu(menu);
+const menu = Menu.buildFromTemplate(template);
+Menu.setApplicationMenu(menu);
 
 autoUpdater.autoDownload = false;
 
