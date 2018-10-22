@@ -11,6 +11,16 @@
     },
     {
         "gfx": 401,
+        "nameId": "Sufokia",
+        "mapIdOutSide": 90703872,
+        "mapIdInSide": 91753985,
+        "doorIdOutSide": 302,
+        "sunIdInside": 480,
+        "posX": 14,
+        "posY": 25
+    },
+    {
+        "gfx": 401,
         "nameId": "Astrub",
         "mapIdOutSide": 84674566,
         "mapIdInSide": 83887104,
