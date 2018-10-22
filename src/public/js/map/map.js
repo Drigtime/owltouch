@@ -17,8 +17,12 @@ const { readFileSync } = require('fs');
 
 export const mapList = JSON.parse(readFileSync(join(__dirname, '../../../data/json/d2o/map.json')));
 export const areas = JSON.parse(readFileSync(join(__dirname, '../../../data/json/d2o/Areas.json')));
-export const bankPos = JSON.parse(readFileSync(join(__dirname, '../../../data/json/miscellaneous/Bank.json')));
-export const phoenixPos = JSON.parse(readFileSync(join(__dirname, '../../../data/json/miscellaneous/Phoenix.json')));
+export const bankPos = JSON.parse(
+  readFileSync(join(__dirname, '../../../data/json/miscellaneous/Bank.json')),
+);
+export const phoenixPos = JSON.parse(
+  readFileSync(join(__dirname, '../../../data/json/miscellaneous/Phoenix.json')),
+);
 
 export const json = {};
 export const hint = {};
@@ -49,8 +53,13 @@ const coordsTransform = new L.Transformation(69.5, 6517, 50, 4973);
 
 export const getId = (x, y) => {
   let result;
-  Object.keys(mapList).forEach(key => {
-    if (mapList[key].posX === x && mapList[key].posY === y && mapList[key].hasPriorityOnWorldmap && mapList[key].worldMap === 1) {
+  Object.keys(mapList).forEach((key) => {
+    if (
+      mapList[key].posX === x &&
+      mapList[key].posY === y &&
+      mapList[key].hasPriorityOnWorldmap &&
+      mapList[key].worldMap === 1
+    ) {
       result = {
         id: mapList[key].id,
         subAreaId: mapList[key].subAreaId,
@@ -62,7 +71,7 @@ export const getId = (x, y) => {
   return result || false;
 };
 
-export const getCoord = (mapIds) => {
+export const mapidToCoord = (mapIds) => {
   const list = [];
   mapIds.forEach((element) => {
     if (mapList[element].hasPriorityOnWorldmap && mapList[element].worldMap === 1) {
@@ -146,7 +155,7 @@ export function highlightSubArea(e) {
   }
   resetHighlightArea();
   actualID = subAreaId;
-  const subAreaMapIds = getCoord(subAreas.mapIds);
+  const subAreaMapIds = mapidToCoord(subAreas.mapIds);
   Object.keys(subAreaMapIds).forEach((key) => {
     const bounds = getDofusMapBounds([subAreaMapIds[key].x, subAreaMapIds[key].y]);
     const highlight = L.rectangle(bounds, {
@@ -178,8 +187,8 @@ export function drawDofusMapBoundsOnMouseMove(e) {
 
 amakna.options.bounds = new L.LatLngBounds(
   pixelCoordsToGeoCoords([0, 0]),
-  pixelCoordsToGeoCoords([10000, 8000],
-  ));
+  pixelCoordsToGeoCoords([10000, 8000]),
+);
 
 function bpMarkers(type) {
   const layer = [];
@@ -208,7 +217,9 @@ export const mcgLayerSupportGroup = L.markerClusterGroup.layerSupport({
   iconCreateFunction(cluster) {
     const markers = cluster.getAllChildMarkers();
     return L.divIcon({
-      html: `<img src="${markers[0].options.icon.options.iconUrl}"><div class="qnt">${cluster.getChildCount()}</div>`,
+      html: `<img src="${
+        markers[0].options.icon.options.iconUrl
+      }"><div class="qnt">${cluster.getChildCount()}</div>`,
       className: 'mycluster',
       iconAnchor: [
         sizeOf(`${markers[0].options.icon.options.iconUrl}`).width / 2,
