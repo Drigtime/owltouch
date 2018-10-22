@@ -18,32 +18,32 @@ function deleteAll() {
   console.log(movementType);
 }
 
-
-$('#minimize-button').on('click', () => {
-  remote.getCurrentWindow().minimize();
-});
-
-$('#min-max-button').on('click', () => {
-  const currentWindow = remote.getCurrentWindow();
-  if (currentWindow.isMaximized()) {
-    currentWindow.unmaximize();
-  } else {
-    currentWindow.maximize();
-  }
-});
-
-$('#close-button').on('click', () => {
-  remote.app.quit();
-});
-
-ipcRenderer.on('newFile', () => {
-  const rep = confirm('Voulez vous vraiment créer un nouveau trajet et supprimer toute les actions présente sur la map ?');
+function newFile() {
+  const rep = confirm(
+    'Voulez vous vraiment créer un nouveau trajet et supprimer toute les actions présente sur la map ?',
+  );
   if (rep) {
     deleteAll();
   }
-});
+}
 
-ipcRenderer.on('saveFile', () => {
+function openFile() {
+  dialog.showOpenDialog(
+    {
+      filters: [{ name: 'JavaScript', extensions: ['js'] }],
+      properties: ['openFile'],
+    },
+    (filename) => {
+      readFile(filename[0], 'utf8', (err, data) => {
+        if (err) throw err;
+        deleteAll();
+        loadScript(data);
+      });
+    },
+  );
+}
+
+function saveFile() {
   const config = {
     name: document.querySelector('#scriptName').value,
     type: document.querySelector('#scriptType').value,
@@ -63,20 +63,35 @@ ipcRenderer.on('saveFile', () => {
       }
     },
   );
+}
+
+$('#NewFile').on('click', newFile);
+$('#SaveFile').on('click', saveFile);
+$('#LoadFile').on('click', openFile);
+$('#RealoadApp').on('click', () => {
+  remote.getCurrentWindow().reload();
+});
+$('#DevTools').on('click', () => {
+  remote.getCurrentWebContents().toggleDevTools();
 });
 
-ipcRenderer.on('openFile', () => {
-  dialog.showOpenDialog(
-    {
-      filters: [{ name: 'JavaScript', extensions: ['js'] }],
-      properties: ['openFile'],
-    },
-    (filename) => {
-      readFile(filename[0], 'utf8', (err, data) => {
-        if (err) throw err;
-        deleteAll();
-        loadScript(data);
-      });
-    },
-  );
+$('#minimize-button').on('click', () => {
+  remote.getCurrentWindow().minimize();
 });
+
+$('#min-max-button').on('click', () => {
+  const currentWindow = remote.getCurrentWindow();
+  if (currentWindow.isMaximized()) {
+    currentWindow.unmaximize();
+  } else {
+    currentWindow.maximize();
+  }
+});
+
+$('#close-button').on('click', () => {
+  remote.app.quit();
+});
+
+ipcRenderer.on('newFile', newFile);
+ipcRenderer.on('saveFile', saveFile);
+ipcRenderer.on('openFile', openFile);
