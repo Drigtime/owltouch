@@ -1,22 +1,22 @@
 import L from 'leaflet';
 import {
-  autoDelete,
-  elementToGather,
   itemsBank,
   lifeMinMax,
-  monsterForbidden,
-  monsterMandatory,
   monsterQuantMinMax,
-  regenItems,
+  elementWithAutoComplete
 } from '../events/htmlElementInstance';
 import { dofusCoordsToGeoCoords, map, bankPos, phoenixPos } from '../map/map';
 
-const path = require('path');
+const { join } = require('path');
 const { readFileSync } = require('fs');
 
-const items = JSON.parse(readFileSync(path.join(__dirname, '../../../data/json/d2o/Items.json')));
-const monsters = JSON.parse(readFileSync(path.join(__dirname, '../../../data/json/d2o/Monsters.json')));
-const interactive = JSON.parse(readFileSync(path.join(__dirname, '../../../data/json/d2o/Interactive.json')));
+// const items = JSON.parse(readFileSync(join(__dirname, '../../../data/json/d2o/Items.json')));
+// const monsters = JSON.parse(
+//   readFileSync(join(__dirname, '../../../data/json/d2o/Monsters.json')),
+// );
+// const interactive = JSON.parse(
+//   readFileSync(join(__dirname, '../../../data/json/d2o/Interactive.json')),
+// );
 
 export const icon = {
   move: ['top', 'bottom', 'left', 'right', 'bank', 'phoenix', 'bankOut'],
@@ -110,7 +110,7 @@ icon.move.forEach((name) => {
   icon[name] = {};
   icon.type.forEach((type) => {
     icon[name][type] = {
-      iconUrl: path.join(__dirname, `../../../data/assets/path/${type}/${name}.svg`),
+      iconUrl: join(__dirname, `../../../data/assets/path/${type}/${name}.svg`),
     };
   });
 });
@@ -271,9 +271,62 @@ export function onMapClick(coord) {
   console.log(coord, movementType);
 }
 
-function getIdOfChips(chips, database) {
+export function onMapMouseDown(coord) {
+  // loop through list of possible mouvement : ['top', 'bottom', 'left', 'right'],
+  icon.move.forEach((name) => {
+    if ($(`#${name}`).hasClass('selected')) {
+      const dataType = $('#type')[0].selectedOptions[0].dataset.arrayType;
+      const scale = getScale(icon.size[dataType][name], map.getZoom());
+      const type = $('#type')[0].selectedOptions[0].dataset.type;
+      const index = checkIfMapAlreadyExist(coord, movementType[dataType]);
+      const arrowMarker = L.marker(dofusCoordsToGeoCoords(coord), {
+        icon: L.icon({
+          iconUrl: icon[name][type].iconUrl,
+          iconSize: [scale.width, scale.height],
+          iconAnchor: [scale.marginLeft, scale.topMargin],
+          className: name,
+        }),
+        zIndexOffset: icon.size[dataType].zindex,
+        interactive: false,
+      });
+      if (index !== null) {
+        if (index.data[name]) {
+          return false;
+        } else if (index) {
+          index.data[name] = {
+            [type]: true,
+          };
+          index.marker[name] = arrowMarker.addTo(map);
+        }
+      } else {
+        movementType[dataType].push({
+          coord: [coord[0], coord[1]],
+          data: {
+            [name]: {
+              [type]: true,
+            },
+          },
+          marker: {
+            [name]: arrowMarker.addTo(map),
+          },
+        });
+      }
+    } else if ($('#delete').hasClass('selected')) {
+      let index;
+      Object.values(movementType).forEach((dataType) => {
+        // get the object {coord: Array(), data: {…}, marker: {…}}
+        index = checkIfMapAlreadyExist(coord, dataType);
+        if (index !== null) deleteAction(dataType, index, name);
+      });
+    }
+  });
+  console.log(coord, movementType);
+}
+
+export function getIdOfChips(chips, database) {
+  console.log(chips[0].chipsData);
   const elementIds = [];
-  Object.values(chips.chipsData).forEach((data) => {
+  Object.values(chips[0].chipsData).forEach((data) => {
     Object.values(database).forEach((item) => {
       if (data.tag === item.nameId) {
         elementIds.push(item.id);
@@ -344,6 +397,15 @@ function generateMove(type) {
 }
 
 export function generateScript() {
+  const items = JSON.parse(
+    readFileSync(join(__dirname, `../../../data/i18n/${$.i18n.language}/Items.json`)),
+  );
+  const interactive = JSON.parse(
+    readFileSync(join(__dirname, `../../../data/i18n/${$.i18n.language}/Interactives.json`)),
+  );
+  const monsters = JSON.parse(
+    readFileSync(join(__dirname, `../../../data/i18n/${$.i18n.language}/Monsters.json`)),
+  );
   const config = {
     information: {
       author: $('#scriptAuthor').val(),
@@ -357,8 +419,8 @@ export function generateScript() {
       max: parseInt(monsterQuantMinMax.noUiSlider.get()[1], 10),
       minLevel: parseInt($('#monsterMin').val(), 10),
       maxLevel: parseInt($('#monsterMax').val(), 10),
-      forbiddenMonsters: getIdOfChips(monsterForbidden, monsters),
-      mandatoryMonsters: getIdOfChips(monsterMandatory, monsters),
+      forbiddenMonsters: getIdOfChips(elementWithAutoComplete.monsterForbidden, monsters),
+      mandatoryMonsters: getIdOfChips(elementWithAutoComplete.monsterMandatory, monsters),
       maxFightPerMap: parseInt($('#maxFightPerMapValue').val(), 10),
     },
     bank: {
@@ -370,7 +432,7 @@ export function generateScript() {
     autoRegen: {
       minLife: parseInt(lifeMinMax.noUiSlider.get()[0], 10),
       maxLife: parseInt(lifeMinMax.noUiSlider.get()[1], 10),
-      items: getIdOfChips(regenItems, items),
+      items: getIdOfChips(elementWithAutoComplete.regenItems, items),
       store: parseInt($('#regenItemValue').val(), 10),
     },
     display: {
@@ -388,10 +450,10 @@ export function generateScript() {
         .replace(/({.+?}(?:,|))/g, '\n\t$&')
         .replace(/}\]/g, '}\n]'),
     },
-    delete: getIdOfChips(autoDelete, items),
+    delete: getIdOfChips(elementWithAutoComplete.autoDelete, items),
     maxPods: parseInt($('#maxPods').val(), 10),
     openBags: $('#openBagsCheckbox').prop('checked'),
-    elementToGather: getIdOfChips(elementToGather, interactive),
+    elementToGather: getIdOfChips(elementWithAutoComplete.elementToGather, interactive),
   };
 
   const configScript = {

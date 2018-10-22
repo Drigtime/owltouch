@@ -1,15 +1,27 @@
 import sizeOf from 'image-size';
 import L from 'leaflet';
-import { autoDelete, elementToGather, itemsBank, lifeMinMax, monsterForbidden, monsterMandatory, monsterQuantMinMax, regenItems } from '../events/htmlElementInstance';
+import {
+  elementWithAutoComplete,
+  monsterQuantMinMax,
+  itemsBank,
+} from '../events/htmlElementInstance';
 import { dofusCoordsToGeoCoords, map, mapList } from '../map/map';
-import { bpGetInformation, checkIfMapAlreadyExist, deleteAction, getScale, icon, movementType, getIdOfAutoComplete } from '../scripts/pathMaker';
+import {
+  bpGetInformation,
+  checkIfMapAlreadyExist,
+  deleteAction,
+  getScale,
+  icon,
+  movementType,
+  getIdOfAutoComplete,
+} from '../scripts/pathMaker';
 
-const path = require('path');
+const { join } = require('path');
 const { readFileSync } = require('fs');
 
-const items = JSON.parse(readFileSync(path.join(__dirname, '../../../data/json/d2o/Items.json')));
-const monsters = JSON.parse(readFileSync(path.join(__dirname, '../../../data/json/d2o/Monsters.json')));
-const interactive = JSON.parse(readFileSync(path.join(__dirname, '../../../data/json/d2o/Interactive.json')));
+// const items = JSON.parse(readFileSync(join(__dirname, '../../../data/json/d2o/Items.json')));
+// const monsters = JSON.parse(readFileSync(join(__dirname, '../../../data/json/d2o/Monsters.json')));
+// const interactive = JSON.parse(readFileSync(join(__dirname, '../../../data/json/d2o/Interactive.json')));
 
 function loadPath(paths, arrayType) {
   Object.values(paths).forEach((mapInfo) => {
@@ -20,10 +32,10 @@ function loadPath(paths, arrayType) {
       const index = checkIfMapAlreadyExist(coord, movementType.bank);
       const marker = L.marker(dofusCoordsToGeoCoords(coord), {
         icon: L.icon({
-          iconUrl: path.join(__dirname, '../../../data/assets/path/bank/bank.png'),
+          iconUrl: join(__dirname, '../../../data/assets/path/bank/bank.png'),
           iconAnchor: [
-            sizeOf(path.join(__dirname, '../../../data/assets/path/bank/bank.png')).width / 2,
-            sizeOf(path.join(__dirname, '../../../data/assets/path/bank/bank.png')).height / 2,
+            sizeOf(join(__dirname, '../../../data/assets/path/bank/bank.png')).width / 2,
+            sizeOf(join(__dirname, '../../../data/assets/path/bank/bank.png')).height / 2,
           ],
           className: 'bank',
         }),
@@ -61,15 +73,19 @@ function loadPath(paths, arrayType) {
         });
       }
     } else if (Object.prototype.hasOwnProperty.call(mapInfo, 'phoenix')) {
-      const coord = [parseInt(mapInfo.map.split(',')[0], 10), parseInt(mapInfo.map.split(',')[1], 10)];
+      const coord = [
+        parseInt(mapInfo.map.split(',')[0], 10),
+        parseInt(mapInfo.map.split(',')[1], 10),
+      ];
       const data = bpGetInformation(coord);
       const index = checkIfMapAlreadyExist(coord, movementType.phoenix);
       const marker = L.marker(dofusCoordsToGeoCoords(coord), {
         icon: L.icon({
-          iconUrl: path.join(__dirname, '../../../data/assets/path/phoenix/phoenix.png'),
+          iconUrl: join(__dirname, '../../../data/assets/path/phoenix/phoenix.png'),
           iconAnchor: [
-            sizeOf(path.join(__dirname, '../../../data/assets/path/phoenix/phoenix.png')).width / 2,
-            sizeOf(path.join(__dirname, '../../../data/assets/path/phoenix/phoenix.png')).height / 2,
+            sizeOf(join(__dirname, '../../../data/assets/path/phoenix/phoenix.png')).width / 2,
+            sizeOf(join(__dirname, '../../../data/assets/path/phoenix/phoenix.png')).height /
+              2,
           ],
           className: 'phoenix',
         }),
@@ -104,7 +120,12 @@ function loadPath(paths, arrayType) {
           },
         });
       }
-    } else if (typeof mapInfo.map === 'number' && mapInfo.map === (bpGetInformation([mapList[mapInfo.map].posX, mapList[mapInfo.map].posY]).mapIdInSide || bpGetInformation([mapList[mapInfo.map].posX, mapList[mapInfo.map].posY]).mapIdOutSide)) {
+    } else if (
+      typeof mapInfo.map === 'number' &&
+      mapInfo.map ===
+        (bpGetInformation([mapList[mapInfo.map].posX, mapList[mapInfo.map].posY]).mapIdInSide ||
+          bpGetInformation([mapList[mapInfo.map].posX, mapList[mapInfo.map].posY]).mapIdOutSide)
+    ) {
       const coord = [mapList[mapInfo.map].posX, mapList[mapInfo.map].posY];
       const data = bpGetInformation(coord);
       const index = checkIfMapAlreadyExist(coord, movementType.move);
@@ -140,7 +161,10 @@ function loadPath(paths, arrayType) {
         const dataType = arrayType;
         const scale = getScale(icon.size[arrayType][direction], map.getZoom());
         let type;
-        if (Object.prototype.hasOwnProperty.call(mapInfo, 'gather') && Object.prototype.hasOwnProperty.call(mapInfo, 'fight')) {
+        if (
+          Object.prototype.hasOwnProperty.call(mapInfo, 'gather') &&
+          Object.prototype.hasOwnProperty.call(mapInfo, 'fight')
+        ) {
           type = 'gatherfight';
         } else if (Object.prototype.hasOwnProperty.call(mapInfo, 'gather')) {
           type = 'gather';
@@ -187,7 +211,7 @@ function loadPath(paths, arrayType) {
   });
 }
 
-function getChipsOfId(ids, database) {
+export function getChipsOfId(ids, database) {
   const list = [];
   Object.values(database).forEach((element) => {
     Object.values(ids).forEach((id) => {
@@ -199,18 +223,24 @@ function getChipsOfId(ids, database) {
   return list;
 }
 
-
 export function putGetItem(type, itemName, itemQuant) {
+  const items = JSON.parse(
+    readFileSync(join(__dirname, `../../../data/i18n/${$.i18n.language}/Items.json`)),
+  );
   $('.delete-item').off();
   const name = itemName || $(`#${type}ItemName`).val();
   const ids = getIdOfAutoComplete(name, items);
   const quant = itemQuant || $(`#${type}ItemQuant`).val();
   if (name.length > 0) {
     const html = `<tr>
-    <td><img src="https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/items/${ids.iconId}.png" width="40" height="40"/></td>
+    <td><img src="https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/items/${
+  ids.iconId
+}.png" width="40" height="40"/></td>
     <td>${name}</td>
     <td>${quant}</td>
-    <td><a class="waves-effect waves-light btn amber accent-3 delete-item" data-id="${ids.id}">X</a></td>
+    <td><a class="waves-effect waves-light btn amber accent-3 delete-item" data-id="${
+  ids.id
+}">X</a></td>
     </tr>`;
     itemsBank[type].push({
       item: ids.id,
@@ -219,7 +249,10 @@ export function putGetItem(type, itemName, itemQuant) {
     console.log(itemsBank[type]);
     $(`#${type}ItemTable`).append(html);
     $('.delete-item').on('click', (e) => {
-      itemsBank[type].splice(itemsBank[type].indexOf(parseInt({ item: e.target.dataset.id }, 10)), 1);
+      itemsBank[type].splice(
+        itemsBank[type].indexOf(parseInt({ item: e.target.dataset.id }, 10)),
+        1,
+      );
       console.log(itemsBank[type]);
       $(e.target.parentNode.parentNode).remove();
     });
@@ -227,6 +260,15 @@ export function putGetItem(type, itemName, itemQuant) {
 }
 
 function loadSettings(settings, info) {
+  const items = JSON.parse(
+    readFileSync(join(__dirname, `../../../data/i18n/${$.i18n.language}/Items.json`)),
+  );
+  const interactive = JSON.parse(
+    readFileSync(join(__dirname, `../../../data/i18n/${$.i18n.language}/Interactives.json`)),
+  );
+  const monsters = JSON.parse(
+    readFileSync(join(__dirname, `../../../data/i18n/${$.i18n.language}/Monsters.json`)),
+  );
   if (Object.prototype.hasOwnProperty.call(settings, 'DISPLAY_GATHER_COUNT')) {
     $('#displayGatherCountCheckbox').prop('checked', !!settings.DISPLAY_GATHER_COUNT);
   } else {
@@ -239,7 +281,7 @@ function loadSettings(settings, info) {
   }
   if (Object.prototype.hasOwnProperty.call(settings, 'ELEMENTS_TO_GATHER')) {
     getChipsOfId(settings.ELEMENTS_TO_GATHER, interactive).forEach((resource) => {
-      elementToGather.addChip({
+      elementWithAutoComplete.elementToGather[0].addChip({
         tag: resource,
       });
     });
@@ -253,7 +295,7 @@ function loadSettings(settings, info) {
     $('#autoRegenCheckbox').prop('checked', true);
     lifeMinMax.noUiSlider.set([settings.AUTO_REGEN.minLife, settings.AUTO_REGEN.maxLife]);
     getChipsOfId(settings.AUTO_REGEN.items, items).forEach((item) => {
-      regenItems.addChip({
+      elementWithAutoComplete.regenItems[0].addChip({
         tag: item,
       });
     });
@@ -261,7 +303,10 @@ function loadSettings(settings, info) {
   } else {
     $('#autoRegenCheckbox').prop('checked', false);
   }
-  if (Object.prototype.hasOwnProperty.call(settings, 'MIN_MONSTERS') && Object.prototype.hasOwnProperty.call(settings, 'MAX_MONSTERS')) {
+  if (
+    Object.prototype.hasOwnProperty.call(settings, 'MIN_MONSTERS') &&
+    Object.prototype.hasOwnProperty.call(settings, 'MAX_MONSTERS')
+  ) {
     monsterQuantMinMax.noUiSlider.set([settings.MIN_MONSTERS, settings.MAX_MONSTERS]);
   }
   if (Object.prototype.hasOwnProperty.call(settings, 'MIN_MONSTERS_LEVEL')) {
@@ -272,14 +317,14 @@ function loadSettings(settings, info) {
   }
   if (Object.prototype.hasOwnProperty.call(settings, 'FORBIDDEN_MONSTERS')) {
     getChipsOfId(settings.FORBIDDEN_MONSTERS, monsters).forEach((monster) => {
-      monsterForbidden.addChip({
+      elementWithAutoComplete.monsterForbidden[0].addChip({
         tag: monster,
       });
     });
   }
   if (Object.prototype.hasOwnProperty.call(settings, 'MANDATORY_MONSTERS')) {
     getChipsOfId(settings.MANDATORY_MONSTERS, monsters).forEach((monster) => {
-      monsterMandatory.addChip({
+      elementWithAutoComplete.monsterMandatory[0].addChip({
         tag: monster,
       });
     });
@@ -295,7 +340,7 @@ function loadSettings(settings, info) {
   }
   if (Object.prototype.hasOwnProperty.call(settings, 'AUTO_DELETE')) {
     getChipsOfId(settings.AUTO_DELETE, items).forEach((item) => {
-      autoDelete.addChip({
+      elementWithAutoComplete.autoDelete[0].addChip({
         tag: item,
       });
     });
@@ -313,11 +358,13 @@ function loadSettings(settings, info) {
     $('#getKamasCheckbox').prop('checked', false);
   }
   if (Object.prototype.hasOwnProperty.call(settings, 'BANK_PUT_ITEMS')) {
+    $('#bankItemTable').html('');
     settings.BANK_PUT_ITEMS.forEach((element) => {
       putGetItem('put', items[element.item].nameId, element.quantity);
     });
   }
   if (Object.prototype.hasOwnProperty.call(settings, 'BANK_GET_ITEMS')) {
+    $('#phoenixItemTable').html('');
     settings.BANK_GET_ITEMS.forEach((element) => {
       putGetItem('get', items[element.item].nameId, element.quantity);
     });
@@ -366,7 +413,9 @@ export default function loadScript(script) {
     move: /move(?:[\s\S]*?)=(?:[\s\S]*?)(\[[\s\S]*?\])/gm.exec(scriptTemp),
     bank: /bank(?:[\s\S]*?)=(?:[\s\S]*?)(\[[\s\S]*?\])/gm.exec(scriptTemp),
     phoenix: /phoenix(?:[\s\S]*?)=(?:[\s\S]*?)(\[[\s\S]*?\])/gm.exec(scriptTemp),
-    settings: /config(?:[\s\S]*?)=(?:[\s\S]*?)({[\s\S]*\n[\s]*?})[\s\S]*?(?:const|let|var|function|async)/gm.exec(scriptTemp),
+    settings: /config(?:[\s\S]*?)=(?:[\s\S]*?)({[\s\S]*\n[\s]*?})[\s\S]*?(?:const|let|var|function|async)/gm.exec(
+      scriptTemp,
+    ),
     author: /Créateur(?:[\s\S]*?):(?:[\s\S]*?)\b([\w\d]*?)\n/g.exec(scriptTemp),
     name: /Name(?:[\s\S]*?):(?:[\s\S]*?)\b([\w\d]*?)\n/g.exec(scriptTemp),
     type: /Type(?:[\s\S]*?):(?:[\s\S]*?)\b([\w\d]*?)\n/g.exec(scriptTemp),

@@ -136,8 +136,8 @@ L.Control.Coordinates = L.Control.extend({
   },
 
   /**
-     *	Creates an input HTML element in given container with given classname
-     */
+   *	Creates an input HTML element in given container with given classname
+   */
   createInput(classname, container) {
     const input = L.DomUtil.create('input', classname, container);
     input.type = 'text';
@@ -151,8 +151,8 @@ L.Control.Coordinates = L.Control.extend({
   },
 
   /**
-     *	Called onkeyup of input fields
-     */
+   *	Called onkeyup of input fields
+   */
   handleKeypress(e) {
     switch (e.keyCode) {
       case 13: // Enter
@@ -165,8 +165,8 @@ L.Control.Coordinates = L.Control.extend({
   },
 
   /**
-     *	Called on each keyup except ESC
-     */
+   *	Called on each keyup except ESC
+   */
   handleSubmit(e) {
     if (e.target.id === 'mapId') {
       const mapid = this.mapId.value;
@@ -189,8 +189,8 @@ L.Control.Coordinates = L.Control.extend({
   },
 
   /**
-     *	Shows inputs fields
-     */
+   *	Shows inputs fields
+   */
   expand() {
     this.showsCoordinates = false;
 
@@ -204,14 +204,12 @@ L.Control.Coordinates = L.Control.extend({
   },
 
   /**
-     *	Creates the label according to given options and formatters
-     */
+   *	Creates the label according to given options and formatters
+   */
   createCoordinateLabel(ll) {
     const opts = this.options;
 
-
     let x;
-
 
     let y;
     if (opts.customLabelFcn) {
@@ -238,8 +236,8 @@ L.Control.Coordinates = L.Control.extend({
   },
 
   /**
-     *	Returns a Number according to options (DMS or decimal)
-     */
+   *	Returns a Number according to options (DMS or decimal)
+   */
   getNumber(n, opts) {
     let res;
     if (opts.useDMS) {
@@ -251,9 +249,9 @@ L.Control.Coordinates = L.Control.extend({
   },
 
   /**
-     *	Shows coordinate labels after user input has ended. Also
-     *	displays a marker with popup at the last input position.
-     */
+   *	Shows coordinate labels after user input has ended. Also
+   *	displays a marker with popup at the last input position.
+   */
   collapse() {
     if (!this.showsCoordinates) {
       this.map.on('mousemove', this.update, this);
@@ -266,7 +264,6 @@ L.Control.Coordinates = L.Control.extend({
 
       if (this.marker) {
         const m = this.createNewMarker();
-
 
         const ll = this.marker.getLatLng();
         m.setLatLng(ll);
@@ -302,8 +299,8 @@ L.Control.Coordinates = L.Control.extend({
   },
 
   /**
-     *	Click callback for UI
-     */
+   *	Click callback for UI
+   */
   switchUI(evt) {
     L.DomEvent.stop(evt);
     L.DomEvent.stopPropagation(evt);
@@ -322,8 +319,8 @@ L.Control.Coordinates = L.Control.extend({
   },
 
   /**
-     *	Mousemove callback function updating labels and input elements
-     */
+   *	Mousemove callback function updating labels and input elements
+   */
   update(evt) {
     const geoCoords = evt.latlng;
     if (geoCoords) {

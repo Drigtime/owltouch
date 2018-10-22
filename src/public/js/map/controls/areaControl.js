@@ -1,103 +1,86 @@
 /*
  * L.Control.Area is used for displaying current area info on the map.
  */
-import { geoCoordsToDofusCoords, mapList, areas } from "../map";
+import L from 'leaflet';
+import { geoCoordsToDofusCoords, mapList, areas, getId } from '../map';
+import { join } from 'path';
+import { readFileSync } from 'fs';
+
+const i18nAreas = {
+  en: JSON.parse(readFileSync(join(__dirname, '../../../../data/i18n/en/Areas.json'))),
+  fr: JSON.parse(readFileSync(join(__dirname, '../../../../data/i18n/fr/Areas.json'))),
+  es: JSON.parse(readFileSync(join(__dirname, '../../../../data/i18n/es/Areas.json'))),
+};
 
 L.Control.Area = L.Control.extend({
-    options: {
-        position: "topright"
-    },
+  options: {
+    position: 'topright',
+  },
 
-    onAdd(map) {
-        this._map = map;
+  onAdd(map) {
+    this.map = map;
 
-        let className = "leaflet-control-area",
-            container = (this._container = L.DomUtil.create("div", className));
+    const className = 'leaflet-control-area';
 
-        L.DomEvent.disableScrollPropagation(this._container);
-        L.DomEvent.disableClickPropagation(this._container);
-        L.DomEvent.addListener(container, "mousemove", L.DomEvent.stop);
+    this.container = L.DomUtil.create('div', className);
+    const container = this.container;
 
-        // label containers
-        this._labelcontainer = L.DomUtil.create("div", "uiElement dark", container);
-        this._labelcontainer.style.padding = "5 10 5 10";
-        this._label = L.DomUtil.create("span", "labelFirst", this._labelcontainer);
+    L.DomEvent.disableScrollPropagation(this.container);
+    L.DomEvent.disableClickPropagation(this.container);
+    L.DomEvent.addListener(container, 'mousemove', L.DomEvent.stop);
 
-        // connect to mouseevents
-        map.on("mousemove", this._update, this);
-        // map.on("move", this._pause, this);
-        // map.on("moveend", this._unpause, this);
+    // label containers
+    this.labelcontainer = L.DomUtil.create('div', 'uiElement dark', container);
+    this.labelcontainer.style.padding = '5 10 5 10';
+    this.label = L.DomUtil.create('span', 'labelFirst', this.labelcontainer);
 
-        map.whenReady(this._update, this);
+    // connect to mouseevents
+    map.on('mousemove', this.update, this);
+    // map.on("move", this.pause, this);
+    // map.on("moveend", this.unpause, this);
 
-        return container;
-    },
+    map.whenReady(this.update, this);
 
-    onRemove(map) {
-        map.off("move", this._pause, this);
-        map.off("moveend", this._unpause, this);
-    },
+    return container;
+  },
 
-    /**
-     *	Mousemove callback function updating labels and input elements
-     */
-    _update(evt) {
-        const geoCoords = evt.latlng;
+  onRemove(map) {
+    map.off('move', this.pause, this);
+    map.off('moveend', this.unpause, this);
+  },
 
-        if (geoCoords) {
-            const [x, y] = geoCoordsToDofusCoords(geoCoords);
-            const subAreas = this._getId(x, y);
-            if (!subAreas.subAreaId) {
-                L.DomUtil.addClass(this._labelcontainer, "uiHidden");
-                this._label.innerHTML = "";
-                return;
-            }
-            L.DomUtil.removeClass(this._labelcontainer, "uiHidden");
-            this._label.innerHTML = areas[subAreas.subAreaId].nameId;
+  /**
+   *	Mousemove callback function updating labels and input elements
+   */
+  update(evt) {
+    const geoCoords = evt.latlng;
 
-            // if (this._subAreas[x][y].length > 1) {
-            //     this._label.innerHTML += " & " + this._t("subArea." + this._subAreas[x][y][1].id);
-            // }
-        }
-    },
+    if (geoCoords) {
+      const [x, y] = geoCoordsToDofusCoords(geoCoords);
+      const subAreas = getId(x, y);
+      if (!subAreas.subAreaId) {
+        L.DomUtil.addClass(this.labelcontainer, 'uiHidden');
+        this.label.innerHTML = '';
+        return;
+      }
+      L.DomUtil.removeClass(this.labelcontainer, 'uiHidden');
+      this.label.innerHTML = i18nAreas[$.i18n.language][subAreas.subAreaId].nameId;
 
-    _getId(x, y) {
-        for (const key in mapList) {
-            if (mapList[key].posX == x && mapList[key].posY == y && mapList[key].hasPriorityOnWorldmap && mapList[key].worldMap == 1) {
-                return {
-                    id: mapList[key].id,
-                    subAreaId: mapList[key].subAreaId,
-                    worldMap: mapList[key].worldMap,
-                    mapIds: areas[mapList[key].subAreaId].mapIds
-                };
-            }
-        }
-        return false;
-    },
-
-    _pause(evt) {
-        this._map.off("mousemove", this._update, this);
-        L.DomUtil.addClass(this._labelcontainer, "uiHidden");
-    },
-
-    _unpause(evt) {
-        this._map.on("mousemove", this._update, this);
+      // if (this.subAreas[x][y].length > 1) {
+      //     this.label.innerHTML += " & " + this.t("subArea." + this.subAreas[x][y][1].id);
+      // }
     }
+  },
+
+  pause() {
+    this.map.off('mousemove', this.update, this);
+    L.DomUtil.addClass(this.labelcontainer, 'uiHidden');
+  },
+
+  unpause() {
+    this.map.on('mousemove', this.update, this);
+  },
 });
 
 // constructor registration
-L.control.area = function(options) {
-    return new L.Control.Area(options);
-};
-
-// map init hook
-L.Map.mergeOptions({
-    areaControl: false
-});
-
-L.Map.addInitHook(function() {
-    if (this.options.areaControl) {
-        this.areaControl = new L.Control.Area();
-        this.addControl(this.areaControl);
-    }
-});
+L.control.area = options => new L.Control.Area(options);

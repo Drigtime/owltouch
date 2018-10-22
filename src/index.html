@@ -35,21 +35,21 @@
 
   <!-- Dropdown Structure -->
   <ul id="settings-dropdown" class="dropdown-content">
-    <li><a class="modal-trigger" href="#settings-global" data-i18n="dropdown.settings"><i class="material-icons">settings</i></a></li>
+    <li><a class="modal-trigger" href="#settings" data-i18n="dropdown.settings"><i class="material-icons">settings</i></a></li>
     <li><a class="modal-trigger" href="#information" data-i18n="dropdown.config"><i class="material-icons">map</i></a></li>
   </ul>
   <!-- Dropdown Structure -->
   <ul id="menu-dropdown" class="dropdown-content">
-    <li><a id="NewFile" data-i18n="titlebar.newFile"><i class="material-icons">insert_drive_file</i><span style="float: right;">
-          Ctrl + N</span></a></li>
-    <li><a id="SaveFile" data-i18n="titlebar.saveFile"><i class="material-icons">save</i><span style="float: right;">
-          Ctrl + S</span></a></li>
-    <li><a id="LoadFile" data-i18n="titlebar.loadFile"><i class="material-icons">folder_open</i><span style="float: right;">
-          Ctrl + O</span></a></li>
-    <li><a id="RealoadApp" data-i18n="titlebar.restart"><i class="material-icons">refresh</i><span style="float: right;">
-          Ctrl + R</span></a></li>
-    <li><a id="DevTools" data-i18n="titlebar.devTools"><i class="material-icons">code</i><span>
-          Ctrl + Shift + I</span></a></li>
+    <li><a id="NewFile"><span data-i18n="titlebar.newFile"></span><i class="material-icons">insert_drive_file</i><span
+          class="dropdownShortcut">Ctrl + N</span></a></li>
+    <li><a id="SaveFile"><span data-i18n="titlebar.saveFile"></span><i class="material-icons">save</i><span class="dropdownShortcut">Ctrl
+          + S</span></a></li>
+    <li><a id="LoadFile"><span data-i18n="titlebar.loadFile"></span><i class="material-icons">folder_open</i><span
+          class="dropdownShortcut">Ctrl + O</span></a></li>
+    <li><a id="RealoadApp"><span data-i18n="titlebar.restart"></span><i class="material-icons">refresh</i><span class="dropdownShortcut">Ctrl
+          + R</span></a></li>
+    <li><a id="DevTools"><span data-i18n="titlebar.devTools"></span><i class="material-icons">code</i><span class="dropdownShortcut">Ctrl
+          + Shift + I</span></a></li>
   </ul>
   <nav>
     <div class="nav-wrapper">
@@ -85,8 +85,8 @@
                 class="material-icons">account_balance</i></a>
             <a class="waves-effect btn-flat tooltipped" data-position="bottom" id="phoenixPlacement" data-i18n="[data-tooltip]movement.special.phoenix.label"><i
                 class="material-icons">whatshot</i></a>
-            <a class="waves-effect btn-flat tooltipped" data-position="bottom" id="zaapPlacement" data-i18n="[data-tooltip]movement.special.zaap.label"><i
-                class="material-icons">filter_tilt_shift</i></a>
+            <!-- <a class="waves-effect btn-flat tooltipped" data-position="bottom" id="zaapPlacement" data-i18n="[data-tooltip]movement.special.zaap.label"><i
+                class="material-icons">filter_tilt_shift</i></a> -->
           </span>
         </li>
       </ul>
@@ -96,47 +96,61 @@
       </ul>
     </div>
   </nav>
-  <div id="settings-global" class="modal">
+  <div id="settings" class="modal modal-fixed-footer">
     <div class="modal-content">
       <div class="row">
         <div class="col s12">
           <ul class="tabs">
-            <li class="tab col s3 selected"><a href="#keyboard-shortcut">raccourcis clavier</a></li>
-            <li class="tab col s3 disabled"><a href="">langage</a></li>
-            <li class="tab col s3 disabled"><a href="">à propos</a></li>
+            <li class="tab col s4"><a href="#settingsShortcut" data-i18n="settings.keyBinding.label" class="active"></a></li>
+            <li class="tab col s4"><a href="#settingsLanguage" data-i18n="settings.language.label"></a></li>
+            <!-- <li class="tab col s4"><a href="#settingsAbout" data-i18n="settings.about.label"></a></li> -->
           </ul>
         </div>
         <div class="col s12">
           <div class="row">
             <div class="col s12">
-              <div id="keyboard-shortcut" class="card-panel row">
+              <div id="settingsShortcut" class="card-panel row">
                 <div class="input-field col s3">
-                  <input id="topKeyBinding" type="text">
-                  <label for="topKeyBinding" class="">Haut</label>
+                  <input data-shortcut="top" type="text" id="settingsShortcutTop">
+                  <label for="settingsShortcutTop" data-i18n="settings.keyBinding.top"></label>
                 </div>
                 <div class="input-field col s3">
-                  <input id="bottomKeyBinding" type="text">
-                  <label for="bottomKeyBinding" class="">Bas</label>
+                  <input data-shortcut="bottom" type="text" id="settingsShortcutBottom">
+                  <label for="settingsShortcutBottom" data-i18n="settings.keyBinding.bottom"></label>
                 </div>
                 <div class="input-field col s3">
-                  <input id="leftKeyBinding" type="text">
-                  <label for="leftKeyBinding" class="">Gauche</label>
+                  <input data-shortcut="left" type="text" id="settingsShortcutLeft">
+                  <label for="settingsShortcutLeft" data-i18n="settings.keyBinding.left"></label>
                 </div>
                 <div class="input-field col s3">
-                  <input id="rightKeyBinding" type="text">
-                  <label for="rightKeyBinding" class="">Droite</label>
+                  <input data-shortcut="right" type="text" id="settingsShortcutRigth">
+                  <label for="settingsShortcutRigth" data-i18n="settings.keyBinding.right"></label>
                 </div>
                 <div class="input-field col s3">
-                  <input id="deleteKeyBinding" type="text">
-                  <label for="deleteKeyBinding" class="">Supprimer</label>
+                  <input data-shortcut="delete" type="text" id="settingsShortcutDelete">
+                  <label for="settingsShortcutDelete" data-i18n="settings.keyBinding.delete"></label>
                 </div>
                 <div class="input-field col s3">
-                  <input id="bankKeyBinding" type="text">
-                  <label for="bankKeyBinding" class="">Placement de banque</label>
+                  <input data-shortcut="bank" type="text" id="settingsShortcutBank">
+                  <label for="settingsShortcutBank" data-i18n="settings.keyBinding.bank"></label>
                 </div>
                 <div class="input-field col s3">
-                  <input id="phoenixKeyBinding" type="text">
-                  <label for="phoenixKeyBinding" class="">Placement de phoenix</label>
+                  <input data-shortcut="phoenix" type="text" id="settingsShortcutPhoenix">
+                  <label for="settingsShortcutPhoenix" data-i18n="settings.keyBinding.phoenix"></label>
+                </div>
+                <!-- <div class="input-field col s3">
+                  <input data-shortcut="zaap" type="text" id="settingsShortcutZaap">
+                  <label for="settingsShortcutZaap" data-i18n="settings.keyBinding.zaap"></label>
+                </div> -->
+              </div>
+              <div id="settingsLanguage" class="card-panel row">
+                <div class="input-field col s12">
+                  <select id="settingLanguageSelector">
+                    <option value="fr" data-i18n="settings.language.fr" data-icon="./data/i18n/FR/flag.svg">Français</option>
+                    <option value="en" data-i18n="settings.language.en" data-icon="./data/i18n/EN/flag.svg">English</option>
+                    <option value="es" data-i18n="settings.language.es" data-icon="./data/i18n/ES/flag.svg">Español</option>
+                  </select>
+                  <label data-i18n="settings.language.label"></label>
                 </div>
               </div>
             </div>
@@ -145,8 +159,9 @@
       </div>
     </div>
     <div class="modal-footer">
-      <a class="modal-close waves-effect btn-flat">Annuler</a>
-      <a id="" class="modal-close waves-effect waves-green btn ">Confirmer</a>
+      <a class="waves-effect btn-flat" id="SettingsBtnDefault" data-i18n="settings.btn.default"></a>
+      <!-- <a class="modal-close waves-effect btn-flat" id="SettingsBtnCancel" data-i18n="settings.btn.cancel"></a> -->
+      <a class="modal-close waves-effect waves-green btn" id="SettingsBtnConfirm" data-i18n="settings.btn.confirm"></a>
     </div>
   </div>
   <div id="information" class="modal modal-fixed-footer" style="max-height: 71%;height: 71%;">
@@ -166,14 +181,14 @@
               <div id="gatherTab" class="card-panel ">
                 <div class="switch">
                   <label>
-                    <input type="checkbox" id="displayGatherCountCheckbox" checked>
+                    <input type="checkbox" id="displayGatherCountCheckbox">
                     <span class="lever"></span>
                     <span data-i18n="config.gather.count"></span>
                   </label>
                 </div>
                 <div class="switch">
                   <label>
-                    <input type="checkbox" id="openBagsCheckbox" checked>
+                    <input type="checkbox" id="openBagsCheckbox">
                     <span class="lever"></span>
                     <span data-i18n="config.gather.openbag"></span>
                   </label>
@@ -186,7 +201,7 @@
               <div id="fightTab" class="card-panel ">
                 <div class="switch">
                   <label>
-                    <input type="checkbox" id="displayFightCountCheckbox" checked>
+                    <input type="checkbox" id="displayFightCountCheckbox">
                     <span class="lever"></span>
                     <span data-i18n="config.fight.count"></span>
                   </label>
@@ -304,8 +319,8 @@
                         <div class="collapsible-body ">
                           <div class="row">
                             <div class="input-field col s6">
-                              <span data-i18n="config.bank.putItems.itemName"></span>
-                              <input class="autocomplete" type="text" id="putItemName">
+                              <span data-i18n="config.bank.putItems.itemName.label"></span>
+                              <input class="autocomplete" type="text" id="putItemName" data-i18n="[placeholder]config.bank.putItems.itemName.placeholder">
                             </div>
                             <div class="input-field col s4">
                               <span data-i18n="config.bank.putItems.quantity.label"></span><input type="number" min="0"
@@ -336,8 +351,8 @@
                         <div class="collapsible-body ">
                           <div class="row">
                             <div class="input-field col s6">
-                              <span data-i18n="config.bank.getItems.itemName"></span>
-                              <input class="autocomplete" type="text" id="getItemName">
+                              <span data-i18n="config.bank.getItems.itemName.label"></span>
+                              <input class="autocomplete" type="text" id="getItemName" data-i18n="[placeholder]config.bank.putItems.itemName.placeholder">
                             </div>
                             <div class="input-field col s4">
                               <span data-i18n="config.bank.getItems.quantity.label"></span><input type="number" min="0"
@@ -387,7 +402,7 @@
       </div>
     </div>
     <div class="modal-footer">
-      <a class="waves-effect btn-flat" data-i18n="config.btn.default"></a>
+      <a class="waves-effect btn-flat" id="ConfigBtnDefault" data-i18n="config.btn.default"></a>
       <a href="#information" class="modal-close waves-effect btn" data-i18n="config.btn.confirm"></a>
     </div>
   </div>
@@ -435,8 +450,7 @@
 <script src="public/js/jquery-3.3.1.min.js"></script>
 <script src="../node_modules/i18next/i18next.min.js"></script>
 <script src="../node_modules/jquery-i18next/jquery-i18next.min.js"></script>
-<script src="public/js/i18n.js"></script>
-<script src="public/js/app.js"></script>
+<script src="./renderer.js"></script>
 
 <!-- Insert this line after script imports -->
 <script>if (window.module) module = window.module;</script>

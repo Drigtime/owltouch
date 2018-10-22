@@ -1,147 +1,179 @@
 {
-    "translation": {
-        "titlebar": {
-            "dropdownTrigger": "File",
-            "newFile": "New script",
-            "saveFile": "Save script",
-            "loadFile": "Load script",
-            "restart": "Restart",
-            "devTools": "Toggle dev tools"
-        },
-        "dropdown": {
-            "settings": "Settings",
-            "config": "Script configuration"
-        },
-        "config": {
-            "gather": {
-                "label": "Gather",
-                "count": "Display of the gathering counter",
-                "openbag": "Automatic opening of gather bags",
-                "gather": {
-                    "label": "Items to harvest",
-                    "placeholder": "ex: Wheat"
-                }
-            },
-            "fight": {
-                "label": "Fight",
-                "count": "Display of the fighting counter",
-                "regen": {
-                    "label": "Automatic regeneration",
-                    "toggleAutoRegen": "Enable automatic regeneration",
-                    "regenMinMax": "Regeneration minimum / maximum",
-                    "items": {
-                        "label": "Items to use for the regeneration",
-                        "placeholder": "ex: Bread"
-                    },
-                    "quant": "Quantity of items to take from the bank"
-                },
-                "monster": {
-                    "minMax": "Minimum / Maximum number of monsters to attack",
-                    "minMaxLevel": "Level of a group of monsters to attack",
-                    "min": "Minimum",
-                    "max": "Maximum",
-                    "forbidden": {
-                        "label": "Forbidden monsters",
-                        "placeholder": "ex: Piwi"
-                    },
-                    "mandatory": {
-                        "label": "Mandatory monsters",
-                        "placeholder": "ex: Piwi"
-                    },
-                    "fightPerMap": "Maximum number of fights per map"
-                }
-            },
-            "bank": {
-                "label": "Bank",
-                "pods": "Pods maximum before going to the bank",
-                "autoDelete": {
-                    "label": "Automatic deletion",
-                    "placeholder": "ex: Feather"
-                },
-                "putKamas": {
-                    "label": "Kamas to put in bank",
-                    "helperText": "If you put 0, all kamas will be deposited."
-                },
-                "getKamas": {
-                    "label": "Kamas to get from bank",
-                    "helperText": "If you put 0, all kamas will be goten."
-                },
-                "putItems": {
-                    "label": "Items to put in the bank",
-                    "itemName": "Name of the item to put",
-                    "quantity": {
-                        "label": "Quantity",
-                        "helperText": "If you put a quantity of 0, the whole amount of the item will be deposited."
-                    },
-                    "btnAdd": "Add",
-                    "table": {
-                        "icon": "Icon",
-                        "name": "Name",
-                        "quantity": "Quantity",
-                        "action": "Action"
-                    }
-                },
-                "getItems": {
-                    "label": "Items to get from the bank",
-                    "itemName": "Name of the item to get",
-                    "quantity": {
-                        "label": "Quantity",
-                        "helperText": "If you put a quantity of 0, the whole quantity of the item will be goten."
-                    },
-                    "btnAdd": "Add",
-                    "table": {
-                        "icon": "Icon",
-                        "name": "Name",
-                        "quantity": "Quantity",
-                        "action": "Action"
-                    }
-                }
-            },
-            "information": {
-                "label": "Information",
-                "author": "Script author name",
-                "name": "Script name",
-                "type": "Script type",
-                "area": "Script area",
-                "job": "Script job"
-            },
-            "btn": {
-                "default": "Restore default settings",
-                "confirm": "Validate"
-            }
-        },
-        "movement": {
-            "type": {
-                "move": "Move",
-                "gather": "Gather",
-                "fight": "Fight",
-                "gatherfight": "Gather & Fight",
-                "bank": "Bank",
-                "phoenix": "Phoenix"
-            },
-            "special": {
-                "bank": {
-                    "label": "Bank location",
-                    "mapidOutSide": "Bank outside mapid",
-                    "cellIdDoor": "Door's cellid to enter in the bank",
-                    "mapidInside": "Bank inside mapid",
-                    "cellidSun": "Sun cellid to exit the bank",
-                    "cancel": "Cancel",
-                    "confirm": "Validate"
-                },
-                "phoenix": {
-                    "label": "Phoenix location",
-                    "cellid": "Phoenix cellid",
-                    "cancel": "Cancel",
-                    "confirm": "Validate"
-                },
-                "zaap": {
-                    "label": "Zaap location",
-                    "zaap": "Destination area",
-                    "cancel": "Cancel",
-                    "confirm": "Validate"
-                }
-            }
+  "translation": {
+    "titlebar": {
+      "dropdownTrigger": "File",
+      "newFile": "New script",
+      "saveFile": "Save script",
+      "loadFile": "Load script",
+      "restart": "Restart",
+      "devTools": "Toggle dev tools"
+    },
+    "dropdown": {
+      "settings": "Settings",
+      "config": "Script configuration"
+    },
+    "settings": {
+      "keyBinding": {
+        "label": "Shortcuts",
+        "top": "Top",
+        "bottom": "Bottom",
+        "left": "Left",
+        "right": "Right",
+        "delete": "Delete",
+        "bank": "Bank",
+        "phoenix": "Phoenix",
+        "zaap": "Zaap"
+      },
+      "language": {
+        "label": "Language",
+        "fr": "French",
+        "en": "English",
+        "es": "Spanish"
+      },
+      "about": {
+        "label": "About"
+      },
+      "btn": {
+        "default": "Reset",
+        "confirm": "Validate"
+      }
+    },
+    "config": {
+      "gather": {
+        "label": "Gather",
+        "count": "Display of the gathering counter",
+        "openbag": "Automatic opening of gather bags",
+        "gather": {
+          "label": "Items to harvest",
+          "placeholder": "ex: Wheat"
         }
+      },
+      "fight": {
+        "label": "Fight",
+        "count": "Display of the fighting counter",
+        "regen": {
+          "label": "Automatic regeneration",
+          "toggleAutoRegen": "Enable automatic regeneration",
+          "regenMinMax": "Regeneration minimum / maximum",
+          "items": {
+            "label": "Items to use for the regeneration",
+            "placeholder": "ex: Bread"
+          },
+          "quantity": "Quantity of items to take from the bank"
+        },
+        "monster": {
+          "minMax": "Minimum / Maximum number of monsters to attack",
+          "minMaxLevel": "Level of a group of monsters to attack",
+          "min": "Minimum",
+          "max": "Maximum",
+          "forbidden": {
+            "label": "Forbidden monsters",
+            "placeholder": "ex: Piwi"
+          },
+          "mandatory": {
+            "label": "Mandatory monsters",
+            "placeholder": "ex: Piwi"
+          },
+          "fightPerMap": "Maximum number of fights per map"
+        }
+      },
+      "bank": {
+        "label": "Bank",
+        "pods": "Pods maximum before going to the bank",
+        "autoDelete": {
+          "label": "Automatic deletion",
+          "placeholder": "ex: Feather"
+        },
+        "putKamas": {
+          "label": "Kamas to put in bank",
+          "helperText": "If you put 0, all kamas will be deposited."
+        },
+        "getKamas": {
+          "label": "Kamas to get from bank",
+          "helperText": "If you put 0, all kamas will be goten."
+        },
+        "putItems": {
+          "label": "Items to put in the bank",
+          "itemName": {
+            "label": "Name of the item to put",
+            "placeholder": "ex: Feather"
+          },
+          "quantity": {
+            "label": "Quantity",
+            "helperText": "If you put a quantity of 0, the whole amount of the item will be deposited."
+          },
+          "btnAdd": "Add",
+          "table": {
+            "icon": "Icon",
+            "name": "Name",
+            "quantity": "Quantity",
+            "action": "Action"
+          }
+        },
+        "getItems": {
+          "label": "Items to get from the bank",
+          "itemName": {
+            "label": "Name of the item to get",
+            "placeholder": "ex: Feather"
+          },
+          "quantity": {
+            "label": "Quantity",
+            "helperText": "If you put a quantity of 0, the whole quantity of the item will be goten."
+          },
+          "btnAdd": "Add",
+          "table": {
+            "icon": "Icon",
+            "name": "Name",
+            "quantity": "Quantity",
+            "action": "Action"
+          }
+        }
+      },
+      "information": {
+        "label": "Information",
+        "author": "Script author name",
+        "name": "Script name",
+        "type": "Script type",
+        "area": "Script area",
+        "job": "Script job"
+      },
+      "btn": {
+        "default": "Reset",
+        "confirm": "Validate"
+      }
+    },
+    "movement": {
+      "type": {
+        "move": "Move",
+        "gather": "Gather",
+        "fight": "Fight",
+        "gatherfight": "Gather & Fight",
+        "bank": "Bank",
+        "phoenix": "Phoenix"
+      },
+      "special": {
+        "bank": {
+          "label": "Bank location",
+          "mapidOutSide": "Mapid outside the bank",
+          "doorIdOutSide": "Cellid of the door to enter the bank",
+          "mapidInside": "Mapid inside the bank",
+          "sunIdInside": "Cellid of the sun to exit the bank",
+          "cancel": "Cancel",
+          "confirm": "Validate"
+        },
+        "phoenix": {
+          "label": "Phoenix location",
+          "cellid": "Cellid of the phoenix",
+          "cancel": "Cancel",
+          "confirm": "Validate"
+        },
+        "zaap": {
+          "label": "Zaap location",
+          "zaap": "Destination area",
+          "cancel": "Cancel",
+          "confirm": "Validate"
+        }
+      }
     }
+  }
 }
