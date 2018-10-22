@@ -40,7 +40,7 @@
     font-size: 20px;
 }
 
-#menu-dropdown a span {
+#menu-dropdown a span.dropdownShortcut {
     float: right;
     margin: 0 0 0 24px;
     color: #ffffff45 !important;
@@ -289,8 +289,13 @@ svg.caret {
 #addGetItem {
     margin-top: 47px;
 }
-
+.tabs .tab.disabled a,
 .tabs .tab.disabled a:focus,
 .tabs .tab.disabled a:focus.active {
     background-color: rgba(255, 255, 255, 0);
+    color: rgba(255, 255, 255, 0.5)!important
+}
+
+#close-button:hover {
+    background-color: #d61425
 }
