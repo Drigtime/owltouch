@@ -16,14 +16,39 @@
             "BANK_GET_KAMAS": 0,
             "AUTO_REGEN": {
                 "minLife": 90,
-                "manLife": 100,
+                "maxLife": 100,
                 "items": [],
                 "store": 0
             },
             "AUTO_DELETE": [],
             "OPEN_BAGS": false,
             "DISPLAY_GATHER_COUNT": false,
-            "DISPLAY_FIGHT_COUNT": false,
+            "DISPLAY_FIGHT_COUNT": false
         }
-    }
+    },
+    "shortcut": {
+        "default": {
+            "top": "z",
+            "bottom": "s",
+            "left": "q",
+            "right": "d",
+            "delete": "e",
+            "bankPlacement": "w",
+            "phoenixPlacement": "x",
+            "zaapPlacement": "c"
+        },
+        "user": {
+            "left": "q",
+            "right": "d",
+            "delete": "e",
+            "bankPlacement": "w",
+            "phoenixPlacement": "x",
+            "zaapPlacement": "c",
+            "bottom": "s",
+            "top": "z",
+            "phoenix": "c",
+            "bank": "x"
+        }
+    },
+    "language": "fr"
 }
