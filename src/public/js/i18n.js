@@ -15,13 +15,13 @@ function resetMaterialElement() {
   $(document).localize();
   $('select').formSelect();
   const items = JSON.parse(
-    fs.readFileSync(join(__dirname, `../../data/i18n/${$.i18n.language}/items.json`)),
+    fs.readFileSync(join(__dirname, `../../data/i18n/${$.i18n.language}/Items.json`)),
   );
   const interactives = JSON.parse(
     fs.readFileSync(join(__dirname, `../../data/i18n/${$.i18n.language}/Interactives.json`)),
   );
   const monsters = JSON.parse(
-    fs.readFileSync(join(__dirname, `../../data/i18n/${$.i18n.language}/monsters.json`)),
+    fs.readFileSync(join(__dirname, `../../data/i18n/${$.i18n.language}/Monsters.json`)),
   );
   const store = $.i18n.store.data[$.i18n.language].translation.config;
   elementWithAutoComplete.elementToGather = M.Chips.init($('#gatherElementChips'), {
