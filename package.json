@@ -25,10 +25,7 @@
       "!src/public/css/sass"
     ],
     "linux": {
-      "target": [
-        "AppImage",
-        "tar.xz"
-      ],
+      "target": "AppImage",
       "icon": "./build/icon",
       "category": "Utility"
     },

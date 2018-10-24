@@ -79,7 +79,7 @@
         "pods": "Pods maximum avant retour en banque",
         "autoDelete": {
           "label": "Suppression automatique",
-          "placeholder": "ex: Feather"
+          "placeholder": "ex: Plume"
         },
         "putKamas": {
           "label": "Déposer des kamas",

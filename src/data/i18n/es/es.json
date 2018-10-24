@@ -1,177 +1,177 @@
 {
   "translation": {
     "titlebar": {
-      "dropdownTrigger": "File",
-      "newFile": "New script",
-      "saveFile": "Save script",
-      "loadFile": "Load script",
-      "restart": "Restart",
-      "devTools": "Toggle dev tools"
+      "dropdownTrigger": "Archivo",
+      "newFile": "Nuevo Trayecto",
+      "saveFile": "Guardar Trayecto",
+      "loadFile": "Cargar Trayecto",
+      "restart": "Reinicio",
+      "devTools": "Modo Desarrollador"
     },
     "dropdown": {
-      "settings": "Settings",
-      "config": "Script configuration"
+      "settings": "Opciones",
+      "config": "Configuracion de Trayecto"
     },
     "settings": {
       "keyBinding": {
-        "label": "Shortcuts",
-        "top": "Top",
-        "bottom": "Bottom",
-        "left": "Left",
-        "right": "Right",
-        "delete": "Delete",
-        "bank": "Bank",
-        "phoenix": "Phoenix",
+        "label": "Atajos",
+        "top": "Arriba",
+        "bottom": "Abajo",
+        "left": "Izquierda",
+        "right": "Derecha",
+        "delete": "Borrar",
+        "bank": "Banco",
+        "phoenix": "Fenix",
         "zaap": "Zaap"
       },
       "language": {
-        "label": "Language",
+        "label": "Lenguaje",
         "fr": "French",
         "en": "English",
         "es": "Spanish"
       },
       "about": {
-        "label": "About"
+        "label": "Acerda de"
       },
       "btn": {
-        "default": "Reset",
-        "confirm": "Validate"
+        "default": "Reiniciar",
+        "confirm": "Validar"
       }
     },
     "config": {
       "gather": {
-        "label": "Gather",
-        "count": "Display of the gathering counter",
-        "openbag": "Automatic opening of gather bags",
+        "label": "Recolecta",
+        "count": "Mostrar Nº ded recolectas",
+        "openbag": "AAbrir sacos automaticamente",
         "gather": {
-          "label": "Items to harvest",
-          "placeholder": "ex: Wheat"
+          "label": "Objetos a recolectar",
+          "placeholder": "ej: Trigo"
         }
       },
       "fight": {
-        "label": "Fight",
-        "count": "Display of the fighting counter",
+        "label": "Combate",
+        "count": "Mostrar Nº de combates",
         "regen": {
-          "label": "Automatic regeneration",
-          "toggleAutoRegen": "Enable automatic regeneration",
-          "regenMinMax": "Regeneration minimum / maximum",
+          "label": "Regeneracion",
+          "toggleAutoRegen": "Activar regeneracion automatica",
+          "regenMinMax": "Regenerar minimo / maximo",
           "items": {
-            "label": "Items to use for the regeneration",
-            "placeholder": "ex: Bread"
+            "label": "Objetos para regenerar",
+            "placeholder": "ej: Pan"
           },
-          "quantity": "Quantity of items to take from the bank"
+          "quantity": "Cantidad de articulos a retirar del banco"
         },
         "monster": {
-          "minMax": "Minimum / Maximum number of monsters to attack",
-          "minMaxLevel": "Level of a group of monsters to attack",
-          "min": "Minimum",
-          "max": "Maximum",
+          "minMax": "Minimo / Maximo numero de monstruos para atacar",
+          "minMaxLevel": "Nivel del grupo de monstruos",
+          "min": "Minimo",
+          "max": "Maximo",
           "forbidden": {
-            "label": "Forbidden monsters",
-            "placeholder": "ex: Piwi"
+            "label": "Monstruos exentos",
+            "placeholder": "ej: Pio"
           },
           "mandatory": {
-            "label": "Mandatory monsters",
-            "placeholder": "ex: Piwi"
+            "label": "Monstruos obligatorios",
+            "placeholder": "ej: Pio"
           },
-          "fightPerMap": "Maximum number of fights per map"
+          "fightPerMap": "Numero maximo de peleas por mapa"
         }
       },
       "bank": {
-        "label": "Bank",
-        "pods": "Pods maximum before going to the bank",
+        "label": "Banco",
+        "pods": "Pods maximos antes de visitar el banco",
         "autoDelete": {
-          "label": "Automatic deletion",
-          "placeholder": "ex: Feather"
+          "label": "Borrar automaticamente",
+          "placeholder": "ej: Pluma"
         },
         "putKamas": {
-          "label": "Kamas to put in bank",
-          "helperText": "If you put 0, all kamas will be deposited."
+          "label": "Kamas a depositar",
+          "helperText": "Si es 0 todos los kamas se depositaran."
         },
         "getKamas": {
-          "label": "Kamas to get from bank",
-          "helperText": "If you put 0, all kamas will be goten."
+          "label": "Kamas a Retirar",
+          "helperText": "Si es 0 todos los kamas se retiraran"
         },
         "putItems": {
-          "label": "Items to put in the bank",
+          "label": "Objetos a depositar en el banco",
           "itemName": {
-            "label": "Name of the item to put",
-            "placeholder": "ex: Feather"
+            "label": "Nombre del objeto a depositar",
+            "placeholder": "ej: Pluma"
           },
           "quantity": {
-            "label": "Quantity",
-            "helperText": "If you put a quantity of 0, the whole amount of the item will be deposited."
+            "label": "Cantidad",
+            "helperText": "Si es 0, todos los objetos se depositaran."
           },
-          "btnAdd": "Add",
+          "btnAdd": "Añadir",
           "table": {
-            "icon": "Icon",
-            "name": "Name",
-            "quantity": "Quantity",
-            "action": "Action"
+            "icon": "Icono",
+            "name": "Nombre",
+            "quantity": "Cantidad",
+            "action": "Accion"
           }
         },
         "getItems": {
-          "label": "Items to get from the bank",
+          "label": "Objetos a recuperar del banco",
           "itemName": {
-            "label": "Name of the item to get",
-            "placeholder": "ex: Feather"
+            "label": "Nombre del objeto a recuperar",
+            "placeholder": "ej: Pluma"
           },
           "quantity": {
-            "label": "Quantity",
-            "helperText": "If you put a quantity of 0, the whole quantity of the item will be goten."
+            "label": "Cantidad",
+            "helperText": "Si es 0, se recuperaran todos los objetos."
           },
-          "btnAdd": "Add",
+          "btnAdd": "Añadir",
           "table": {
-            "icon": "Icon",
-            "name": "Name",
-            "quantity": "Quantity",
-            "action": "Action"
+            "icon": "Icono",
+            "name": "Nombre",
+            "quantity": "Cantidad",
+            "action": "Accion"
           }
         }
       },
       "information": {
-        "label": "Information",
-        "author": "Script author name",
-        "name": "Script name",
-        "type": "Script type",
-        "area": "Script area",
-        "job": "Script job"
+        "label": "Informacion",
+        "author": "Nombre del autor",
+        "name": "Nombre del Trayecto",
+        "type": "Tipo de Trayecto",
+        "area": "Area del Trayecto",
+        "job": "Oficio del Trayecto"
       },
       "btn": {
-        "default": "Reset",
-        "confirm": "Validate"
+        "default": "Reiniciar",
+        "confirm": "Validar"
       }
     },
     "movement": {
       "type": {
-        "move": "Move",
-        "gather": "Gather",
-        "fight": "Fight",
-        "gatherfight": "Gather & Fight",
-        "bank": "Bank",
-        "phoenix": "Phoenix"
+        "move": "Mover",
+        "gather": "Recolectar",
+        "fight": "Luchar",
+        "gatherfight": "Recolectar & Luchar",
+        "bank": "Banco",
+        "phoenix": "Fenix"
       },
       "special": {
         "bank": {
-          "label": "Bank location",
-          "mapidOutSide": "Mapid outside the bank",
-          "doorIdOutSide": "Cellid of the door to enter the bank",
-          "mapidInside": "Mapid inside the bank",
-          "sunIdInside": "Cellid of the sun to exit the bank",
-          "cancel": "Cancel",
-          "confirm": "Validate"
+          "label": "Localizacion del Banco",
+          "mapidOutSide": "Mapid fuera del banco",
+          "doorIdOutSide": "Cellid de la puerta para entrar en el banco",
+          "mapidInside": "Mapid dentro del banco",
+          "sunIdInside": "Cellid de la salida del banco",
+          "cancel": "Cancelar",
+          "confirm": "Validar"
         },
         "phoenix": {
-          "label": "Phoenix location",
-          "cellid": "Cellid of the phoenix",
-          "cancel": "Cancel",
-          "confirm": "Validate"
+          "label": "Localizacion Fenix",
+          "cellid": "Cellid del Fenix",
+          "cancel": "Cancelar",
+          "confirm": "Validar"
         },
         "zaap": {
-          "label": "Zaap location",
-          "zaap": "Destination area",
-          "cancel": "Cancel",
-          "confirm": "Validate"
+          "label": "Localizacion del Zaap",
+          "zaap": "Area de Destino",
+          "cancel": "Cancelar",
+          "confirm": "Validar"
         }
       }
     }
