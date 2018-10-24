@@ -5,6 +5,7 @@
 Requirement : 
 * [NodeJS](https://nodejs.org/en/)
 * [Yarn](https://yarnpkg.com/en/docs/install#windows-stable)
+* [Git](https://git-scm.com/)
 ```
 git clone https://github.com/Drigtime/owltouch
 cd owltouch && yarn
