@@ -41,8 +41,8 @@
     "config": {
       "gather": {
         "label": "Recolecta",
-        "count": "Mostrar Nº ded recolectas",
-        "openbag": "AAbrir sacos automaticamente",
+        "count": "Mostrar Nº de recolectas",
+        "openbag": "Abrir sacos automaticamente",
         "gather": {
           "label": "Objetos a recolectar",
           "placeholder": "ej: Trigo"
