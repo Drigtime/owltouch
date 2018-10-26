@@ -34,7 +34,7 @@
             "right": "d",
             "delete": "e",
             "bankPlacement": "w",
-            "phoenixPlacement": "x",
+            "phenixPlacement": "x",
             "zaapPlacement": "c"
         },
         "user": {
@@ -42,13 +42,13 @@
             "right": "d",
             "delete": "e",
             "bankPlacement": "w",
-            "phoenixPlacement": "x",
+            "phenixPlacement": "x",
             "zaapPlacement": "c",
             "bottom": "s",
             "top": "z",
-            "phoenix": "x",
+            "phenix": "x",
             "bank": "w"
         }
     },
-    "language": "fr"
+    "language": "en"
 }

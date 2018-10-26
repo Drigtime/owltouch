@@ -1,5 +1,5 @@
 import L from 'leaflet';
-import { bankLayerGroup, dofusCoordsToGeoCoords, map, phoenixLayerGroup } from '../map/map';
+import { bankLayerGroup, dofusCoordsToGeoCoords, map, phenixLayerGroup } from '../map/map';
 import { checkIfMapAlreadyExist, deleteAction, movementType } from '../scripts/pathMaker';
 
 const sizeOf = require('image-size');
@@ -65,7 +65,7 @@ function bpDefineCoord(coordElementId, type, data) {
       },
     });
     bmHandler(data, coord, marker);
-  } else if (type === 'phoenix') {
+  } else if (type === 'phenix') {
     movementType[type].push({
       coord: [coord[0], coord[1]],
       data: {
@@ -89,32 +89,32 @@ $('#defineBankCoordConfirm').on('click', () => {
   });
 });
 
-$('#definePhoenixCoordConfirm').on('click', () => {
-  bpDefineCoord('#definePhoenixCoord', 'phoenix', {
-    phoenix: true,
-    phoenixCellid: $('#phoenixCellid').val(),
+$('#definePhenixCoordConfirm').on('click', () => {
+  bpDefineCoord('#definePhenixCoord', 'phenix', {
+    phenix: true,
+    phenixCellid: $('#phenixCellid').val(),
   });
 });
 
-$('#phoenixPlacement').on('click', (e) => {
+$('#phenixPlacement').on('click', (e) => {
   $(e.currentTarget).toggleClass('selected');
   if ($(e.currentTarget).hasClass('selected')) {
     bankLayerGroup.remove();
-    phoenixLayerGroup.addTo(map);
+    phenixLayerGroup.addTo(map);
     ['top', 'bottom', 'left', 'right', 'delete', 'bankPlacement'].forEach((element) => {
       $(`#${element}`).removeClass('selected');
     });
   } else {
-    phoenixLayerGroup.remove();
+    phenixLayerGroup.remove();
   }
 });
 
 $('#bankPlacement').on('click', (e) => {
   $(e.currentTarget).toggleClass('selected');
   if ($(e.currentTarget).hasClass('selected')) {
-    phoenixLayerGroup.remove();
+    phenixLayerGroup.remove();
     bankLayerGroup.addTo(map);
-    ['top', 'bottom', 'left', 'right', 'delete', 'phoenixPlacement'].forEach((element) => {
+    ['top', 'bottom', 'left', 'right', 'delete', 'phenixPlacement'].forEach((element) => {
       $(`#${element}`).removeClass('selected');
     });
   } else {
@@ -125,9 +125,9 @@ $('#bankPlacement').on('click', (e) => {
 $('#delete').on('click', (e) => {
   $(e.currentTarget).toggleClass('selected');
   if ($(e.currentTarget).hasClass('selected')) {
-    phoenixLayerGroup.remove();
+    phenixLayerGroup.remove();
     bankLayerGroup.remove();
-    ['top', 'bottom', 'left', 'right', 'phoenixPlacement', 'bankPlacement'].forEach((element) => {
+    ['top', 'bottom', 'left', 'right', 'phenixPlacement', 'bankPlacement'].forEach((element) => {
       $(`#${element}`).removeClass('selected');
     });
   }
@@ -136,9 +136,9 @@ $('#delete').on('click', (e) => {
 $('#top, #bottom, #left, #right').on('click', (e) => {
   $(e.currentTarget).toggleClass('selected');
   if ($(e.currentTarget).hasClass('selected')) {
-    phoenixLayerGroup.remove();
+    phenixLayerGroup.remove();
     bankLayerGroup.remove();
-    ['delete', 'phoenixPlacement', 'bankPlacement'].forEach((element) => {
+    ['delete', 'phenixPlacement', 'bankPlacement'].forEach((element) => {
       $(`#${element}`).removeClass('selected');
     });
   }

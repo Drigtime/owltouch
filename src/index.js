@@ -1,9 +1,7 @@
-
-
-import { app, BrowserWindow, Menu, dialog, ipcMain } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, Menu } from 'electron';
+import { autoUpdater } from 'electron-updater';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
-import { autoUpdater } from 'electron-updater';
 
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
 let mainWindow;
@@ -103,34 +101,19 @@ autoUpdater.on('error', (error) => {
 });
 
 autoUpdater.on('update-available', () => {
-  dialog.showMessageBox(
-    {
-      type: 'info',
-      title: 'Nouvelle mise à jour touvé',
-      message: 'Nouvelle mise a jour touvé, voulez vous mettre a jour maintenant ?',
-      buttons: ['Non', 'Oui'],
-    },
-    (buttonIndex) => {
-      if (buttonIndex === 1) {
-        autoUpdater.downloadUpdate();
-      }
-    },
-  );
+  mainWindow.webContents.send('update-available');
+});
+
+ipcMain.on('download-update', () => {
+  autoUpdater.downloadUpdate();
+});
+
+ipcMain.on('update-downloaded', () => {
+  setImmediate(() => autoUpdater.quitAndInstall());
 });
 
 autoUpdater.on('update-downloaded', () => {
-  dialog.showMessageBox(
-    {
-      title: 'Installation de mise à jours',
-      message: "Mise à jours installé, quittez l'application pour appliquer les changements.",
-      buttons: ['Plus tard', 'Relancer maintenant'],
-    },
-    (buttonIndex) => {
-      if (buttonIndex === 1) {
-        setImmediate(() => autoUpdater.quitAndInstall());
-      }
-    },
-  );
+  mainWindow.webContents.send('update-downloaded');
 });
 
 app.on('ready', () => {

@@ -1,26 +1,13 @@
 import L from 'leaflet';
-import {
-  itemsBank,
-  lifeMinMax,
-  monsterQuantMinMax,
-  elementWithAutoComplete
-} from '../events/htmlElementInstance';
-import { dofusCoordsToGeoCoords, map, bankPos, phoenixPos } from '../map/map';
+import { elementWithAutoComplete, itemsBank, lifeMinMax, monsterQuantMinMax } from '../events/htmlElementInstance';
+import { bankPos, dofusCoordsToGeoCoords, map, phenixPos } from '../map/map';
 
 const { join } = require('path');
 const { readFileSync } = require('fs');
 
-// const items = JSON.parse(readFileSync(join(__dirname, '../../../data/json/d2o/Items.json')));
-// const monsters = JSON.parse(
-//   readFileSync(join(__dirname, '../../../data/json/d2o/Monsters.json')),
-// );
-// const interactive = JSON.parse(
-//   readFileSync(join(__dirname, '../../../data/json/d2o/Interactive.json')),
-// );
-
 export const icon = {
-  move: ['top', 'bottom', 'left', 'right', 'bank', 'phoenix', 'bankOut'],
-  type: ['move', 'gather', 'fight', 'gatherfight', 'bank', 'phoenix'],
+  move: ['top', 'bottom', 'left', 'right', 'bank', 'phenix', 'bankOut'],
+  type: ['move', 'gather', 'fight', 'gatherfight', 'bank', 'phenix'],
   size: {
     move: {
       top: {
@@ -76,7 +63,7 @@ export const icon = {
       },
       zindex: 9998,
     },
-    phoenix: {
+    phenix: {
       top: {
         width: 17.22,
         height: 25,
@@ -118,7 +105,7 @@ icon.move.forEach((name) => {
 export const movementType = {
   move: [],
   bank: [],
-  phoenix: [],
+  phenix: [],
 };
 
 export function checkIfMapAlreadyExist(coord, array) {
@@ -164,6 +151,7 @@ export function resizeMarker() {
   Object.keys(movementType).forEach((dataType) => {
     Object.values(movementType[dataType]).forEach((object) => {
       ['top', 'bottom', 'left', 'right'].forEach((name) => {
+        if (!Object.prototype.hasOwnProperty.call(object, 'marker')) return;
         if (!Object.prototype.hasOwnProperty.call(object.marker, name)) return;
         const zoom = getScale(icon.size[dataType][name], map.getZoom());
         object.marker[name].setIcon(
@@ -189,7 +177,7 @@ export function bpGetInformation(coord) {
       data.sunIdInside = element.sunIdInside;
     }
   });
-  Object.values(phoenixPos).forEach((element) => {
+  Object.values(phenixPos).forEach((element) => {
     if (element.posX === coord[0] && element.posY === coord[1]) {
       data.cellId = element.cellId;
     }
@@ -199,6 +187,7 @@ export function bpGetInformation(coord) {
 
 export function deleteAction(dataType, index, name) {
   const newIndex = index;
+  if (!Object.prototype.hasOwnProperty.call(newIndex, 'marker')) return;
   if (!Object.prototype.hasOwnProperty.call(newIndex.marker, name) && !(name === 'bankOut')) return;
   if (!(name === 'bankOut')) newIndex.marker[name].remove();
   delete newIndex.data[name];
@@ -253,11 +242,11 @@ export function onMapClick(coord) {
         index = checkIfMapAlreadyExist(coord, dataType);
         if (index !== null) deleteAction(dataType, index, name);
       });
-    } else if ($('#phoenixPlacement').hasClass('selected')) {
+    } else if ($('#phenixPlacement').hasClass('selected')) {
       const data = bpGetInformation(coord);
-      $('#definePhoenixCoord').data('coord', coord);
-      $('#phoenixCellid').val(data.cellId);
-      $('#definePhoenixCoord').modal('open');
+      $('#definePhenixCoord').data('coord', coord);
+      $('#phenixCellid').val(data.cellId);
+      $('#definePhenixCoord').modal('open');
     } else if ($('#bankPlacement').hasClass('selected')) {
       const data = bpGetInformation(coord);
       $('#defineBankCoord').data('coord', coord);
@@ -364,13 +353,13 @@ function generateMove(type) {
         secondarymap.npcBank = true;
         return;
       }
-      if (key === 'phoenix') {
-        mapInfo.phoenix = parseInt(object.data[key].phoenixCellid, 10);
+      if (key === 'phenix') {
+        mapInfo.phenix = parseInt(object.data[key].phenixCellid, 10);
         return;
       }
       if (key === 'bankOut') {
         secondarymap.map = parseInt(object.data[key].mapid, 10);
-        secondarymap.path = object.data[key].sun;
+        secondarymap.path = String(object.data[key].sun);
         if (object.data.top || object.data.bottom || object.data.left || object.data.right) {
           mapInfo.map = parseInt(object.data[key].mapIdOutSide, 10);
         }
@@ -441,12 +430,24 @@ export function generateScript() {
     },
     paths: {
       move: JSON.stringify(generateMove('move'))
+        .replace(/"([^(")"]+)":/g, '$1: ')
+        .replace(/{(\w+)/g, '{ $1')
+        .replace(/(\w+|")}/g, '$1 }')
+        .replace(/,([^-\n])/g, ', $1')
         .replace(/({.+?}(?:,|))/g, '\n\t$&')
         .replace(/}\]/g, '}\n]'),
       bank: JSON.stringify(generateMove('bank'))
+        .replace(/"([^(")"]+)":/g, '$1: ')
+        .replace(/{(\w+)/g, '{ $1')
+        .replace(/(\w+|")}/g, '$1 }')
+        .replace(/,([^-\n])/g, ', $1')
         .replace(/({.+?}(?:,|))/g, '\n\t$&')
         .replace(/}\]/g, '}\n]'),
-      phoenix: JSON.stringify(generateMove('phoenix'))
+      phenix: JSON.stringify(generateMove('phenix'))
+        .replace(/"([^(")"]+)":/g, '$1: ')
+        .replace(/{(\w+)/g, '{ $1')
+        .replace(/(\w+|")}/g, '$1 }')
+        .replace(/,([^-\n])/g, ', $1')
         .replace(/({.+?}(?:,|))/g, '\n\t$&')
         .replace(/}\]/g, '}\n]'),
     },
@@ -460,8 +461,8 @@ export function generateScript() {
     MAX_PODS: config.maxPods,
     MIN_MONSTERS: config.monster.min,
     MAX_MONSTERS: config.monster.max,
-    MAX_MONSTERS_LEVEL: config.monster.minLevel,
-    MIN_MONSTERS_LEVEL: config.monster.maxLevel,
+    MIN_MONSTERS_LEVEL: config.monster.minLevel,
+    MAX_MONSTERS_LEVEL: config.monster.maxLevel,
     FORBIDDEN_MONSTERS: config.monster.forbiddenMonsters,
     MANDATORY_MONSTERS: config.monster.mandatoryMonsters,
     ELEMENTS_TO_GATHER: config.elementToGather,
@@ -498,12 +499,12 @@ export function generateScript() {
 //-- Zone : ${config.information.area}
 //-- Métier : ${config.information.job}
 //---------------------------------------------
-const config = ${JSON.stringify(configScript, null, 4)}
+const config = ${JSON.stringify(configScript, null, 4).replace(/"([^(")"]+)":/g, '$1:')}
 
 const move = ${config.paths.move}
 
 const bank = ${config.paths.bank}
 
-const phoenix = ${config.paths.phoenix}`;
+const phenix = ${config.paths.phenix}`;
   return script;
 }

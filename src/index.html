@@ -29,7 +29,7 @@
       <li><a id="close-button"><i class="material-icons">close</i></a></li>
     </ul>
     <div class="app-version">
-      <span>OwlTouch 1.2.1</span>
+      <span>OwlTouch 1.2.3</span>
     </div>
   </nav>
 
@@ -62,7 +62,7 @@
               <option data-array-type="move" data-type="fight" value="move" data-i18n="movement.type.fight"></option>
               <option data-array-type="move" data-type="gatherfight" value="move" data-i18n="movement.type.gatherfight"></option>
               <option data-array-type="bank" data-type="bank" value="bank" data-i18n="movement.type.bank"></option>
-              <option data-array-type="phoenix" data-type="phoenix" value="phoenix" data-i18n="movement.type.phoenix"></option>
+              <option data-array-type="phenix" data-type="phenix" value="phenix" data-i18n="movement.type.phenix"></option>
             </select>
           </div>
         </li>
@@ -83,7 +83,7 @@
           <span class="btn-group">
             <a class="waves-effect btn-flat tooltipped" data-position="bottom" id="bankPlacement" data-i18n="[data-tooltip]movement.special.bank.label"><i
                 class="material-icons">account_balance</i></a>
-            <a class="waves-effect btn-flat tooltipped" data-position="bottom" id="phoenixPlacement" data-i18n="[data-tooltip]movement.special.phoenix.label"><i
+            <a class="waves-effect btn-flat tooltipped" data-position="bottom" id="phenixPlacement" data-i18n="[data-tooltip]movement.special.phenix.label"><i
                 class="material-icons">whatshot</i></a>
             <!-- <a class="waves-effect btn-flat tooltipped" data-position="bottom" id="zaapPlacement" data-i18n="[data-tooltip]movement.special.zaap.label"><i
                 class="material-icons">filter_tilt_shift</i></a> -->
@@ -136,8 +136,8 @@
                     <label for="settingsShortcutBank" data-i18n="settings.keyBinding.bank"></label>
                   </div>
                   <div class="input-field col s3">
-                    <input data-shortcut="phoenix" type="text" id="settingsShortcutPhoenix">
-                    <label for="settingsShortcutPhoenix" data-i18n="settings.keyBinding.phoenix"></label>
+                    <input data-shortcut="phenix" type="text" id="settingsShortcutPhenix">
+                    <label for="settingsShortcutPhenix" data-i18n="settings.keyBinding.phenix"></label>
                   </div>
                   <!-- <div class="input-field col s3">
                     <input data-shortcut="zaap" type="text" id="settingsShortcutZaap">
@@ -165,7 +165,7 @@
     <div class="modal-footer">
       <a class="waves-effect btn-flat" id="SettingsBtnDefault" data-i18n="settings.btn.default"></a>
       <!-- <a class="modal-close waves-effect btn-flat" id="SettingsBtnCancel" data-i18n="settings.btn.cancel"></a> -->
-      <a class="modal-close waves-effect waves-green btn" id="SettingsBtnConfirm" data-i18n="settings.btn.confirm"></a>
+      <a class="modal-close waves-effect btn" id="SettingsBtnConfirm" data-i18n="settings.btn.confirm"></a>
     </div>
   </div>
   <div id="information" class="modal modal-fixed-footer" style="max-height: 71%;height: 71%;">
@@ -431,19 +431,30 @@
     </div>
     <div class="modal-footer">
       <a class="modal-close waves-effect btn-flat" data-i18n="movement.special.bank.cancel"></a>
-      <a id="defineBankCoordConfirm" class="modal-close waves-effect waves-green btn" data-i18n="movement.special.bank.confirm"></a>
+      <a id="defineBankCoordConfirm" class="modal-close waves-effect btn" data-i18n="movement.special.bank.confirm"></a>
     </div>
   </div>
-  <div id="definePhoenixCoord" class="modal">
+  <div id="definePhenixCoord" class="modal">
     <div class="modal-content">
       <div class="input-field">
-        <span data-i18n="movement.special.phoenix.cellid"></span>
-        <input id="phoenixCellid" type="number">
+        <span data-i18n="movement.special.phenix.cellid"></span>
+        <input id="phenixCellid" type="number">
       </div>
     </div>
     <div class="modal-footer">
-      <a class="modal-close waves-effect btn-flat" data-i18n="movement.special.phoenix.cancel"></a>
-      <a id="definePhoenixCoordConfirm" class="modal-close waves-effect waves-green btn" data-i18n="movement.special.phoenix.confirm"></a>
+      <a class="modal-close waves-effect btn-flat" data-i18n="movement.special.phenix.cancel"></a>
+      <a id="definePhenixCoordConfirm" class="modal-close waves-effect btn" data-i18n="movement.special.phenix.confirm"></a>
+    </div>
+  </div>
+  <div class="card" id="updateAvailable">
+    <div class="card-content white-text">
+      <span class="card-title" data-i18n="update.available.title"></span>
+      <p data-i18n="update.available.content"></p>
+      <p data-i18n="update.available.comment"></p>
+    </div>
+    <div class="card-action">
+      <a class="btn waves-effect" data-i18n="update.available.btn.confirm" id="downloadUpdate"></a>
+      <a class="btn-flat waves-effect" data-i18n="update.available.btn.cancel" id="cancelUpdate"></a>
     </div>
   </div>
   <div id="map"></div>

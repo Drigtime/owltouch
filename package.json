@@ -3,7 +3,7 @@
   "license": "MIT",
   "name": "owltouch",
   "productName": "owltouch",
-  "version": "1.2.2",
+  "version": "1.2.1",
   "description": "créateur de trajet pour cookieTouch",
   "main": "src/index.js",
   "repository": "https://github.com/drigtime/owltouch",
@@ -25,10 +25,7 @@
       "!src/public/css/sass"
     ],
     "linux": {
-      "target": [
-        "AppImage",
-        "tar.xz"
-      ],
+      "target": "AppImage",
       "icon": "./build/icon",
       "category": "Utility"
     },
@@ -89,6 +86,7 @@
     "electron-compile": "^6.4.3",
     "electron-squirrel-startup": "^1.0.0",
     "electron-updater": "^3.1.2",
+    "esprima": "^4.0.1",
     "i18next": "^11.9.1",
     "image-size": "^0.6.3",
     "jquery-i18next": "^1.2.1",
@@ -101,8 +99,8 @@
     "babel-preset-env": "^1.7.0",
     "electron-builder": "^20.28.4",
     "electron-forge": "^5.2.2",
-    "electron-prebuilt-compile": "^3.0.2",
-    "eslint": "^5.7.0",
+    "electron-prebuilt-compile": "1.7.9",
+    "eslint": "4.5.0",
     "eslint-config-airbnb": "^15",
     "eslint-plugin-import": "^2",
     "eslint-plugin-jsx-a11y": "5.1.1",

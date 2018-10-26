@@ -13,7 +13,7 @@ const shortcutInputsId = {
   settingsShortcutRigth: 'right',
   settingsShortcutDelete: 'delete',
   settingsShortcutBank: 'bankPlacement',
-  settingsShortcutPhoenix: 'phoenixPlacement',
+  settingsShortcutPhenix: 'phenixPlacement',
   settingsShortcutZaap: 'zaapPlacement',
 };
 

@@ -2,26 +2,24 @@ import sizeOf from 'image-size';
 import L from 'leaflet';
 import {
   elementWithAutoComplete,
-  monsterQuantMinMax,
   itemsBank,
+  lifeMinMax,
+  monsterQuantMinMax,
 } from '../events/htmlElementInstance';
 import { dofusCoordsToGeoCoords, map, mapList } from '../map/map';
 import {
   bpGetInformation,
   checkIfMapAlreadyExist,
   deleteAction,
+  getIdOfAutoComplete,
   getScale,
   icon,
   movementType,
-  getIdOfAutoComplete,
 } from '../scripts/pathMaker';
 
+const esprima = require('esprima');
 const { join } = require('path');
 const { readFileSync } = require('fs');
-
-// const items = JSON.parse(readFileSync(join(__dirname, '../../../data/json/d2o/Items.json')));
-// const monsters = JSON.parse(readFileSync(join(__dirname, '../../../data/json/d2o/Monsters.json')));
-// const interactive = JSON.parse(readFileSync(join(__dirname, '../../../data/json/d2o/Interactive.json')));
 
 function loadPath(paths, arrayType) {
   Object.values(paths).forEach((mapInfo) => {
@@ -72,51 +70,50 @@ function loadPath(paths, arrayType) {
           },
         });
       }
-    } else if (Object.prototype.hasOwnProperty.call(mapInfo, 'phoenix')) {
+    } else if (Object.prototype.hasOwnProperty.call(mapInfo, 'phenix')) {
       const coord = [
         parseInt(mapInfo.map.split(',')[0], 10),
         parseInt(mapInfo.map.split(',')[1], 10),
       ];
       const data = bpGetInformation(coord);
-      const index = checkIfMapAlreadyExist(coord, movementType.phoenix);
+      const index = checkIfMapAlreadyExist(coord, movementType.phenix);
       const marker = L.marker(dofusCoordsToGeoCoords(coord), {
         icon: L.icon({
-          iconUrl: join(__dirname, '../../../data/assets/path/phoenix/phoenix.png'),
+          iconUrl: join(__dirname, '../../../data/assets/path/phenix/phenix.png'),
           iconAnchor: [
-            sizeOf(join(__dirname, '../../../data/assets/path/phoenix/phoenix.png')).width / 2,
-            sizeOf(join(__dirname, '../../../data/assets/path/phoenix/phoenix.png')).height /
-              2,
+            sizeOf(join(__dirname, '../../../data/assets/path/phenix/phenix.png')).width / 2,
+            sizeOf(join(__dirname, '../../../data/assets/path/phenix/phenix.png')).height / 2,
           ],
-          className: 'phoenix',
+          className: 'phenix',
         }),
-        zIndexOffset: icon.size.phoenix.zindex,
+        zIndexOffset: icon.size.phenix.zindex,
         interactive: false,
       });
       if (index !== null) {
-        if (index.data.phoenix) {
-          deleteAction(movementType.phoenix, index, 'phoenix');
+        if (index.data.phenix) {
+          deleteAction(movementType.phenix, index, 'phenix');
         } else {
-          index.data.phoenix = {
-            phoenix: true,
+          index.data.phenix = {
+            phenix: true,
             mapIdOutSide: data.mapIdOutSide,
             doorIdOutSide: data.doorIdOutSide,
             mapIdInSide: data.mapIdInSide,
             sunIdInside: data.sunIdInside,
           };
-          index.marker.phoenix = marker.addTo(map);
+          index.marker.phenix = marker.addTo(map);
         }
       } else {
-        movementType.phoenix.push({
+        movementType.phenix.push({
           coord: [coord[0], coord[1]],
           data: {
-            phoenix: {
-              phoenix: true,
-              phoenixCellid: data.cellId,
+            phenix: {
+              phenix: true,
+              phenixCellid: data.cellId,
               actionAfterRevive: mapInfo.path,
             },
           },
           marker: {
-            phoenix: marker.addTo(map),
+            phenix: marker.addTo(map),
           },
         });
       }
@@ -243,7 +240,7 @@ export function putGetItem(type, itemName, itemQuant) {
 }">X</a></td>
     </tr>`;
     itemsBank[type].push({
-      item: ids.id,
+      id: ids.id,
       quantity: parseInt(quant, 10),
     });
     console.log(itemsBank[type]);
@@ -259,7 +256,7 @@ export function putGetItem(type, itemName, itemQuant) {
   }
 }
 
-function loadSettings(settings, info) {
+function loadSettings(settings) {
   const items = JSON.parse(
     readFileSync(join(__dirname, `../../../data/i18n/${$.i18n.language}/Items.json`)),
   );
@@ -364,83 +361,85 @@ function loadSettings(settings, info) {
     });
   }
   if (Object.prototype.hasOwnProperty.call(settings, 'BANK_GET_ITEMS')) {
-    $('#phoenixItemTable').html('');
+    $('#phenixItemTable').html('');
     settings.BANK_GET_ITEMS.forEach((element) => {
       putGetItem('get', items[element.item].nameId, element.quantity);
     });
   }
-  $('#scriptAuthor').val(info.author);
-  $('#scriptName').val(info.name);
-  $('#scriptType').val(info.type);
-  $('#scriptArea').val(info.area);
-  $('#scriptJob').val(info.job);
 }
 
 export default function loadScript(script) {
-  const scriptTemp = script
-    .replace(/(?!")map(?!")/g, '"map"')
-    .replace(/(?!")path(?!")/g, '"path"')
-    .replace(/(?!")door(?!")/g, '"door"')
-    .replace(/(?!")gather(?!")/g, '"gather"')
-    .replace(/(?!")fight(?!")/g, '"fight"')
-    .replace(/(?!")phoenix(?!")/g, '"phoenix"')
-    .replace(/(?!")npcBank(?!")/g, '"npcBank"')
-    .replace(/(?!")MAX_PODS(?!")/g, '"MAX_PODS"')
-    .replace(/(?!")MAX_MONSTERS_LEVEL(?!")/g, '"MAX_MONSTERS_LEVEL"')
-    .replace(/(?!")MIN_MONSTERS_LEVEL(?!")/g, '"MIN_MONSTERS_LEVEL"')
-    .replace(/(?!")MIN_MONSTERS(?!"|_)/g, '"MIN_MONSTERS"')
-    .replace(/(?!")MAX_MONSTERS(?!"|_)/g, '"MAX_MONSTERS"')
-    .replace(/(?!")FORBIDDEN_MONSTERS(?!")/g, '"FORBIDDEN_MONSTERS"')
-    .replace(/(?!")MANDATORY_MONSTERS(?!")/g, '"MANDATORY_MONSTERS"')
-    .replace(/(?!")ELEMENTS_TO_GATHER(?!")/g, '"ELEMENTS_TO_GATHER"')
-    .replace(/(?!")BANK_PUT_ITEMS(?!")/g, '"BANK_PUT_ITEMS"')
-    .replace(/(?!")BANK_GET_ITEMS(?!")/g, '"BANK_GET_ITEMS"')
-    .replace(/(?!")AUTO_DELETE(?!")/g, '"AUTO_DELETE"')
-    .replace(/(?!")OPEN_BAGS(?!")/g, '"OPEN_BAGS"')
-    .replace(/(?!")DISPLAY_GATHER_COUNT(?!")/g, '"DISPLAY_GATHER_COUNT"')
-    .replace(/(?!")DISPLAY_FIGHT_COUNT(?!")/g, '"DISPLAY_FIGHT_COUNT"')
-    .replace(/(?!")MAX_FIGHTS_PER_MAP(?!")/g, '"MAX_FIGHTS_PER_MAP"')
-    .replace(/(?!")BANK_PUT_KAMAS(?!")/g, '"BANK_PUT_KAMAS"')
-    .replace(/(?!")BANK_GET_KAMAS(?!")/g, '"BANK_GET_KAMAS"')
-    .replace(/(?!")AUTO_REGEN(?!")/g, '"AUTO_REGEN"')
-    .replace(/(?!")minLife(?!")/g, '"minLife"')
-    .replace(/(?!")maxLife(?!")/g, '"maxLife"')
-    .replace(/(?!")items(?!")/g, '"items"')
-    .replace(/(?!")store(?!")/g, '"store"')
-    .replace(/,(?:\s*?)(\]|})/g, '\n$1');
-
-  const regex = {
-    move: /move(?:[\s\S]*?)=(?:[\s\S]*?)(\[[\s\S]*?\])/gm.exec(scriptTemp),
-    bank: /bank(?:[\s\S]*?)=(?:[\s\S]*?)(\[[\s\S]*?\])/gm.exec(scriptTemp),
-    phoenix: /phoenix(?:[\s\S]*?)=(?:[\s\S]*?)(\[[\s\S]*?\])/gm.exec(scriptTemp),
-    settings: /config(?:[\s\S]*?)=(?:[\s\S]*?)({[\s\S]*\n[\s]*?})[\s\S]*?(?:const|let|var|function|async)/gm.exec(
-      scriptTemp,
-    ),
-    author: /Créateur(?:[\s\S]*?):(?:[\s\S]*?)\b([\w\d]*?)\n/g.exec(scriptTemp),
-    name: /Name(?:[\s\S]*?):(?:[\s\S]*?)\b([\w\d]*?)\n/g.exec(scriptTemp),
-    type: /Type(?:[\s\S]*?):(?:[\s\S]*?)\b([\w\d]*?)\n/g.exec(scriptTemp),
-    area: /Zone(?:[\s\S]*?):(?:[\s\S]*?)\b([\w\d]*?)\n/g.exec(scriptTemp),
-    job: /Métier(?:[\s\S]*?):(?:[\s\S]*?)\b([\w\d]*?)\n/g.exec(scriptTemp),
-  };
-
-  const config = {
-    paths: {
-      move: regex.move ? JSON.parse(regex.move[1]) : [],
-      bank: regex.bank ? JSON.parse(regex.bank[1]) : [],
-      phoenix: regex.phoenix ? JSON.parse(regex.phoenix[1]) : [],
-    },
-  };
-  const settings = regex.settings ? JSON.parse(regex.settings[1]) : {};
-  const srciptInfo = {
-    author: regex.author ? regex.author[1] : '',
-    name: regex.name ? regex.name[1] : '',
-    type: regex.type ? regex.type[1] : '',
-    area: regex.area ? regex.area[1] : '',
-    job: regex.job ? regex.job[1] : '',
-  };
-  console.log(config.paths.move, config.paths.bank, config.paths.phoenix);
-  Object.keys(config.paths).forEach((key) => {
-    loadPath(config.paths[key], key);
+  const scriptEsprima = esprima.parse(script).body;
+  const body = {};
+  scriptEsprima.forEach((variableDeclaration) => {
+    if (variableDeclaration.type === 'VariableDeclaration') {
+      variableDeclaration.declarations.forEach((declarations) => {
+        if (declarations.init.type === 'ObjectExpression') {
+          body[declarations.id.name] = {};
+          declarations.init.properties.forEach((properties) => {
+            if (properties.value.type === 'ArrayExpression') {
+              body[declarations.id.name][properties.key.value || properties.key.name] = [];
+              properties.value.elements.forEach((elements) => {
+                if (elements.type === 'ObjectExpression') {
+                  const props = {};
+                  elements.properties.forEach((propertie) => {
+                    props[propertie.key.value || propertie.key.name] = propertie.value.value;
+                  });
+                  body[declarations.id.name][properties.key.value || properties.key.name].push(
+                    props,
+                  );
+                } else if (elements.type === 'Literal') {
+                  body[declarations.id.name][properties.key.value || properties.key.name].push(
+                    elements.value,
+                  );
+                }
+              });
+            } else if (properties.value.type === 'ObjectExpression') {
+              const props = {};
+              properties.value.properties.forEach((propertie) => {
+                if (propertie.value.type === 'ArrayExpression') {
+                  props[propertie.key.value || propertie.key.name] = [];
+                  propertie.value.elements.forEach((elements) => {
+                    props[propertie.key.value || propertie.key.name].push(elements.value);
+                  });
+                } else {
+                  props[propertie.key.value || propertie.key.name] = propertie.value.value;
+                }
+              });
+              body[declarations.id.name][properties.key.value || properties.key.name] = props;
+            } else {
+              if ((properties.key.value || properties.key.name) === 'map') {
+                if (Number(properties.value.value)) {
+                  properties.value.value = Number(properties.value.value);
+                }
+              }
+              body[declarations.id.name][properties.key.value || properties.key.name] =
+                properties.value.value;
+            }
+          });
+        } else if (declarations.init.type === 'ArrayExpression') {
+          body[declarations.id.name] = [];
+          declarations.init.elements.forEach((elements) => {
+            const props = {};
+            elements.properties.forEach((properties) => {
+              if ((properties.key.value || properties.key.name) === 'map') {
+                if (Number(properties.value.value)) {
+                  properties.value.value = Number(properties.value.value);
+                }
+              }
+              props[properties.key.value || properties.key.name] = properties.value.value;
+            });
+            body[declarations.id.name].push(props);
+          });
+        }
+      });
+    }
   });
-  loadSettings(settings, srciptInfo);
+
+  console.log(body);
+
+  ['move', 'bank', 'phenix'].forEach((key) => {
+    body[key] && loadPath(body[key], key);
+  });
+  loadSettings(body.config);
 }

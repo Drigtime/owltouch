@@ -19,10 +19,11 @@ function deleteAll() {
 }
 
 function newFile() {
-  const rep = confirm(
-    'Voulez vous vraiment créer un nouveau trajet et supprimer toute les actions présente sur la map ?',
-  );
-  if (rep) {
+  if (
+    confirm(
+      'Voulez vous vraiment créer un nouveau trajet et supprimer toute les actions présente sur la map ?',
+    )
+  ) {
     deleteAll();
   }
 }
@@ -89,7 +90,17 @@ $('#min-max-button').on('click', () => {
 });
 
 $('#close-button').on('click', () => {
-  remote.app.quit();
+  if (
+    !$.isEmptyObject(movementType.bank) ||
+    !$.isEmptyObject(movementType.move) ||
+    !$.isEmptyObject(movementType.phenix)
+  ) {
+    if (confirm('Voulez vous vraiment quitter OwlTouch sans sauvegarder votre trajet ?')) {
+      remote.app.quit();
+    }
+  } else {
+    remote.app.quit();
+  }
 });
 
 ipcRenderer.on('newFile', newFile);

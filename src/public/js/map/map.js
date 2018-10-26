@@ -20,8 +20,8 @@ export const areas = JSON.parse(readFileSync(join(__dirname, '../../../data/json
 export const bankPos = JSON.parse(
   readFileSync(join(__dirname, '../../../data/json/miscellaneous/Bank.json')),
 );
-export const phoenixPos = JSON.parse(
-  readFileSync(join(__dirname, '../../../data/json/miscellaneous/Phoenix.json')),
+export const phenixPos = JSON.parse(
+  readFileSync(join(__dirname, '../../../data/json/miscellaneous/Phenix.json')),
 );
 
 export const json = {};
@@ -210,7 +210,7 @@ function bpMarkers(type) {
 }
 
 export const bankLayerGroup = L.layerGroup(bpMarkers(bankPos));
-export const phoenixLayerGroup = L.layerGroup(bpMarkers(phoenixPos));
+export const phenixLayerGroup = L.layerGroup(bpMarkers(phenixPos));
 
 export const mcgLayerSupportGroup = L.markerClusterGroup.layerSupport({
   maxClusterRadius: 1,
@@ -240,3 +240,5 @@ map.addControl(L.control.miner());
 map.addControl(L.control.alchimist());
 map.addControl(L.control.fisher());
 map.addControl(L.control.miscellaneous());
+
+$('.leaflet-control-attribution.leaflet-control').hide();

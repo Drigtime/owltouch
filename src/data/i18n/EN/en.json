@@ -21,7 +21,7 @@
         "right": "Right",
         "delete": "Delete",
         "bank": "Bank",
-        "phoenix": "Phoenix",
+        "phenix": "Phoenix",
         "zaap": "Zaap"
       },
       "language": {
@@ -149,7 +149,7 @@
         "fight": "Fight",
         "gatherfight": "Gather & Fight",
         "bank": "Bank",
-        "phoenix": "Phoenix"
+        "phenix": "Phoenix"
       },
       "special": {
         "bank": {
@@ -161,7 +161,7 @@
           "cancel": "Cancel",
           "confirm": "Validate"
         },
-        "phoenix": {
+        "phenix": {
           "label": "Phoenix location",
           "cellid": "Cellid of the phoenix",
           "cancel": "Cancel",
@@ -172,6 +172,29 @@
           "zaap": "Destination area",
           "cancel": "Cancel",
           "confirm": "Validate"
+        }
+      }
+    },
+    "update": {
+      "available": {
+        "title": "Update available",
+        "content": "New update available, whould you like to download it ?",
+        "comment": "The update is could take while for small connection",
+        "btn":{
+          "confirm": "Download",
+          "cancel": "Not now"
+        }
+      },
+      "downloading": {
+        "title": "Downloading",
+        "comment": "The update is could take while for small connection"
+      },
+      "downloaded":{
+        "title": "Downloaded",
+        "content": "Update downloaded, to intall it restart owltouch",
+        "btn":{
+          "confirm": "Restart",
+          "cancel": "Not now"
         }
       }
     }

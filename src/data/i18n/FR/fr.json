@@ -21,7 +21,7 @@
         "right": "Droite",
         "delete": "Supprimer",
         "bank": "Banque",
-        "phoenix": "Phénix",
+        "phenix": "Phénix",
         "zaap": "Zaap"
       },
       "language": {
@@ -146,7 +146,7 @@
         "fight": "Combat",
         "gatherfight": "Récolte & Combat",
         "bank": "Banque",
-        "phoenix": "Phoenix"
+        "phenix": "Phenix"
       },
       "special": {
         "bank": {
@@ -158,9 +158,9 @@
           "cancel": "Annuler",
           "confirm": "Confirmer"
         },
-        "phoenix": {
-          "label": "Position du phoenix",
-          "cellid": "cellid du phoenix",
+        "phenix": {
+          "label": "Position du phenix",
+          "cellid": "cellid du phenix",
           "cancel": "Annuler",
           "confirm": "Confirmer"
         },
