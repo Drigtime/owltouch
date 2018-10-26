@@ -21,7 +21,7 @@
         "right": "Derecha",
         "delete": "Borrar",
         "bank": "Banco",
-        "phenix": "Fenix",
+        "phoenix": "Fenix",
         "zaap": "Zaap"
       },
       "language": {
@@ -149,7 +149,7 @@
         "fight": "Luchar",
         "gatherfight": "Recolectar & Luchar",
         "bank": "Banco",
-        "phenix": "Fenix"
+        "phoenix": "Fenix"
       },
       "special": {
         "bank": {
@@ -161,7 +161,7 @@
           "cancel": "Cancelar",
           "confirm": "Validar"
         },
-        "phenix": {
+        "phoenix": {
           "label": "Localizacion Fenix",
           "cellid": "Cellid del Fenix",
           "cancel": "Cancelar",
@@ -172,6 +172,29 @@
           "zaap": "Area de Destino",
           "cancel": "Cancelar",
           "confirm": "Validar"
+        }
+      }
+    },
+    "update": {
+      "available": {
+        "title": "Update available",
+        "content": "New update available, whould you like to download it ?",
+        "comment": "The update is could take while for small connection",
+        "btn":{
+          "confirm": "Download",
+          "cancel": "Not now"
+        }
+      },
+      "downloading": {
+        "title": "Downloading",
+        "comment": "The update is could take while for small connection"
+      },
+      "downloaded":{
+        "title": "Downloaded",
+        "content": "Update downloaded, to intall it restart owltouch",
+        "btn":{
+          "confirm": "Restart",
+          "cancel": "Not now"
         }
       }
     }

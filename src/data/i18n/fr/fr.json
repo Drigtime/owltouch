@@ -79,7 +79,7 @@
         "pods": "Pods maximum avant retour en banque",
         "autoDelete": {
           "label": "Suppression automatique",
-          "placeholder": "ex: Feather"
+          "placeholder": "ex: Plume"
         },
         "putKamas": {
           "label": "Déposer des kamas",
@@ -169,6 +169,29 @@
           "zaap": "Zone de destination",
           "cancel": "Annuler",
           "confirm": "Confirmer"
+        }
+      }
+    },
+    "update": {
+      "available": {
+        "title": "Nouvelle mise à jour",
+        "content": "Nouvelle mise à jour disponible, voulez-vous la télécharger maintenant ?",
+        "comment": "La mise à jour peu prendre du temps pour les petites connections",
+        "btn":{
+          "confirm": "Télécharger",
+          "cancel": "Pas maintenant"
+        }
+      },
+      "downloading": {
+        "title": "Téléchargement",
+        "comment": "La mise à jour peu prendre du temps pour les petites connections"
+      },
+      "downloaded":{
+        "title": "Téléchargé",
+        "content": "Mise à jour téléchargé, pour l'installer redémarré OwlTouch",
+        "btn":{
+          "confirm": "Redémarrer",
+          "cancel": "Pas maintenant"
         }
       }
     }
