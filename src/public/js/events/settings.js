@@ -29,23 +29,15 @@ const defaultShortcuts = () => {
   });
 };
 
-$('#settingsShortcut .input-field input').on('focus', (e) => {
-  $(e.target).val('Appuyer sur une touche');
-  $(e.target).on('keydown', (key) => {
-    $(e.target).val(String(key.key).toUpperCase());
-    fs.writeFileSync(
-      join(__dirname, '../../../data/json/settings.json'),
-      JSON.stringify(settings, null, 4),
-    );
-    settings.shortcut.user[e.target.dataset.shortcut] = key.key;
-    $(e.target).on('input', (input) => {
-      $(e.target).val(String(input.originalEvent.data).toUpperCase());
-      fs.writeFileSync(
-        join(__dirname, '../../../data/json/settings.json'),
-        JSON.stringify(settings, null, 4),
-      );
-    });
-  });
+$('#settingsShortcut .input-field input').on('keydown', (event) => {
+  event.stopPropagation(event);
+  event.preventDefault(event);
+  $(event.target).val(String(event.key).toUpperCase());
+  fs.writeFileSync(
+    join(__dirname, '../../../data/json/settings.json'),
+    JSON.stringify(settings, null, 4),
+  );
+  settings.shortcut.user[event.target.dataset.shortcut] = event.key;
 });
 
 $('#settingsShortcut .input-field input').on('focusout', (e) => {

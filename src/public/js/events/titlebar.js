@@ -1,19 +1,23 @@
 import { remote, ipcRenderer } from 'electron';
 import loadScript from '../scripts/loadPath';
-import { deleteAction, generateScript, icon, movementType } from '../scripts/pathMaker';
+import { deleteAction, generateScript, movementType } from '../scripts/pathMaker';
+import icon from '../scripts/iconProperties';
+import { mapTileLayer } from '../map/map';
 
 const { dialog } = require('electron').remote;
 const { writeFile, readFile } = require('fs');
 
 function deleteAll() {
-  Object.keys(movementType).forEach((key) => {
-    const dataTypeBackup = movementType[key].slice(0);
-    movementType[key].forEach((index) => {
-      icon.move.forEach((name) => {
-        deleteAction(dataTypeBackup, index, name);
+  Object.values(movementType).forEach((worldMap) => {
+    Object.keys(worldMap).forEach((key) => {
+      const dataTypeBackup = worldMap[key].slice(0);
+      worldMap[key].forEach((index) => {
+        icon.move.forEach((name) => {
+          deleteAction(dataTypeBackup, index, name);
+        });
       });
+      worldMap[key] = dataTypeBackup.slice(0);
     });
-    movementType[key] = dataTypeBackup.slice(0);
   });
   console.log(movementType);
 }
@@ -91,9 +95,9 @@ $('#min-max-button').on('click', () => {
 
 $('#close-button').on('click', () => {
   if (
-    !$.isEmptyObject(movementType.bank) ||
-    !$.isEmptyObject(movementType.move) ||
-    !$.isEmptyObject(movementType.phenix)
+    !$.isEmptyObject(movementType[mapTileLayer.actualLayerName].bank) ||
+    !$.isEmptyObject(movementType[mapTileLayer.actualLayerName].move) ||
+    !$.isEmptyObject(movementType[mapTileLayer.actualLayerName].phenix)
   ) {
     if (confirm('Voulez vous vraiment quitter OwlTouch sans sauvegarder votre trajet ?')) {
       remote.app.quit();

@@ -3,7 +3,14 @@
  */
 import L from 'leaflet';
 import sizeOf from 'image-size';
-import { dofusCoordsToGeoCoords, map, json, hint, mcgLayerSupportGroup } from '../map';
+import {
+  dofusCoordsToGeoCoords,
+  map,
+  json,
+  hint,
+  mcgLayerSupportGroup,
+  mapTileLayer,
+} from '../map';
 
 const path = require('path');
 const fs = require('fs');
@@ -43,30 +50,63 @@ L.Control.Miscellaneous = L.Control.extend({
     this.buttons = [];
     const resourcesLength = this.resources.length;
     for (let i = 0; i < resourcesLength; i += 1) {
-      const aMagicButton = L.DomUtil.create('a', `scale-border-in-out ${this.resources[i]}`, this.magicContainer);
+      const aMagicButton = L.DomUtil.create(
+        'a',
+        `scale-border-in-out ${this.resources[i]}`,
+        this.magicContainer,
+      );
       aMagicButton.setAttribute('href', '#');
       // aMagicButton.setAttribute('title', i18next.t(this.prof + "." + this.resources[i]));
       const imgMagicButton = L.DomUtil.create('img', 'no-class', aMagicButton);
-      imgMagicButton.setAttribute('src', path.join(__dirname, `../../../../data/assets/misc/${this.resources[i]}.png`));
+      imgMagicButton.setAttribute(
+        'src',
+        path.join(__dirname, `../../../../data/assets/misc/${this.resources[i]}.png`),
+      );
       L.DomEvent.addListener(aMagicButton, 'click', this.toggle, this);
     }
 
     for (let j = 0; j < resourcesLength; j += 1) {
       json[this.resources[j]] = JSON.parse(
-        fs.readFileSync(path.join(__dirname, `../../../../data/json/miscellaneous/${this.resources[j]}.json`)),
+        fs.readFileSync(
+          path.join(__dirname, `../../../../data/json/miscellaneous/${this.resources[j]}.json`),
+        ),
       );
       hint[this.resources[j]] = L.layerGroup();
       Object.keys(json[this.resources[j]]).forEach((key) => {
-        L.marker(dofusCoordsToGeoCoords([json[this.resources[j]][key].posX, json[this.resources[j]][key].posY]), {
-          icon: L.icon({
-            iconUrl: path.join(__dirname, `../../../../data/assets/hint/${json[this.resources[j]][key].gfx}.png`),
-            iconAnchor: [
-              sizeOf(path.join(__dirname, `../../../../data/assets/hint/${json[this.resources[j]][key].gfx}.png`)).width / 2,
-              sizeOf(path.join(__dirname, `../../../../data/assets/hint/${json[this.resources[j]][key].gfx}.png`)).height / 2,
-            ],
-          }),
-          interactive: false,
-        }).addTo(hint[this.resources[j]]);
+        if (
+          json[this.resources[j]][key].worldMapId ===
+          mapTileLayer.getTileLayer().worldMap
+        ) {
+          L.marker(
+            dofusCoordsToGeoCoords([
+              json[this.resources[j]][key].posX,
+              json[this.resources[j]][key].posY,
+            ]),
+            {
+              icon: L.icon({
+                iconUrl: path.join(
+                  __dirname,
+                  `../../../../data/assets/hint/${json[this.resources[j]][key].gfx}.png`,
+                ),
+                iconAnchor: [
+                  sizeOf(
+                    path.join(
+                      __dirname,
+                      `../../../../data/assets/hint/${json[this.resources[j]][key].gfx}.png`,
+                    ),
+                  ).width / 2,
+                  sizeOf(
+                    path.join(
+                      __dirname,
+                      `../../../../data/assets/hint/${json[this.resources[j]][key].gfx}.png`,
+                    ),
+                  ).height / 2,
+                ],
+              }),
+              interactive: false,
+            },
+          ).addTo(hint[this.resources[j]]);
+        }
       });
       mcgLayerSupportGroup.checkIn([hint[this.resources[j]]]);
     }

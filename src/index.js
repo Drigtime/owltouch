@@ -1,20 +1,30 @@
 import { app, BrowserWindow, dialog, ipcMain, Menu } from 'electron';
 import { autoUpdater } from 'electron-updater';
-import * as path from 'path';
 import { format as formatUrl } from 'url';
 
-// global reference to mainWindow (necessary to prevent window from being garbage collected)
+const path = require('path');
+
+const iconPath = path.join(__dirname, 'icon.png');
+
 let mainWindow;
 
 function createMainWindow() {
   const window = new BrowserWindow({
     width: 1280,
     height: 720,
-    minWidth: 700,
+    minWidth: 800,
     minHeight: 500,
-    frame: false,
+    icon: iconPath,
     backgroundColor: '#282c34',
   });
+  // const window = new BrowserWindow({
+  //   width: 1280,
+  //   height: 720,
+  //   minWidth: 700,
+  //   minHeight: 500,
+  //   frame: false,
+  //   backgroundColor: '#282c34',
+  // });
 
   window.loadURL(
     formatUrl({
@@ -86,8 +96,18 @@ const template = [
         },
       },
       { label: 'Reload', role: 'reload' },
-      { label: 'toggle Dev Tools', role: 'toggleDevTools' },
+      {
+        label: 'Toggle Developer Tools',
+        accelerator: 'Ctrl+Shift+I',
+        click(item, focusedWindow) {
+          focusedWindow.webContents.toggleDevTools();
+        },
+      },
     ],
+  },
+  {
+    label: 'Edition',
+    submenu: [{ label: 'Annuler', role: 'undo' }, { label: 'Rétablir', role: 'redo' }],
   },
 ];
 

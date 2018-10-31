@@ -4,17 +4,19 @@
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
   <link rel="stylesheet" href="public/css/materialize.min.css">
   <link rel="stylesheet" href="public/css/material-icons.css">
+  <link rel="stylesheet" href="../node_modules//@fortawesome/fontawesome-free/css/fontawesome.min.css">
+  <link rel="stylesheet" href="../node_modules//@fortawesome/fontawesome-free/css/solid.min.css">
   <link rel="stylesheet" href="../node_modules/typeface-roboto/index.css">
   <link rel="stylesheet" href="public/css/nouislider.css">
   <link rel="stylesheet" href="../node_modules/leaflet/dist/leaflet.css">
   <link rel="stylesheet" href="../node_modules/leaflet.markercluster/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="../node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css" />
   <link rel="stylesheet" href="public/css/style.css">
-  <title>Owl</title>
+  <title>OwlTouch 1.2.3</title>
 </head>
 
 <body>
-  <nav class="title-bar">
+  <!-- <nav class="title-bar">
     <div>
       <img class="app-icon" src="icon.png" alt="">
       <ul>
@@ -31,7 +33,7 @@
     <div class="app-version">
       <span>OwlTouch 1.2.3</span>
     </div>
-  </nav>
+  </nav> -->
 
   <!-- Dropdown Structure -->
   <ul id="settings-dropdown" class="dropdown-content">
@@ -39,7 +41,7 @@
     <li><a class="modal-trigger" href="#information" data-i18n="dropdown.config"><i class="material-icons">map</i></a></li>
   </ul>
   <!-- Dropdown Structure -->
-  <ul id="menu-dropdown" class="dropdown-content">
+  <!-- <ul id="menu-dropdown" class="dropdown-content">
     <li><a id="NewFile"><span data-i18n="titlebar.newFile"></span><i class="material-icons">insert_drive_file</i><span
           class="dropdownShortcut">Ctrl + N</span></a></li>
     <li><a id="SaveFile"><span data-i18n="titlebar.saveFile"></span><i class="material-icons">save</i><span class="dropdownShortcut">Ctrl
@@ -50,7 +52,7 @@
           + R</span></a></li>
     <li><a id="DevTools"><span data-i18n="titlebar.devTools"></span><i class="material-icons">code</i><span class="dropdownShortcut">Ctrl
           + Shift + I</span></a></li>
-  </ul>
+  </ul> -->
   <nav>
     <div class="nav-wrapper">
       <ul>
@@ -72,6 +74,10 @@
             <a class="waves-effect btn-flat" id="bottom"><i class="material-icons">arrow_downward</i></a>
             <a class="waves-effect btn-flat" id="left"><i class="material-icons">arrow_back</i></a>
             <a class="waves-effect btn-flat" id="right"><i class="material-icons">arrow_forward</i></a>
+            <a class="waves-effect btn-flat tooltipped" data-position="bottom" id="door" data-i18n="[data-tooltip]movement.basic.door.label">
+              <i class="fas fa-dungeon material-icons"></i></a>
+            <a class="waves-effect btn-flat tooltipped" data-position="bottom" id="custom" data-i18n="[data-tooltip]movement.basic.custom.label">
+              <i class="material-icons">code</i></a>
           </span>
         </li>
         <li>
@@ -83,8 +89,8 @@
           <span class="btn-group">
             <a class="waves-effect btn-flat tooltipped" data-position="bottom" id="bankPlacement" data-i18n="[data-tooltip]movement.special.bank.label"><i
                 class="material-icons">account_balance</i></a>
-            <a class="waves-effect btn-flat tooltipped" data-position="bottom" id="phenixPlacement" data-i18n="[data-tooltip]movement.special.phenix.label"><i
-                class="material-icons">whatshot</i></a>
+            <a class="waves-effect btn-flat tooltipped" data-position="bottom" id="phenixPlacement" data-i18n="[data-tooltip]movement.special.phenix.label">
+              <i class="material-icons">whatshot</i></a>
             <!-- <a class="waves-effect btn-flat tooltipped" data-position="bottom" id="zaapPlacement" data-i18n="[data-tooltip]movement.special.zaap.label"><i
                 class="material-icons">filter_tilt_shift</i></a> -->
           </span>
@@ -444,6 +450,18 @@
     <div class="modal-footer">
       <a class="modal-close waves-effect btn-flat" data-i18n="movement.special.phenix.cancel"></a>
       <a id="definePhenixCoordConfirm" class="modal-close waves-effect btn" data-i18n="movement.special.phenix.confirm"></a>
+    </div>
+  </div>
+  <div id="doorCellidModal" class="modal">
+    <div class="modal-content">
+      <div class="input-field">
+        <span data-i18n="movement.basic.door.cellid"></span>
+        <input id="doorCellid" type="number">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a class="modal-close waves-effect btn-flat" data-i18n="movement.basic.door.cancel"></a>
+      <a id="doorCellidModalConfirm" class="modal-close waves-effect btn" data-i18n="movement.basic.door.confirm"></a>
     </div>
   </div>
   <div class="card" id="updateAvailable">

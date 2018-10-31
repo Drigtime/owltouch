@@ -55,7 +55,7 @@
 }
 
 #map {
-  height: calc(100% - 96px);
+  height: calc(100% - 64px);
   width: 100%;
   background-color: #000;
 }
@@ -307,6 +307,11 @@ svg.caret {
 }
 
 #updateAvailable .card-content p {
-    font-size: 15px;
-    font-weight: 300;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.leaflet-control-world ul {
+  min-width: 100px;
+  width: 100px;
 }

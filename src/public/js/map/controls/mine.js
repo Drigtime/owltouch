@@ -3,7 +3,14 @@
  */
 import L from 'leaflet';
 import sizeOf from 'image-size';
-import { dofusCoordsToGeoCoords, map, json, hint, mcgLayerSupportGroup } from '../map';
+import {
+  dofusCoordsToGeoCoords,
+  map,
+  json,
+  hint,
+  mcgLayerSupportGroup,
+  mapTileLayer,
+} from '../map';
 
 const path = require('path');
 const fs = require('fs');
@@ -17,7 +24,20 @@ L.Control.Miner = L.Control.extend({
     this.menuToggle = false;
     this.visible = [];
     this.prof = 'mine';
-    this.resources = ['Iron', 'Copper', 'Bronze', 'Cobalt', 'Manganese', 'Tin', 'Silver', 'Bauxite', 'Silicate', 'Dolomite', 'Gold', 'Obsidian'];
+    this.resources = [
+      'Iron',
+      'Copper',
+      'Bronze',
+      'Cobalt',
+      'Manganese',
+      'Tin',
+      'Silver',
+      'Bauxite',
+      'Silicate',
+      'Dolomite',
+      'Gold',
+      'Obsidian',
+    ];
     const className = 'leaflet-control-miner container-resources';
     this.container = L.DomUtil.create('div', className);
     const container = this.container;
@@ -43,78 +63,143 @@ L.Control.Miner = L.Control.extend({
     this.buttons = [];
     const resourcesLength = this.resources.length;
     for (let i = 0; i < resourcesLength; i += 1) {
-      const aMagicButton = L.DomUtil.create('a', `scale-border-in-out ${this.resources[i]}`, this.magicContainer);
+      const aMagicButton = L.DomUtil.create(
+        'a',
+        `scale-border-in-out ${this.resources[i]}`,
+        this.magicContainer,
+      );
       aMagicButton.setAttribute('href', '#');
       // aMagicButton.setAttribute('title', i18next.t(this.prof + "." + this.resources[i]));
       const imgMagicButton = L.DomUtil.create('img', 'no-class', aMagicButton);
-      imgMagicButton.setAttribute('src', path.join(__dirname, `../../../../data/assets/mine/${this.resources[i]}.png`));
+      imgMagicButton.setAttribute(
+        'src',
+        path.join(__dirname, `../../../../data/assets/mine/${this.resources[i]}.png`),
+      );
       L.DomEvent.addListener(aMagicButton, 'click', this.toggle, this);
     }
 
     for (let j = 0; j < resourcesLength; j += 1) {
-      json[this.resources[j]] = JSON.parse(fs.readFileSync(path.join(__dirname, `../../../../data/json/miner/${this.resources[j]}.json`)));
+      json[this.resources[j]] = JSON.parse(
+        fs.readFileSync(
+          path.join(__dirname, `../../../../data/json/miner/${this.resources[j]}.json`),
+        ),
+      );
       hint[this.resources[j]] = L.layerGroup();
       Object.keys(json[this.resources[j]]).forEach((key) => {
-        if (!(json[this.resources[j]][key].w === 2)) {
+        if (
+          json[this.resources[j]][key].w === mapTileLayer.getTileLayer().worldMap
+        ) {
           if (json[this.resources[j]][key].q > 1 && json[this.resources[j]][key].q < 6) {
-            L.marker(dofusCoordsToGeoCoords([json[this.resources[j]][key].posX, json[this.resources[j]][key].posY]), {
-              icon: L.divIcon({
-                iconUrl: path.join(__dirname, `../../../../data/assets/mine/${this.resources[j]}.png`),
-                html: `<img src="${path.join(
-                  __dirname,
-                  `../../../../data/assets/mine/${this.resources[j]}.png`,
-                )}"><div class="qnt1">${json[this.resources[j]][key].q}</div>`,
-                className: 'mycluster',
-                iconAnchor: [
-                  sizeOf(path.join(__dirname, `../../../../data/assets/mine/${this.resources[j]}.png`)).width / 2,
-                  sizeOf(path.join(__dirname, `../../../../data/assets/mine/${this.resources[j]}.png`)).height / 2,
-                ],
-              }),
-              interactive: false,
-            }).addTo(hint[this.resources[j]]);
+            L.marker(
+              dofusCoordsToGeoCoords([
+                json[this.resources[j]][key].posX,
+                json[this.resources[j]][key].posY,
+              ]),
+              {
+                icon: L.divIcon({
+                  iconUrl: path.join(
+                    __dirname,
+                    `../../../../data/assets/mine/${this.resources[j]}.png`,
+                  ),
+                  html: `<img src="${path.join(
+                    __dirname,
+                    `../../../../data/assets/mine/${this.resources[j]}.png`,
+                  )}"><div class="qnt1">${json[this.resources[j]][key].q}</div>`,
+                  className: 'mycluster',
+                  iconAnchor: [
+                    sizeOf(
+                      path.join(__dirname, `../../../../data/assets/mine/${this.resources[j]}.png`),
+                    ).width / 2,
+                    sizeOf(
+                      path.join(__dirname, `../../../../data/assets/mine/${this.resources[j]}.png`),
+                    ).height / 2,
+                  ],
+                }),
+                interactive: false,
+              },
+            ).addTo(hint[this.resources[j]]);
           } else if (json[this.resources[j]][key].q > 5 && json[this.resources[j]][key].q < 11) {
-            L.marker(dofusCoordsToGeoCoords([json[this.resources[j]][key].posX, json[this.resources[j]][key].posY]), {
-              icon: L.divIcon({
-                iconUrl: path.join(__dirname, `../../../../data/assets/mine/${this.resources[j]}.png`),
-                html: `<img src="${path.join(
-                  __dirname,
-                  `../../../../data/assets/mine/${this.resources[j]}.png`,
-                )}"><div class="qnt2">${json[this.resources[j]][key].q}</div>`,
-                className: 'mycluster',
-                iconAnchor: [
-                  sizeOf(path.join(__dirname, `../../../../data/assets/mine/${this.resources[j]}.png`)).width / 2,
-                  sizeOf(path.join(__dirname, `../../../../data/assets/mine/${this.resources[j]}.png`)).height / 2,
-                ],
-              }),
-              interactive: false,
-            }).addTo(hint[this.resources[j]]);
+            L.marker(
+              dofusCoordsToGeoCoords([
+                json[this.resources[j]][key].posX,
+                json[this.resources[j]][key].posY,
+              ]),
+              {
+                icon: L.divIcon({
+                  iconUrl: path.join(
+                    __dirname,
+                    `../../../../data/assets/mine/${this.resources[j]}.png`,
+                  ),
+                  html: `<img src="${path.join(
+                    __dirname,
+                    `../../../../data/assets/mine/${this.resources[j]}.png`,
+                  )}"><div class="qnt2">${json[this.resources[j]][key].q}</div>`,
+                  className: 'mycluster',
+                  iconAnchor: [
+                    sizeOf(
+                      path.join(__dirname, `../../../../data/assets/mine/${this.resources[j]}.png`),
+                    ).width / 2,
+                    sizeOf(
+                      path.join(__dirname, `../../../../data/assets/mine/${this.resources[j]}.png`),
+                    ).height / 2,
+                  ],
+                }),
+                interactive: false,
+              },
+            ).addTo(hint[this.resources[j]]);
           } else if (json[this.resources[j]][key].q > 10) {
-            L.marker(dofusCoordsToGeoCoords([json[this.resources[j]][key].posX, json[this.resources[j]][key].posY]), {
-              icon: L.divIcon({
-                iconUrl: path.join(__dirname, `../../../../data/assets/mine/${this.resources[j]}.png`),
-                html: `<img src="${path.join(
-                  __dirname,
-                  `../../../../data/assets/mine/${this.resources[j]}.png`,
-                )}"><div class="qnt3">${json[this.resources[j]][key].q}</div>`,
-                className: 'mycluster',
-                iconAnchor: [
-                  sizeOf(path.join(__dirname, `../../../../data/assets/mine/${this.resources[j]}.png`)).width / 2,
-                  sizeOf(path.join(__dirname, `../../../../data/assets/mine/${this.resources[j]}.png`)).height / 2,
-                ],
-              }),
-              interactive: false,
-            }).addTo(hint[this.resources[j]]);
+            L.marker(
+              dofusCoordsToGeoCoords([
+                json[this.resources[j]][key].posX,
+                json[this.resources[j]][key].posY,
+              ]),
+              {
+                icon: L.divIcon({
+                  iconUrl: path.join(
+                    __dirname,
+                    `../../../../data/assets/mine/${this.resources[j]}.png`,
+                  ),
+                  html: `<img src="${path.join(
+                    __dirname,
+                    `../../../../data/assets/mine/${this.resources[j]}.png`,
+                  )}"><div class="qnt3">${json[this.resources[j]][key].q}</div>`,
+                  className: 'mycluster',
+                  iconAnchor: [
+                    sizeOf(
+                      path.join(__dirname, `../../../../data/assets/mine/${this.resources[j]}.png`),
+                    ).width / 2,
+                    sizeOf(
+                      path.join(__dirname, `../../../../data/assets/mine/${this.resources[j]}.png`),
+                    ).height / 2,
+                  ],
+                }),
+                interactive: false,
+              },
+            ).addTo(hint[this.resources[j]]);
           } else {
-            L.marker(dofusCoordsToGeoCoords([json[this.resources[j]][key].posX, json[this.resources[j]][key].posY]), {
-              icon: L.icon({
-                iconUrl: path.join(__dirname, `../../../../data/assets/mine/${this.resources[j]}.png`),
-                iconAnchor: [
-                  sizeOf(path.join(__dirname, `../../../../data/assets/mine/${this.resources[j]}.png`)).width / 2,
-                  sizeOf(path.join(__dirname, `../../../../data/assets/mine/${this.resources[j]}.png`)).height / 2,
-                ],
-              }),
-              interactive: false,
-            }).addTo(hint[this.resources[j]]);
+            L.marker(
+              dofusCoordsToGeoCoords([
+                json[this.resources[j]][key].posX,
+                json[this.resources[j]][key].posY,
+              ]),
+              {
+                icon: L.icon({
+                  iconUrl: path.join(
+                    __dirname,
+                    `../../../../data/assets/mine/${this.resources[j]}.png`,
+                  ),
+                  iconAnchor: [
+                    sizeOf(
+                      path.join(__dirname, `../../../../data/assets/mine/${this.resources[j]}.png`),
+                    ).width / 2,
+                    sizeOf(
+                      path.join(__dirname, `../../../../data/assets/mine/${this.resources[j]}.png`),
+                    ).height / 2,
+                  ],
+                }),
+                interactive: false,
+              },
+            ).addTo(hint[this.resources[j]]);
           }
         }
       });

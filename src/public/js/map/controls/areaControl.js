@@ -1,10 +1,10 @@
 /*
  * L.Control.Area is used for displaying current area info on the map.
  */
-import L from 'leaflet';
-import { geoCoordsToDofusCoords, mapList, areas, getId } from '../map';
-import { join } from 'path';
 import { readFileSync } from 'fs';
+import L from 'leaflet';
+import { join } from 'path';
+import { geoCoordsToDofusCoords, getId } from '../map';
 
 const i18nAreas = {
   en: JSON.parse(readFileSync(join(__dirname, '../../../../data/i18n/en/Areas.json'))),

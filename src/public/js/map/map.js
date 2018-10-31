@@ -5,6 +5,7 @@ import 'leaflet.markercluster.layersupport';
 import './controls/alch';
 import './controls/areaControl';
 import './controls/coordControl';
+import './controls/worldControl';
 import './controls/farm';
 import './controls/infoControl';
 import './controls/lumb';
@@ -32,24 +33,56 @@ const actualDofusCoords = {};
 let actualID;
 let dofusMapUnderMouse;
 
-const amakna = L.tileLayer('./data/tiles/amakna/{z}/{x}/{y}.jpg', {
-  minZoom: 0,
-  maxZoom: 4,
-  noWrap: true,
-});
-// incarnam = L.tileLayer('../../../data/tiles/incarnam/{z}/{x}/{y}.jpg', { minZoom: 0, maxZoom: 4, });
+export const mapTileLayer = {
+  amakna: {
+    tileLayer: L.tileLayer('./data/tiles/amakna/{z}/{x}/{y}.jpg', {
+      minZoom: 0,
+      maxZoom: 4,
+      noWrap: true,
+    }),
+    coordsTransform: new L.Transformation(69.5, 6517, 50, 4973),
+    view: { lat: -250, lng: 425 },
+    topLeftCornerCorner: 69.5,
+    bottomRightCornerCorner: 50,
+    worldMap: 1,
+  },
+  incarnam: {
+    tileLayer: L.tileLayer('./data/tiles/incarnam/{z}/{x}/{y}.jpg', {
+      minZoom: 0,
+      maxZoom: 4,
+    }),
+    coordsTransform: new L.Transformation(213, 1992, 153, 970),
+    view: { lat: -90, lng: 120 },
+    topLeftCornerCorner: 213,
+    bottomRightCornerCorner: 153,
+    worldMap: 2,
+  },
+  actualLayerName: '',
+  default() {
+    this.actualLayerName = 'amakna';
+    return this.amakna;
+  },
+  setTileLayer(tileLayer) {
+    this.actualLayerName = tileLayer;
+    this.amakna.tileLayer.remove();
+    this.incarnam.tileLayer.remove();
+    this[tileLayer].tileLayer.addTo(map);
+    map.setView(this[tileLayer].view);
+  },
+  getTileLayer() {
+    return this[this.actualLayerName];
+  },
+};
 
 export const map = L.map('map', {
   crs: L.CRS.Simple,
   // center: [-250, 315],
-  center: [-251.4375, 424.6875],
+  center: [mapTileLayer.default().view.lat, mapTileLayer.default().view.lng],
   // zoom: 0,
   zoom: 4,
-  layers: [amakna],
+  layers: [mapTileLayer.default().tileLayer],
   zoomControl: false,
 });
-
-const coordsTransform = new L.Transformation(69.5, 6517, 50, 4973);
 
 export const getId = (x, y) => {
   let result;
@@ -58,7 +91,7 @@ export const getId = (x, y) => {
       mapList[key].posX === x &&
       mapList[key].posY === y &&
       mapList[key].hasPriorityOnWorldmap &&
-      mapList[key].worldMap === 1
+      mapList[key].worldMap === mapTileLayer.getTileLayer().worldMap
     ) {
       result = {
         id: mapList[key].id,
@@ -74,7 +107,10 @@ export const getId = (x, y) => {
 export const mapidToCoord = (mapIds) => {
   const list = [];
   mapIds.forEach((element) => {
-    if (mapList[element].hasPriorityOnWorldmap && mapList[element].worldMap === 1) {
+    if (
+      mapList[element].hasPriorityOnWorldmap &&
+      mapList[element].worldMap === mapTileLayer.getTileLayer().worldMap
+    ) {
       list.push({
         x: mapList[element].posX,
         y: mapList[element].posY,
@@ -87,14 +123,17 @@ export const mapidToCoord = (mapIds) => {
 const geoCoordsToPixelCoords = geoCoords => map.project(geoCoords, map.getMaxZoom());
 const pixelCoordsToGeoCoords = pixelCoords => map.unproject(pixelCoords, map.getMaxZoom());
 const pixelCoordsToDofusCoords = (pixelCoords) => {
-  const { x, y } = coordsTransform.untransform(pixelCoords).round();
+  const { x, y } = mapTileLayer
+    .getTileLayer()
+    .coordsTransform.untransform(pixelCoords)
+    .round();
   return [x, y];
 };
 // in: dofus [x,y] out: pixel coords (x,y) of the [x,y] map's center pixel
 const dofusCoordsToPixelCoords = (dofusCoords) => {
   let newDofusCoords = dofusCoords;
   newDofusCoords = L.point(dofusCoords);
-  return coordsTransform.transform(newDofusCoords);
+  return mapTileLayer.getTileLayer().coordsTransform.transform(newDofusCoords);
 };
 export const geoCoordsToDofusCoords = (geoCoords) => {
   const pixelCoords = geoCoordsToPixelCoords(geoCoords);
@@ -115,9 +154,12 @@ function resetHighlightArea() {
 
 function getDofusMapBounds(dofusMapCoord) {
   const topLeftCornerCorner = dofusCoordsToPixelCoords(dofusMapCoord);
-  topLeftCornerCorner.x -= 34.75;
-  topLeftCornerCorner.y -= 25;
-  const bottomRightCornerCorner = L.point(topLeftCornerCorner.x + 69.5, topLeftCornerCorner.y + 50);
+  topLeftCornerCorner.x -= mapTileLayer.getTileLayer().topLeftCornerCorner / 2;
+  topLeftCornerCorner.y -= mapTileLayer.getTileLayer().bottomRightCornerCorner / 2;
+  const bottomRightCornerCorner = L.point(
+    topLeftCornerCorner.x + mapTileLayer.getTileLayer().topLeftCornerCorner,
+    topLeftCornerCorner.y + mapTileLayer.getTileLayer().bottomRightCornerCorner,
+  );
   const nW = pixelCoordsToGeoCoords(topLeftCornerCorner);
   const sE = pixelCoordsToGeoCoords(bottomRightCornerCorner);
   return [nW, sE];
@@ -185,32 +227,36 @@ export function drawDofusMapBoundsOnMouseMove(e) {
   }
 }
 
-amakna.options.bounds = new L.LatLngBounds(
+mapTileLayer.amakna.tileLayer.options.bounds = new L.LatLngBounds(
   pixelCoordsToGeoCoords([0, 0]),
   pixelCoordsToGeoCoords([10000, 8000]),
 );
 
-function bpMarkers(type) {
+export function bpMarkers(type) {
   const layer = [];
   type.forEach((element) => {
-    layer.push(
-      L.marker(dofusCoordsToGeoCoords([element.posX, element.posY]), {
-        icon: L.icon({
-          iconUrl: join(__dirname, `../../../data/assets/hint/${element.gfx}.png`),
-          iconAnchor: [
-            sizeOf(join(__dirname, `../../../data/assets/hint/${element.gfx}.png`)).width / 2,
-            sizeOf(join(__dirname, `../../../data/assets/hint/${element.gfx}.png`)).height / 2,
-          ],
+    if (element.worldMap === mapTileLayer.getTileLayer().worldMap) {
+      layer.push(
+        L.marker(dofusCoordsToGeoCoords([element.posX, element.posY]), {
+          icon: L.icon({
+            iconUrl: join(__dirname, `../../../data/assets/hint/${element.gfx}.png`),
+            iconAnchor: [
+              sizeOf(join(__dirname, `../../../data/assets/hint/${element.gfx}.png`)).width / 2,
+              sizeOf(join(__dirname, `../../../data/assets/hint/${element.gfx}.png`)).height / 2,
+            ],
+          }),
+          interactive: false,
         }),
-        interactive: false,
-      }),
-    );
+      );
+    }
   });
   return layer;
 }
 
-export const bankLayerGroup = L.layerGroup(bpMarkers(bankPos));
-export const phenixLayerGroup = L.layerGroup(bpMarkers(phenixPos));
+export const bpLayers = {
+  bank: L.layerGroup(bpMarkers(bankPos)),
+  phenix: L.layerGroup(bpMarkers(phenixPos)),
+};
 
 export const mcgLayerSupportGroup = L.markerClusterGroup.layerSupport({
   maxClusterRadius: 1,
@@ -233,12 +279,22 @@ export const mcgLayerSupportGroup = L.markerClusterGroup.layerSupport({
 mcgLayerSupportGroup.addTo(map);
 
 map.addControl(L.control.coordinates());
+map.addControl(L.control.world());
 map.addControl(L.control.area());
-map.addControl(L.control.farmer());
-map.addControl(L.control.lumber());
-map.addControl(L.control.miner());
-map.addControl(L.control.alchimist());
-map.addControl(L.control.fisher());
-map.addControl(L.control.miscellaneous());
+export const controls = {
+  farmer: L.control.farmer(),
+  lumber: L.control.lumber(),
+  miner: L.control.miner(),
+  alchimist: L.control.alchimist(),
+  fisher: L.control.fisher(),
+  miscellaneous: L.control.miscellaneous(),
+};
+map.addControl(controls.farmer);
+map.addControl(controls.lumber);
+map.addControl(controls.miner);
+map.addControl(controls.alchimist);
+map.addControl(controls.fisher);
+map.addControl(controls.miscellaneous);
 
+$('select').formSelect();
 $('.leaflet-control-attribution.leaflet-control').hide();

@@ -6,16 +6,16 @@ import {
   lifeMinMax,
   monsterQuantMinMax,
 } from '../events/htmlElementInstance';
-import { dofusCoordsToGeoCoords, map, mapList } from '../map/map';
+import { dofusCoordsToGeoCoords, map, mapList, mapTileLayer } from '../map/map';
 import {
   bpGetInformation,
   checkIfMapAlreadyExist,
   deleteAction,
   getIdOfAutoComplete,
   getScale,
-  icon,
   movementType,
 } from '../scripts/pathMaker';
+import icon from './iconProperties';
 
 const esprima = require('esprima');
 const { join } = require('path');
@@ -27,48 +27,96 @@ function loadPath(paths, arrayType) {
     if (Object.prototype.hasOwnProperty.call(mapInfo, 'npcBank')) {
       const coord = [mapList[mapInfo.map].posX, mapList[mapInfo.map].posY];
       const data = bpGetInformation(coord);
-      const index = checkIfMapAlreadyExist(coord, movementType.bank);
-      const marker = L.marker(dofusCoordsToGeoCoords(coord), {
-        icon: L.icon({
-          iconUrl: join(__dirname, '../../../data/assets/path/bank/bank.png'),
-          iconAnchor: [
-            sizeOf(join(__dirname, '../../../data/assets/path/bank/bank.png')).width / 2,
-            sizeOf(join(__dirname, '../../../data/assets/path/bank/bank.png')).height / 2,
-          ],
-          className: 'bank',
-        }),
-        zIndexOffset: icon.size.bank.zindex,
-        interactive: false,
-      });
-      if (index !== null) {
-        if (index.data.bank) {
-          deleteAction(movementType.bank, index, 'bank');
-        } else {
-          index.data.bank = {
-            bank: true,
-            mapIdOutSide: data.mapIdOutSide,
-            doorIdOutSide: data.doorIdOutSide,
-            mapIdInSide: data.mapIdInSide,
-            sunIdInside: data.sunIdInside,
-          };
-          index.marker.bank = marker.addTo(map);
-        }
-      } else {
-        movementType.bank.push({
-          coord: [coord[0], coord[1]],
-          data: {
-            bank: {
+      if (Object.prototype.hasOwnProperty.call(mapInfo, 'incarnam')) {
+        mapTileLayer.setTileLayer('incarnam');
+        const index = checkIfMapAlreadyExist(coord, movementType.incarnam.bank);
+        const marker = L.marker(dofusCoordsToGeoCoords(coord), {
+          icon: L.icon({
+            iconUrl: join(__dirname, '../../../data/assets/path/bank/bank.png'),
+            iconAnchor: [
+              sizeOf(join(__dirname, '../../../data/assets/path/bank/bank.png')).width / 2,
+              sizeOf(join(__dirname, '../../../data/assets/path/bank/bank.png')).height / 2,
+            ],
+            className: 'bank',
+          }),
+          zIndexOffset: icon.size.incarnam.bank.zindex,
+          interactive: false,
+        });
+        if (index !== null) {
+          if (index.data.bank) {
+            deleteAction(movementType.incarnam.bank, index, 'bank');
+          } else {
+            index.data.bank = {
               bank: true,
               mapIdOutSide: data.mapIdOutSide,
               doorIdOutSide: data.doorIdOutSide,
               mapIdInSide: data.mapIdInSide,
               sunIdInside: data.sunIdInside,
+            };
+            index.marker.bank = marker.addTo(map);
+          }
+        } else {
+          movementType.incarnam.bank.push({
+            coord: [coord[0], coord[1]],
+            data: {
+              bank: {
+                bank: true,
+                mapIdOutSide: data.mapIdOutSide,
+                doorIdOutSide: data.doorIdOutSide,
+                mapIdInSide: data.mapIdInSide,
+                sunIdInside: data.sunIdInside,
+              },
             },
-          },
-          marker: {
-            bank: marker.addTo(map),
-          },
+            marker: {
+              bank: marker.addTo(map),
+            },
+          });
+        }
+      } else {
+        mapTileLayer.setTileLayer('amakna');
+        const index = checkIfMapAlreadyExist(coord, movementType.amakna.bank);
+        const marker = L.marker(dofusCoordsToGeoCoords(coord), {
+          icon: L.icon({
+            iconUrl: join(__dirname, '../../../data/assets/path/bank/bank.png'),
+            iconAnchor: [
+              sizeOf(join(__dirname, '../../../data/assets/path/bank/bank.png')).width / 2,
+              sizeOf(join(__dirname, '../../../data/assets/path/bank/bank.png')).height / 2,
+            ],
+            className: 'bank',
+          }),
+          zIndexOffset: icon.size.amakna.bank.zindex,
+          interactive: false,
         });
+        if (index !== null) {
+          if (index.data.bank) {
+            deleteAction(movementType.amakna.bank, index, 'bank');
+          } else {
+            index.data.bank = {
+              bank: true,
+              mapIdOutSide: data.mapIdOutSide,
+              doorIdOutSide: data.doorIdOutSide,
+              mapIdInSide: data.mapIdInSide,
+              sunIdInside: data.sunIdInside,
+            };
+            index.marker.bank = marker.addTo(map);
+          }
+        } else {
+          movementType.amakna.bank.push({
+            coord: [coord[0], coord[1]],
+            data: {
+              bank: {
+                bank: true,
+                mapIdOutSide: data.mapIdOutSide,
+                doorIdOutSide: data.doorIdOutSide,
+                mapIdInSide: data.mapIdInSide,
+                sunIdInside: data.sunIdInside,
+              },
+            },
+            marker: {
+              bank: marker.addTo(map),
+            },
+          });
+        }
       }
     } else if (Object.prototype.hasOwnProperty.call(mapInfo, 'phenix')) {
       const coord = [
@@ -76,46 +124,92 @@ function loadPath(paths, arrayType) {
         parseInt(mapInfo.map.split(',')[1], 10),
       ];
       const data = bpGetInformation(coord);
-      const index = checkIfMapAlreadyExist(coord, movementType.phenix);
-      const marker = L.marker(dofusCoordsToGeoCoords(coord), {
-        icon: L.icon({
-          iconUrl: join(__dirname, '../../../data/assets/path/phenix/phenix.png'),
-          iconAnchor: [
-            sizeOf(join(__dirname, '../../../data/assets/path/phenix/phenix.png')).width / 2,
-            sizeOf(join(__dirname, '../../../data/assets/path/phenix/phenix.png')).height / 2,
-          ],
-          className: 'phenix',
-        }),
-        zIndexOffset: icon.size.phenix.zindex,
-        interactive: false,
-      });
-      if (index !== null) {
-        if (index.data.phenix) {
-          deleteAction(movementType.phenix, index, 'phenix');
+      if (Object.prototype.hasOwnProperty.call(mapInfo, 'incarnam')) {
+        mapTileLayer.setTileLayer('incarnam');
+        const index = checkIfMapAlreadyExist(coord, movementType.incarnam.phenix);
+        const marker = L.marker(dofusCoordsToGeoCoords(coord), {
+          icon: L.icon({
+            iconUrl: join(__dirname, '../../../data/assets/path/phenix/phenix.png'),
+            iconAnchor: [
+              sizeOf(join(__dirname, '../../../data/assets/path/phenix/phenix.png')).width / 2,
+              sizeOf(join(__dirname, '../../../data/assets/path/phenix/phenix.png')).height / 2,
+            ],
+            className: 'phenix',
+          }),
+          zIndexOffset: icon.size.phenix.zindex,
+          interactive: false,
+        });
+        if (index !== null) {
+          if (index.data.phenix) {
+            deleteAction(movementType.incarnam.phenix, index, 'phenix');
+          } else {
+            index.data.phenix = {
+              phenix: true,
+              mapIdOutSide: data.mapIdOutSide,
+              doorIdOutSide: data.doorIdOutSide,
+              mapIdInSide: data.mapIdInSide,
+              sunIdInside: data.sunIdInside,
+            };
+            index.marker.phenix = marker.addTo(map);
+          }
         } else {
-          index.data.phenix = {
-            phenix: true,
-            mapIdOutSide: data.mapIdOutSide,
-            doorIdOutSide: data.doorIdOutSide,
-            mapIdInSide: data.mapIdInSide,
-            sunIdInside: data.sunIdInside,
-          };
-          index.marker.phenix = marker.addTo(map);
+          movementType.amakna.phenix.push({
+            coord: [coord[0], coord[1]],
+            data: {
+              phenix: {
+                phenix: true,
+                phenixCellid: data.cellId,
+                actionAfterRevive: mapInfo.path,
+              },
+            },
+            marker: {
+              phenix: marker.addTo(map),
+            },
+          });
         }
       } else {
-        movementType.phenix.push({
-          coord: [coord[0], coord[1]],
-          data: {
-            phenix: {
-              phenix: true,
-              phenixCellid: data.cellId,
-              actionAfterRevive: mapInfo.path,
-            },
-          },
-          marker: {
-            phenix: marker.addTo(map),
-          },
+        mapTileLayer.setTileLayer('amakna');
+        const index = checkIfMapAlreadyExist(coord, movementType.amakna.phenix);
+        const marker = L.marker(dofusCoordsToGeoCoords(coord), {
+          icon: L.icon({
+            iconUrl: join(__dirname, '../../../data/assets/path/phenix/phenix.png'),
+            iconAnchor: [
+              sizeOf(join(__dirname, '../../../data/assets/path/phenix/phenix.png')).width / 2,
+              sizeOf(join(__dirname, '../../../data/assets/path/phenix/phenix.png')).height / 2,
+            ],
+            className: 'phenix',
+          }),
+          zIndexOffset: icon.size.phenix.zindex,
+          interactive: false,
         });
+        if (index !== null) {
+          if (index.data.phenix) {
+            deleteAction(movementType.amakna.phenix, index, 'phenix');
+          } else {
+            index.data.phenix = {
+              phenix: true,
+              mapIdOutSide: data.mapIdOutSide,
+              doorIdOutSide: data.doorIdOutSide,
+              mapIdInSide: data.mapIdInSide,
+              sunIdInside: data.sunIdInside,
+            };
+            index.marker.phenix = marker.addTo(map);
+          }
+        } else {
+          movementType.amakna.phenix.push({
+            coord: [coord[0], coord[1]],
+            data: {
+              phenix: {
+                phenix: true,
+                phenixCellid: data.cellId,
+                actionAfterRevive: mapInfo.path,
+              },
+            },
+            marker: {
+              phenix: marker.addTo(map),
+            },
+          });
+        }
       }
     } else if (
       typeof mapInfo.map === 'number' &&
@@ -125,28 +219,56 @@ function loadPath(paths, arrayType) {
     ) {
       const coord = [mapList[mapInfo.map].posX, mapList[mapInfo.map].posY];
       const data = bpGetInformation(coord);
-      const index = checkIfMapAlreadyExist(coord, movementType.move);
-      if (index !== null) {
-        if (index.data.move) {
-          deleteAction(movementType.move, index, 'bankOut');
-        } else {
-          index.data.bankOut = {
-            mapid: data.mapIdInSide,
-            sun: data.sunIdInside,
-            mapIdOutSide: data.mapIdOutSide,
-          };
-        }
-      } else {
-        movementType.move.push({
-          coord: [coord[0], coord[1]],
-          data: {
-            bankOut: {
+      if (Object.prototype.hasOwnProperty.call(mapInfo, 'incarnam')) {
+        mapTileLayer.setTileLayer('incarnam');
+        const index = checkIfMapAlreadyExist(coord, movementType.incarnam.move);
+        if (index !== null) {
+          if (index.data.move) {
+            deleteAction(movementType.incarnam.move, index, 'bankOut');
+          } else {
+            index.data.bankOut = {
               mapid: data.mapIdInSide,
               sun: data.sunIdInside,
               mapIdOutSide: data.mapIdOutSide,
+            };
+          }
+        } else {
+          movementType.incarnam.move.push({
+            coord: [coord[0], coord[1]],
+            data: {
+              bankOut: {
+                mapid: data.mapIdInSide,
+                sun: data.sunIdInside,
+                mapIdOutSide: data.mapIdOutSide,
+              },
             },
-          },
-        });
+          });
+        }
+      } else {
+        mapTileLayer.setTileLayer('amakna');
+        const index = checkIfMapAlreadyExist(coord, movementType.amakna.move);
+        if (index !== null) {
+          if (index.data.move) {
+            deleteAction(movementType.amakna.move, index, 'bankOut');
+          } else {
+            index.data.bankOut = {
+              mapid: data.mapIdInSide,
+              sun: data.sunIdInside,
+              mapIdOutSide: data.mapIdOutSide,
+            };
+          }
+        } else {
+          movementType.amakna.move.push({
+            coord: [coord[0], coord[1]],
+            data: {
+              bankOut: {
+                mapid: data.mapIdInSide,
+                sun: data.sunIdInside,
+                mapIdOutSide: data.mapIdOutSide,
+              },
+            },
+          });
+        }
       }
     } else if (Object.prototype.hasOwnProperty.call(mapInfo, 'path')) {
       directions = mapInfo.path.split('|');
@@ -156,7 +278,6 @@ function loadPath(paths, arrayType) {
             ? [parseInt(mapInfo.map.split(',')[0], 10), parseInt(mapInfo.map.split(',')[1], 10)]
             : [mapList[mapInfo.map].posX, mapList[mapInfo.map].posY];
         const dataType = arrayType;
-        const scale = getScale(icon.size[arrayType][direction], map.getZoom());
         let type;
         if (
           Object.prototype.hasOwnProperty.call(mapInfo, 'gather') &&
@@ -170,40 +291,174 @@ function loadPath(paths, arrayType) {
         } else {
           type = arrayType;
         }
-        const index = checkIfMapAlreadyExist(coord, movementType[dataType]);
+        if (Object.prototype.hasOwnProperty.call(mapInfo, 'incarnam')) {
+          mapTileLayer.setTileLayer('incarnam');
+
+          const scale = getScale(icon.size.incarnam[arrayType][direction], map.getZoom());
+          const index = checkIfMapAlreadyExist(coord, movementType.incarnam[dataType]);
+          const marker = L.marker(dofusCoordsToGeoCoords(coord), {
+            icon: L.icon({
+              iconUrl: icon[direction][type].iconUrl,
+              iconSize: [scale.width, scale.height],
+              iconAnchor: [scale.marginLeft, scale.topMargin],
+              className: direction,
+            }),
+            zIndexOffset: icon.size.incarnam[dataType].zindex,
+            interactive: false,
+          });
+          if (index !== null) {
+            if (index.data[direction]) {
+              deleteAction(movementType.incarnam[dataType], index, direction);
+            } else {
+              index.data[direction] = {
+                [type]: true,
+              };
+              index.marker[direction] = marker.addTo(map);
+            }
+          } else {
+            movementType.incarnam[dataType].push({
+              coord: [coord[0], coord[1]],
+              data: {
+                [direction]: {
+                  [type]: true,
+                },
+              },
+              marker: {
+                [direction]: marker.addTo(map),
+              },
+            });
+          }
+        } else {
+          mapTileLayer.setTileLayer('amakna');
+          const scale = getScale(icon.size.amakna[arrayType][direction], map.getZoom());
+          const index = checkIfMapAlreadyExist(coord, movementType.amakna[dataType]);
+          const marker = L.marker(dofusCoordsToGeoCoords(coord), {
+            icon: L.icon({
+              iconUrl: icon[direction][type].iconUrl,
+              iconSize: [scale.width, scale.height],
+              iconAnchor: [scale.marginLeft, scale.topMargin],
+              className: direction,
+            }),
+            zIndexOffset: icon.size.amakna[dataType].zindex,
+            interactive: false,
+          });
+          if (index !== null) {
+            if (index.data[direction]) {
+              deleteAction(movementType.amakna[dataType], index, direction);
+            } else {
+              index.data[direction] = {
+                [type]: true,
+              };
+              index.marker[direction] = marker.addTo(map);
+            }
+          } else {
+            movementType.amakna[dataType].push({
+              coord: [coord[0], coord[1]],
+              data: {
+                [direction]: {
+                  [type]: true,
+                },
+              },
+              marker: {
+                [direction]: marker.addTo(map),
+              },
+            });
+          }
+        }
+      });
+    } else if (Object.prototype.hasOwnProperty.call(mapInfo, 'door')) {
+      const coord =
+        typeof mapInfo.map === 'string'
+          ? [parseInt(mapInfo.map.split(',')[0], 10), parseInt(mapInfo.map.split(',')[1], 10)]
+          : [mapList[mapInfo.map].posX, mapList[mapInfo.map].posY];
+      if (bpGetInformation(coord)) return;
+      const dataType = arrayType;
+      let type;
+      if (
+        Object.prototype.hasOwnProperty.call(mapInfo, 'gather') &&
+        Object.prototype.hasOwnProperty.call(mapInfo, 'fight')
+      ) {
+        type = 'gatherfight';
+      } else if (Object.prototype.hasOwnProperty.call(mapInfo, 'gather')) {
+        type = 'gather';
+      } else if (Object.prototype.hasOwnProperty.call(mapInfo, 'fight')) {
+        type = 'fight';
+      } else {
+        type = arrayType;
+      }
+      if (Object.prototype.hasOwnProperty.call(mapInfo, 'incarnam')) {
+        mapTileLayer.setTileLayer('incarnam');
+        const scale = getScale(icon.size.incarnam[arrayType].door, map.getZoom());
+        const index = checkIfMapAlreadyExist(coord, movementType.incarnam[dataType]);
         const marker = L.marker(dofusCoordsToGeoCoords(coord), {
           icon: L.icon({
-            iconUrl: icon[direction][type].iconUrl,
+            iconUrl: icon.door[type].iconUrl,
             iconSize: [scale.width, scale.height],
             iconAnchor: [scale.marginLeft, scale.topMargin],
-            className: direction,
+            className: 'door',
           }),
-          zIndexOffset: icon.size[dataType].zindex,
+          zIndexOffset: icon.size.incarnam[dataType].zindex,
           interactive: false,
         });
         if (index !== null) {
-          if (index.data[direction]) {
-            deleteAction(movementType[dataType], index, direction);
+          if (index.data.door) {
+            deleteAction(movementType.incarnam[dataType], index, 'door');
           } else {
-            index.data[direction] = {
-              [type]: true,
+            index.data.door = {
+              cellid: mapInfo.door,
             };
-            index.marker[direction] = marker.addTo(map);
+            index.marker.door = marker.addTo(map);
           }
         } else {
-          movementType[dataType].push({
+          movementType.incarnam[dataType].push({
             coord: [coord[0], coord[1]],
             data: {
-              [direction]: {
-                [type]: true,
+              door: {
+                cellid: mapInfo.door,
               },
             },
             marker: {
-              [direction]: marker.addTo(map),
+              door: marker.addTo(map),
             },
           });
         }
-      });
+      } else {
+        mapTileLayer.setTileLayer('amakna');
+        const scale = getScale(icon.size.amakna[arrayType].door, map.getZoom());
+        const index = checkIfMapAlreadyExist(coord, movementType.amakna[dataType]);
+        const marker = L.marker(dofusCoordsToGeoCoords(coord), {
+          icon: L.icon({
+            iconUrl: icon.door[type].iconUrl,
+            iconSize: [scale.width, scale.height],
+            iconAnchor: [scale.marginLeft, scale.topMargin],
+            className: 'door',
+          }),
+          zIndexOffset: icon.size.amakna[dataType].zindex,
+          interactive: false,
+        });
+        if (index !== null) {
+          if (index.data.door) {
+            deleteAction(movementType.amakna[dataType], index, 'door');
+          } else {
+            index.data.door = {
+              cellid: mapInfo.door,
+            };
+            index.marker.door = marker.addTo(map);
+          }
+        } else {
+          movementType.amakna[dataType].push({
+            coord: [coord[0], coord[1]],
+            data: {
+              door: {
+                cellid: mapInfo.door,
+              },
+            },
+            marker: {
+              door: marker.addTo(map),
+            },
+          });
+        }
+      }
     }
   });
 }

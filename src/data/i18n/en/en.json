@@ -151,6 +151,10 @@
         "bank": "Bank",
         "phenix": "Phoenix"
       },
+      "basic": {
+        "door": "Door",
+        "custom": "Custom function"
+      },
       "special": {
         "bank": {
           "label": "Bank location",
@@ -180,7 +184,7 @@
         "title": "Update available",
         "content": "New update available, whould you like to download it ?",
         "comment": "The update is could take while for small connection",
-        "btn":{
+        "btn": {
           "confirm": "Download",
           "cancel": "Not now"
         }
@@ -189,10 +193,10 @@
         "title": "Downloading",
         "comment": "The update is could take while for small connection"
       },
-      "downloaded":{
+      "downloaded": {
         "title": "Downloaded",
         "content": "Update downloaded, to intall it restart owltouch",
-        "btn":{
+        "btn": {
           "confirm": "Restart",
           "cancel": "Not now"
         }

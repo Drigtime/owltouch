@@ -1,97 +1,15 @@
 import L from 'leaflet';
-import { elementWithAutoComplete, itemsBank, lifeMinMax, monsterQuantMinMax } from '../events/htmlElementInstance';
-import { bankPos, dofusCoordsToGeoCoords, map, phenixPos } from '../map/map';
+import {
+  elementWithAutoComplete,
+  itemsBank,
+  lifeMinMax,
+  monsterQuantMinMax,
+} from '../events/htmlElementInstance';
+import { bankPos, dofusCoordsToGeoCoords, map, phenixPos, mapTileLayer } from '../map/map';
+import icon from './iconProperties';
 
 const { join } = require('path');
 const { readFileSync } = require('fs');
-
-export const icon = {
-  move: ['top', 'bottom', 'left', 'right', 'bank', 'phenix', 'bankOut'],
-  type: ['move', 'gather', 'fight', 'gatherfight', 'bank', 'phenix'],
-  size: {
-    move: {
-      top: {
-        width: 17.22,
-        height: 25,
-        marginLeft: 17.22 / 2,
-        topMargin: 25,
-      },
-      bottom: {
-        width: 17.22,
-        height: 25,
-        marginLeft: 17.22 / 2,
-        topMargin: 0,
-      },
-      left: {
-        width: 32.04,
-        height: 17.22,
-        marginLeft: 34.75,
-        topMargin: 17.22 / 2,
-      },
-      right: {
-        width: 32.04,
-        height: 17.22,
-        marginLeft: 32.04 - 34.75,
-        topMargin: 17.22 / 2,
-      },
-      zindex: 9999,
-    },
-    bank: {
-      top: {
-        width: 17.22,
-        height: 25,
-        marginLeft: -2.5,
-        topMargin: 25,
-      },
-      bottom: {
-        width: 17.22,
-        height: 25,
-        marginLeft: -2.5,
-        topMargin: 0,
-      },
-      left: {
-        width: 32.04,
-        height: 17.22,
-        marginLeft: 34.75,
-        topMargin: -2.5,
-      },
-      right: {
-        width: 32.04,
-        height: 17.22,
-        marginLeft: 32.04 - 34.75,
-        topMargin: -2.5,
-      },
-      zindex: 9998,
-    },
-    phenix: {
-      top: {
-        width: 17.22,
-        height: 25,
-        marginLeft: 20,
-        topMargin: 25,
-      },
-      bottom: {
-        width: 17.22,
-        height: 25,
-        marginLeft: 20,
-        topMargin: 0,
-      },
-      left: {
-        width: 32.04,
-        height: 17.22,
-        marginLeft: 34.75,
-        topMargin: 20,
-      },
-      right: {
-        width: 32.04,
-        height: 17.22,
-        marginLeft: 32.04 - 34.75,
-        topMargin: 20,
-      },
-      zindex: 9997,
-    },
-  },
-};
 
 icon.move.forEach((name) => {
   icon[name] = {};
@@ -103,9 +21,16 @@ icon.move.forEach((name) => {
 });
 
 export const movementType = {
-  move: [],
-  bank: [],
-  phenix: [],
+  amakna: {
+    move: [],
+    bank: [],
+    phenix: [],
+  },
+  incarnam: {
+    move: [],
+    bank: [],
+    phenix: [],
+  },
 };
 
 export function checkIfMapAlreadyExist(coord, array) {
@@ -148,12 +73,15 @@ export function getScale(size, zoom) {
 }
 
 export function resizeMarker() {
-  Object.keys(movementType).forEach((dataType) => {
-    Object.values(movementType[dataType]).forEach((object) => {
-      ['top', 'bottom', 'left', 'right'].forEach((name) => {
+  Object.keys(movementType[mapTileLayer.actualLayerName]).forEach((dataType) => {
+    Object.values(movementType[mapTileLayer.actualLayerName][dataType]).forEach((object) => {
+      ['top', 'bottom', 'left', 'right', 'door'].forEach((name) => {
         if (!Object.prototype.hasOwnProperty.call(object, 'marker')) return;
         if (!Object.prototype.hasOwnProperty.call(object.marker, name)) return;
-        const zoom = getScale(icon.size[dataType][name], map.getZoom());
+        const zoom = getScale(
+          icon.size[mapTileLayer.actualLayerName][dataType][name],
+          map.getZoom(),
+        );
         object.marker[name].setIcon(
           L.icon({
             iconUrl: object.marker[name]._icon.src,
@@ -198,11 +126,21 @@ export function deleteAction(dataType, index, name) {
 export function onMapClick(coord) {
   // loop through list of possible mouvement : ['top', 'bottom', 'left', 'right'],
   icon.move.forEach((name) => {
-    if ($(`#${name}`).hasClass('selected')) {
+    if ($('#door').hasClass('selected')) {
+      $('#doorCellidModal').data('coord', coord);
+      $('#doorCellid').val('');
+      $('#doorCellidModal').modal('open');
+    } else if ($(`#${name}`).hasClass('selected')) {
       const dataType = $('#type')[0].selectedOptions[0].dataset.arrayType;
-      const scale = getScale(icon.size[dataType][name], map.getZoom());
+      const scale = getScale(
+        icon.size[mapTileLayer.actualLayerName][dataType][name],
+        map.getZoom(),
+      );
       const type = $('#type')[0].selectedOptions[0].dataset.type;
-      const index = checkIfMapAlreadyExist(coord, movementType[dataType]);
+      const index = checkIfMapAlreadyExist(
+        coord,
+        movementType[mapTileLayer.actualLayerName][dataType],
+      );
       const arrowMarker = L.marker(dofusCoordsToGeoCoords(coord), {
         icon: L.icon({
           iconUrl: icon[name][type].iconUrl,
@@ -210,12 +148,12 @@ export function onMapClick(coord) {
           iconAnchor: [scale.marginLeft, scale.topMargin],
           className: name,
         }),
-        zIndexOffset: icon.size[dataType].zindex,
+        zIndexOffset: icon.size[mapTileLayer.actualLayerName][dataType].zindex,
         interactive: false,
       });
       if (index !== null) {
         if (index.data[name]) {
-          deleteAction(movementType[dataType], index, name);
+          deleteAction(movementType[mapTileLayer.actualLayerName][dataType], index, name);
         } else {
           index.data[name] = {
             [type]: true,
@@ -223,7 +161,7 @@ export function onMapClick(coord) {
           index.marker[name] = arrowMarker.addTo(map);
         }
       } else {
-        movementType[dataType].push({
+        movementType[mapTileLayer.actualLayerName][dataType].push({
           coord: [coord[0], coord[1]],
           data: {
             [name]: {
@@ -237,7 +175,7 @@ export function onMapClick(coord) {
       }
     } else if ($('#delete').hasClass('selected')) {
       let index;
-      Object.values(movementType).forEach((dataType) => {
+      Object.values(movementType[mapTileLayer.actualLayerName]).forEach((dataType) => {
         // get the object {coord: Array(), data: {…}, marker: {…}}
         index = checkIfMapAlreadyExist(coord, dataType);
         if (index !== null) deleteAction(dataType, index, name);
@@ -257,7 +195,7 @@ export function onMapClick(coord) {
       $('#defineBankCoord').modal('open');
     }
   });
-  console.log(coord, movementType);
+  console.log(coord, movementType[mapTileLayer.actualLayerName]);
 }
 
 export function onMapMouseDown(coord) {
@@ -265,9 +203,15 @@ export function onMapMouseDown(coord) {
   icon.move.forEach((name) => {
     if ($(`#${name}`).hasClass('selected')) {
       const dataType = $('#type')[0].selectedOptions[0].dataset.arrayType;
-      const scale = getScale(icon.size[dataType][name], map.getZoom());
+      const scale = getScale(
+        icon.size[mapTileLayer.actualLayerName][dataType][name],
+        map.getZoom(),
+      );
       const type = $('#type')[0].selectedOptions[0].dataset.type;
-      const index = checkIfMapAlreadyExist(coord, movementType[dataType]);
+      const index = checkIfMapAlreadyExist(
+        coord,
+        movementType[mapTileLayer.actualLayerName][dataType],
+      );
       const arrowMarker = L.marker(dofusCoordsToGeoCoords(coord), {
         icon: L.icon({
           iconUrl: icon[name][type].iconUrl,
@@ -275,7 +219,7 @@ export function onMapMouseDown(coord) {
           iconAnchor: [scale.marginLeft, scale.topMargin],
           className: name,
         }),
-        zIndexOffset: icon.size[dataType].zindex,
+        zIndexOffset: icon.size[mapTileLayer.actualLayerName][dataType].zindex,
         interactive: false,
       });
       if (index !== null) {
@@ -288,7 +232,7 @@ export function onMapMouseDown(coord) {
           index.marker[name] = arrowMarker.addTo(map);
         }
       } else {
-        movementType[dataType].push({
+        movementType[mapTileLayer.actualLayerName][dataType].push({
           coord: [coord[0], coord[1]],
           data: {
             [name]: {
@@ -302,14 +246,14 @@ export function onMapMouseDown(coord) {
       }
     } else if ($('#delete').hasClass('selected')) {
       let index;
-      Object.values(movementType).forEach((dataType) => {
+      Object.values(movementType[mapTileLayer.actualLayerName]).forEach((dataType) => {
         // get the object {coord: Array(), data: {…}, marker: {…}}
         index = checkIfMapAlreadyExist(coord, dataType);
         if (index !== null) deleteAction(dataType, index, name);
       });
     }
   });
-  console.log(coord, movementType);
+  console.log(coord, movementType[mapTileLayer.actualLayerName]);
 }
 
 export function getIdOfChips(chips, database) {
@@ -340,47 +284,56 @@ export function getIdOfAutoComplete(value, database) {
 
 function generateMove(type) {
   const maps = [];
-  movementType[type].forEach((object) => {
-    const mapInfo = {};
-    const secondarymap = {};
-    let firstAction = true;
-    mapInfo.map = `${object.coord[0]},${object.coord[1]}`;
-    Object.keys(object.data).forEach((key) => {
-      if (key === 'bank') {
-        mapInfo.map = parseInt(object.data[key].mapIdOutSide, 10);
-        mapInfo.door = parseInt(object.data[key].doorIdOutSide, 10);
-        secondarymap.map = parseInt(object.data[key].mapIdInSide, 10);
-        secondarymap.npcBank = true;
-        return;
-      }
-      if (key === 'phenix') {
-        mapInfo.phenix = parseInt(object.data[key].phenixCellid, 10);
-        return;
-      }
-      if (key === 'bankOut') {
-        secondarymap.map = parseInt(object.data[key].mapid, 10);
-        secondarymap.path = String(object.data[key].sun);
-        if (object.data.top || object.data.bottom || object.data.left || object.data.right) {
+  Object.keys(movementType).forEach((worldMap) => {
+    movementType[worldMap][type].forEach((object) => {
+      const mapInfo = {};
+      const secondarymap = {};
+      let firstAction = true;
+      mapInfo.map = `${object.coord[0]},${object.coord[1]}`;
+      Object.keys(object.data).forEach((key) => {
+        if (key === 'bank') {
           mapInfo.map = parseInt(object.data[key].mapIdOutSide, 10);
+          mapInfo.door = parseInt(object.data[key].doorIdOutSide, 10);
+          secondarymap.map = parseInt(object.data[key].mapIdInSide, 10);
+          secondarymap.npcBank = true;
+          return;
         }
-        return;
-      }
-      if (firstAction) {
-        mapInfo.path = `${key}`;
-      } else {
-        mapInfo.path += `|${key}`;
-      }
-      if (object.data[key].gather) {
-        mapInfo.gather = true;
-      } else if (object.data[key].fight) {
-        mapInfo.fight = true;
-      } else if (object.data[key].gatherfight) {
-        mapInfo.gather = true;
-        mapInfo.fight = true;
-      }
-      firstAction = false;
+        if (key === 'phenix') {
+          mapInfo.phenix = parseInt(object.data[key].phenixCellid, 10);
+          return;
+        }
+        if (key === 'bankOut') {
+          secondarymap.map = parseInt(object.data[key].mapid, 10);
+          secondarymap.path = String(object.data[key].sun);
+          if (object.data.top || object.data.bottom || object.data.left || object.data.right) {
+            mapInfo.map = parseInt(object.data[key].mapIdOutSide, 10);
+          }
+          return;
+        }
+        if (key === 'door') {
+          mapInfo.door = parseInt(object.data[key].cellid, 10);
+          return;
+        }
+        if (firstAction) {
+          mapInfo.path = `${key}`;
+        } else {
+          mapInfo.path += `|${key}`;
+        }
+        if (object.data[key].gather) {
+          mapInfo.gather = true;
+        } else if (object.data[key].fight) {
+          mapInfo.fight = true;
+        } else if (object.data[key].gatherfight) {
+          mapInfo.gather = true;
+          mapInfo.fight = true;
+        }
+        if (worldMap === 'incarnam') {
+          mapInfo.incarnam = true;
+        }
+        firstAction = false;
+      });
+      $.isEmptyObject(secondarymap) ? maps.push(mapInfo) : maps.push(mapInfo, secondarymap);
     });
-    $.isEmptyObject(secondarymap) ? maps.push(mapInfo) : maps.push(mapInfo, secondarymap);
   });
   return maps;
 }
@@ -433,21 +386,21 @@ export function generateScript() {
         .replace(/"([^(")"]+)":/g, '$1: ')
         .replace(/{(\w+)/g, '{ $1')
         .replace(/(\w+|")}/g, '$1 }')
-        .replace(/,([^-\n])/g, ', $1')
+        .replace(/,([^-\d\n])/g, ', $1')
         .replace(/({.+?}(?:,|))/g, '\n\t$&')
         .replace(/}\]/g, '}\n]'),
       bank: JSON.stringify(generateMove('bank'))
         .replace(/"([^(")"]+)":/g, '$1: ')
         .replace(/{(\w+)/g, '{ $1')
         .replace(/(\w+|")}/g, '$1 }')
-        .replace(/,([^-\n])/g, ', $1')
+        .replace(/,([^-\d\n])/g, ', $1')
         .replace(/({.+?}(?:,|))/g, '\n\t$&')
         .replace(/}\]/g, '}\n]'),
       phenix: JSON.stringify(generateMove('phenix'))
         .replace(/"([^(")"]+)":/g, '$1: ')
         .replace(/{(\w+)/g, '{ $1')
         .replace(/(\w+|")}/g, '$1 }')
-        .replace(/,([^-\n])/g, ', $1')
+        .replace(/,([^-\d\n])/g, ', $1')
         .replace(/({.+?}(?:,|))/g, '\n\t$&')
         .replace(/}\]/g, '}\n]'),
     },

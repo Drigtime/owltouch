@@ -5,7 +5,8 @@
     "posX": 12,
     "posY": 12,
     "mapId": 88086283,
-    "cellId": 184
+    "cellId": 184,
+    "worldMap": 1
   },
   {
     "gfx": "447",
@@ -13,7 +14,8 @@
     "posX": 13,
     "posY": -7,
     "mapId": 93850624,
-    "cellId": 303
+    "cellId": 303,
+    "worldMap": -1
   },
   {
     "gfx": "447",
@@ -21,7 +23,8 @@
     "posX": -14,
     "posY": 31,
     "mapId": 138271,
-    "cellId": 243
+    "cellId": 243,
+    "worldMap": 1
   },
   {
     "gfx": "447",
@@ -29,7 +32,8 @@
     "posX": 36,
     "posY": 5,
     "mapId": 18437,
-    "cellId": 327
+    "cellId": 327,
+    "worldMap": 1
   },
   {
     "gfx": "447",
@@ -37,7 +41,8 @@
     "posX": 4,
     "posY": 11,
     "mapId": 8390667,
-    "cellId": 342
+    "cellId": 342,
+    "worldMap": -1
   },
   {
     "gfx": "447",
@@ -45,7 +50,8 @@
     "posX": 2,
     "posY": -12,
     "mapId": 84673546,
-    "cellId": 272
+    "cellId": 272,
+    "worldMap": 1
   },
   {
     "gfx": "447",
@@ -53,7 +59,8 @@
     "posX": 10,
     "posY": 19,
     "mapId": 88085252,
-    "cellId": 192
+    "cellId": 192,
+    "worldMap": 1
   },
   {
     "gfx": "447",
@@ -61,7 +68,8 @@
     "posX": 27,
     "posY": -33,
     "mapId": 14113,
-    "cellId": 202
+    "cellId": 202,
+    "worldMap": 1
   },
   {
     "gfx": "447",
@@ -69,7 +77,8 @@
     "posX": 25,
     "posY": -4,
     "mapId": 99615238,
-    "cellId": 450
+    "cellId": 450,
+    "worldMap": 1
   },
   {
     "gfx": "447",
@@ -77,7 +86,8 @@
     "posX": 24,
     "posY": -43,
     "mapId": 12587,
-    "cellId": 245
+    "cellId": 245,
+    "worldMap": 1
   },
   {
     "gfx": "447",
@@ -85,7 +95,8 @@
     "posX": -43,
     "posY": -19,
     "mapId": 153363,
-    "cellId": 271
+    "cellId": 271,
+    "worldMap": 1
   },
   {
     "gfx": "447",
@@ -93,7 +104,8 @@
     "posX": -41,
     "posY": -17,
     "mapId": 152337,
-    "cellId": 203
+    "cellId": 203,
+    "worldMap": 1
   },
   {
     "gfx": "447",
@@ -101,7 +113,8 @@
     "posX": -10,
     "posY": 13,
     "mapId": 64489222,
-    "cellId": 354
+    "cellId": 354,
+    "worldMap": 1
   },
   {
     "gfx": "447",
@@ -109,7 +122,17 @@
     "posX": 5,
     "posY": -9,
     "mapId": 84675085,
-    "cellId": 116
+    "cellId": 116,
+    "worldMap": 1
+  },
+  {
+    "gfx": "447",
+    "nameId": "Rocher du Phénix",
+    "posX": 6,
+    "posY": 6,
+    "mapId": 80219143,
+    "cellId": 176,
+    "worldMap": 2
   },
   {
     "gfx": "447",
@@ -117,7 +140,8 @@
     "posX": -58,
     "posY": 18,
     "mapId": 160786,
-    "cellId": 354
+    "cellId": 354,
+    "worldMap": 1
   },
   {
     "gfx": "447",
@@ -125,7 +149,8 @@
     "posX": -60,
     "posY": -3,
     "mapId": 162051,
-    "cellId": 91
+    "cellId": 91,
+    "worldMap": 1
   },
   {
     "gfx": "447",
@@ -133,7 +158,8 @@
     "posX": -26,
     "posY": 36,
     "mapId": 13632516,
-    "cellId": 185
+    "cellId": 185,
+    "worldMap": -1
   },
   {
     "gfx": "447",
@@ -141,7 +167,8 @@
     "posX": -11,
     "posY": -54,
     "mapId": 137014,
-    "cellId": 216
+    "cellId": 216,
+    "worldMap": 1
   },
   {
     "gfx": "447",
@@ -149,7 +176,8 @@
     "posX": -55,
     "posY": 40,
     "mapId": 76283910,
-    "cellId": 240
+    "cellId": 240,
+    "worldMap": 1
   },
   {
     "gfx": "447",
@@ -157,6 +185,7 @@
     "posX": -67,
     "posY": -44,
     "mapId": 54167340,
-    "cellId": 219
+    "cellId": 219,
+    "worldMap": 1
   }
 ]
