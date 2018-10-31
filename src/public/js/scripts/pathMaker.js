@@ -291,6 +291,9 @@ function generateMove(type) {
       let firstAction = true;
       mapInfo.map = `${object.coord[0]},${object.coord[1]}`;
       Object.keys(object.data).forEach((key) => {
+        if (worldMap === 'incarnam') {
+          mapInfo.incarnam = true;
+        }
         if (key === 'bank') {
           mapInfo.map = parseInt(object.data[key].mapIdOutSide, 10);
           mapInfo.door = parseInt(object.data[key].doorIdOutSide, 10);
@@ -326,9 +329,6 @@ function generateMove(type) {
         } else if (object.data[key].gatherfight) {
           mapInfo.gather = true;
           mapInfo.fight = true;
-        }
-        if (worldMap === 'incarnam') {
-          mapInfo.incarnam = true;
         }
         firstAction = false;
       });
