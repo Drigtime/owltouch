@@ -39,7 +39,7 @@
 #menu-dropdown a span.dropdownShortcut {
   float: right;
   margin: 0 0 0 24px;
-  color: #ffffff45 !important;
+  color: rgba(255, 255, 255, 0.5) !important;
 }
 
 .app-icon {
@@ -55,7 +55,7 @@
 }
 
 #map {
-  height: calc(100% - 64px);
+  height: calc(100% - 96px);
   width: 100%;
   background-color: #000;
 }

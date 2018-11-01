@@ -2,6 +2,10 @@ import { app, BrowserWindow, dialog, ipcMain, Menu } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import { format as formatUrl } from 'url';
 
+const en = require('./data/i18n/en/en');
+const fr = require('./data/i18n/fr/fr');
+const es = require('./data/i18n/es/es');
+
 const path = require('path');
 
 const iconPath = path.join(__dirname, 'icon.png');
@@ -15,6 +19,7 @@ function createMainWindow() {
     minWidth: 800,
     minHeight: 500,
     icon: iconPath,
+    frame: false,
     backgroundColor: '#282c34',
   });
   // const window = new BrowserWindow({
@@ -69,6 +74,10 @@ app.on('activate', () => {
 app.on('ready', () => {
   mainWindow = createMainWindow();
 });
+
+// ipcMain.on('languageChanged', (lng) => {
+//   autoUpdater.downloadUpdate();
+// });
 
 const template = [
   {

@@ -172,29 +172,35 @@
           "zaap": "Area de Destino",
           "cancel": "Cancelar",
           "confirm": "Validar"
+        },
+        "door": {
+          "label": "Usa una puerta",
+          "cellid": "Cellid de la puerta",
+          "cancel": "Cancelar",
+          "confirm": "Validar"
         }
       }
     },
     "update": {
       "available": {
-        "title": "Update available",
-        "content": "New update available, whould you like to download it ?",
-        "comment": "The update is could take while for small connection",
-        "btn":{
-          "confirm": "Download",
-          "cancel": "Not now"
+        "title": "Actualización disponible",
+        "content": "Nueva actualización disponible, ¿te gustaría descargarla ?",
+        "comment": "La actualización se puede tardar hasta para una pequeña conexión",
+        "btn": {
+          "confirm": "Descargar",
+          "cancel": "Ahora no"
         }
       },
       "downloading": {
-        "title": "Downloading",
-        "comment": "The update is could take while for small connection"
+        "title": "Descargando",
+        "comment": "La actualización se puede tardar hasta para una pequeña conexión"
       },
-      "downloaded":{
-        "title": "Downloaded",
-        "content": "Update downloaded, to intall it restart owltouch",
-        "btn":{
-          "confirm": "Restart",
-          "cancel": "Not now"
+      "downloaded": {
+        "title": "Descargado",
+        "content": "Actualización descargada, para instalarlo reinicie owltouch",
+        "btn": {
+          "confirm": "Reiniciar",
+          "cancel": "Ahora no"
         }
       }
     }

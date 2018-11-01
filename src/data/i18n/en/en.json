@@ -151,10 +151,6 @@
         "bank": "Bank",
         "phenix": "Phoenix"
       },
-      "basic": {
-        "door": "Door",
-        "custom": "Custom function"
-      },
       "special": {
         "bank": {
           "label": "Bank location",
@@ -176,13 +172,19 @@
           "zaap": "Destination area",
           "cancel": "Cancel",
           "confirm": "Validate"
+        },
+        "door": {
+          "label": "use door",
+          "cellid": "Door cellid",
+          "cancel": "Cancel",
+          "confirm": "Validate"
         }
       }
     },
     "update": {
       "available": {
         "title": "Update available",
-        "content": "New update available, whould you like to download it ?",
+        "content": "New update available, would you like to download it ?",
         "comment": "The update is could take while for small connection",
         "btn": {
           "confirm": "Download",
@@ -195,7 +197,7 @@
       },
       "downloaded": {
         "title": "Downloaded",
-        "content": "Update downloaded, to intall it restart owltouch",
+        "content": "Update downloaded, to install it restart owltouch",
         "btn": {
           "confirm": "Restart",
           "cancel": "Not now"

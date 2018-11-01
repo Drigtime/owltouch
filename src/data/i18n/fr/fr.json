@@ -169,6 +169,12 @@
           "zaap": "Zone de destination",
           "cancel": "Annuler",
           "confirm": "Confirmer"
+        },
+        "door": {
+          "label": "Utiliser une porte",
+          "cellid": "cellid de la porte",
+          "cancel": "Annuler",
+          "confirm": "Confirmer"
         }
       }
     },
@@ -177,7 +183,7 @@
         "title": "Nouvelle mise à jour",
         "content": "Nouvelle mise à jour disponible, voulez-vous la télécharger maintenant ?",
         "comment": "La mise à jour peu prendre du temps pour les petites connections",
-        "btn":{
+        "btn": {
           "confirm": "Télécharger",
           "cancel": "Pas maintenant"
         }
@@ -186,10 +192,10 @@
         "title": "Téléchargement",
         "comment": "La mise à jour peu prendre du temps pour les petites connections"
       },
-      "downloaded":{
+      "downloaded": {
         "title": "Téléchargé",
         "content": "Mise à jour téléchargé, pour l'installer redémarré OwlTouch",
-        "btn":{
+        "btn": {
           "confirm": "Redémarrer",
           "cancel": "Pas maintenant"
         }

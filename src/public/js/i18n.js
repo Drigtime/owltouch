@@ -2,11 +2,11 @@ import i18next from 'i18next';
 import jqueryI18next from 'jquery-i18next';
 import { elementWithAutoComplete, objectMap } from './events/htmlElementInstance';
 import M from './materialize.min.js';
+import store from './events/settings';
 
 const { join } = require('path');
 const fs = require('fs');
 
-const settings = require('../../data/json/settings');
 const en = require('../../data/i18n/en/en');
 const fr = require('../../data/i18n/fr/fr');
 const es = require('../../data/i18n/es/es');
@@ -23,14 +23,14 @@ function resetMaterialElement() {
   const monsters = JSON.parse(
     fs.readFileSync(join(__dirname, `../../data/i18n/${$.i18n.language}/Monsters.json`)),
   );
-  const store = $.i18n.store.data[$.i18n.language].translation.config;
+  const i18nStore = $.i18n.store.data[$.i18n.language].translation.config;
   elementWithAutoComplete.elementToGather = M.Chips.init($('#gatherElementChips'), {
     autocompleteOptions: {
       data: objectMap(interactives, null, null),
       limit: 5,
       minLength: 1,
     },
-    placeholder: store.gather.gather.placeholder,
+    placeholder: i18nStore.gather.gather.placeholder,
   });
   elementWithAutoComplete.regenItems = M.Chips.init($('#regenItemChips'), {
     autocompleteOptions: {
@@ -42,7 +42,7 @@ function resetMaterialElement() {
       limit: 5,
       minLength: 1,
     },
-    placeholder: store.fight.regen.items.placeholder,
+    placeholder: i18nStore.fight.regen.items.placeholder,
   });
   elementWithAutoComplete.monsterMandatory = M.Chips.init($('#monsterMandatory'), {
     autocompleteOptions: {
@@ -54,7 +54,7 @@ function resetMaterialElement() {
       limit: 5,
       minLength: 1,
     },
-    placeholder: store.fight.monster.mandatory.placeholder,
+    placeholder: i18nStore.fight.monster.mandatory.placeholder,
   });
   elementWithAutoComplete.monsterForbidden = M.Chips.init($('#monsterForbidden'), {
     autocompleteOptions: {
@@ -66,7 +66,7 @@ function resetMaterialElement() {
       limit: 5,
       minLength: 1,
     },
-    placeholder: store.fight.monster.forbidden.placeholder,
+    placeholder: i18nStore.fight.monster.forbidden.placeholder,
   });
   elementWithAutoComplete.autoDelete = M.Chips.init($('#autoDelete'), {
     autocompleteOptions: {
@@ -78,7 +78,7 @@ function resetMaterialElement() {
       limit: 5,
       minLength: 1,
     },
-    placeholder: store.bank.autoDelete.placeholder,
+    placeholder: i18nStore.bank.autoDelete.placeholder,
   });
   elementWithAutoComplete.putItemName = M.Autocomplete.init($('#putItemName'), {
     data: objectMap(
@@ -102,7 +102,7 @@ function resetMaterialElement() {
 
 i18next.init(
   {
-    lng: settings.language,
+    lng: store.get('language'),
     resources: {
       en,
       fr,
@@ -121,11 +121,7 @@ export default function changeHtmlInstanceLanguage(e) {
       lng: e.originalEvent.target.value,
     },
     () => {
-      settings.language = $.i18n.language;
-      fs.writeFileSync(
-        join(__dirname, '../../data/json/settings.json'),
-        JSON.stringify(settings, null, 4),
-      );
+      store.set('language', $.i18n.language);
       resetMaterialElement();
     },
   );

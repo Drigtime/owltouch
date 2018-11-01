@@ -40,14 +40,14 @@
         "user": {
             "left": "q",
             "right": "d",
-            "delete": "e",
+            "delete": "d",
             "bankPlacement": "w",
             "phenixPlacement": "x",
             "zaapPlacement": "c",
             "bottom": "s",
-            "top": "z",
+            "top": "w",
             "phenix": "x",
-            "bank": "w"
+            "bank": "z"
         }
     },
     "language": "fr"
