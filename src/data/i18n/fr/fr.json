@@ -64,11 +64,11 @@
           "min": "Minimum",
           "max": "Maximum",
           "forbidden": {
-            "label": "Monstres obligatoires",
+            "label": "Monstres interdits",
             "placeholder": "ex: Piou"
           },
           "mandatory": {
-            "label": "Monstres interdits",
+            "label": "Monstres obligatoires",
             "placeholder": "ex: Piou"
           },
           "fightPerMap": "Nombre maximum de combats par map"
@@ -173,6 +173,13 @@
         "door": {
           "label": "Utiliser une porte",
           "cellid": "cellid de la porte",
+          "cancel": "Annuler",
+          "confirm": "Confirmer"
+        },
+        "custom": {
+          "label": "utiliser une fonction custom",
+          "name": "nom de la fonction",
+          "code": "code de la fonction",
           "cancel": "Annuler",
           "confirm": "Confirmer"
         }
