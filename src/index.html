@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="../node_modules/leaflet.markercluster/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="../node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css" />
   <link rel="stylesheet" href="public/css/style.css">
-  <title>OwlTouch 1.2.4</title>
+  <title>OwlTouch 1.2.5</title>
 </head>
 
 <body>
@@ -31,7 +31,7 @@
       <li><a id="close-button"><i class="material-icons">close</i></a></li>
     </ul>
     <div class="app-version">
-      <span>OwlTouch 1.2.4</span>
+      <span>OwlTouch 1.2.5</span>
     </div>
   </nav>
 
@@ -462,6 +462,22 @@
     <div class="modal-footer">
       <a class="modal-close waves-effect btn-flat" data-i18n="movement.special.door.cancel"></a>
       <a id="doorCellidModalConfirm" class="modal-close waves-effect btn" data-i18n="movement.special.door.confirm"></a>
+    </div>
+  </div>
+  <div id="customFunctionModal" class="modal">
+    <div class="modal-content">
+      <div class="input-field">
+        <span data-i18n="movement.special.custom.name"></span>
+        <input id="doorCellid" type="number">
+      </div>
+      <div class="input-field">
+        <span data-i18n="movement.special.custom.code"></span>
+        <textarea class="materialize-textarea"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a class="modal-close waves-effect btn-flat" data-i18n="movement.special.custom.cancel"></a>
+      <a id="customFunctionModalConfirm" class="modal-close waves-effect btn" data-i18n="movement.special.custom.confirm"></a>
     </div>
   </div>
   <div class="card" id="updateAvailable">
