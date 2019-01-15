@@ -1,0 +1,11 @@
+{
+  "title": "owltouch",
+  "main": {
+    "sourceDirectory": "src/main",
+    "webpackConfig": "custom.additions.webpack.js"
+  },
+  "renderer": {
+    "sourceDirectory": "src/renderer",
+    "webpackConfig": "custom.additions.webpack.js"
+  }
+}

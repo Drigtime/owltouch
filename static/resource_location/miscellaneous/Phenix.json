@@ -1,0 +1,162 @@
+[
+  {
+    "gfx": "447",
+    "nameId": "La forêt d'Amakna",
+    "posX": 12,
+    "posY": 12,
+    "mapId": 88086283,
+    "cellId": 184
+  },
+  {
+    "gfx": "447",
+    "nameId": "Prison",
+    "posX": 13,
+    "posY": -7,
+    "mapId": 93850624,
+    "cellId": 303
+  },
+  {
+    "gfx": "447",
+    "nameId": "Cimetière des Torturés",
+    "posX": -14,
+    "posY": 31,
+    "mapId": 138271,
+    "cellId": 243
+  },
+  {
+    "gfx": "447",
+    "nameId": "La plage de Moon",
+    "posX": 36,
+    "posY": 5,
+    "mapId": 18437,
+    "cellId": 327
+  },
+  {
+    "gfx": "447",
+    "nameId": "La plage de Moon",
+    "posX": 4,
+    "posY": 11,
+    "mapId": 8390667,
+    "cellId": 342
+  },
+  {
+    "gfx": "447",
+    "nameId": "Le coin des Tofus",
+    "posX": 2,
+    "posY": -12,
+    "mapId": 84673546,
+    "cellId": 272
+  },
+  {
+    "gfx": "447",
+    "nameId": "Territoire des Bandits",
+    "posX": 10,
+    "posY": 19,
+    "mapId": 88085252,
+    "cellId": 192
+  },
+  {
+    "gfx": "447",
+    "nameId": "Pandala Neutre",
+    "posX": 27,
+    "posY": -33,
+    "mapId": 14113,
+    "cellId": 202
+  },
+  {
+    "gfx": "447",
+    "nameId": "Île de la Cawotte",
+    "posX": 25,
+    "posY": -4,
+    "mapId": 99615238,
+    "cellId": 450
+  },
+  {
+    "gfx": "447",
+    "nameId": "Forêt de Pandala",
+    "posX": 24,
+    "posY": -43,
+    "mapId": 12587,
+    "cellId": 245
+  },
+  {
+    "gfx": "447",
+    "nameId": "L'île du Minotoror",
+    "posX": -43,
+    "posY": -19,
+    "mapId": 153363,
+    "cellId": 271
+  },
+  {
+    "gfx": "447",
+    "nameId": "L'île du Minotoror",
+    "posX": -41,
+    "posY": -17,
+    "mapId": 152337,
+    "cellId": 203
+  },
+  {
+    "gfx": "447",
+    "nameId": "Cimetière primitif",
+    "posX": -10,
+    "posY": 13,
+    "mapId": 64489222,
+    "cellId": 354
+  },
+  {
+    "gfx": "447",
+    "nameId": "Elevage de Bouftous du Château d'Amakna",
+    "posX": 5,
+    "posY": -9,
+    "mapId": 84675085,
+    "cellId": 116
+  },
+  {
+    "gfx": "447",
+    "nameId": "Plage de Corail",
+    "posX": -58,
+    "posY": 18,
+    "mapId": 160786,
+    "cellId": 354
+  },
+  {
+    "gfx": "447",
+    "nameId": "Tourbière sans fond",
+    "posX": -60,
+    "posY": -3,
+    "mapId": 162051,
+    "cellId": 91
+  },
+  {
+    "gfx": "447",
+    "nameId": "Centre-ville Brâkmar",
+    "posX": -26,
+    "posY": 36,
+    "mapId": 13632516,
+    "cellId": 185
+  },
+  {
+    "gfx": "447",
+    "nameId": "Landes de Cania",
+    "posX": -11,
+    "posY": -54,
+    "mapId": 137014,
+    "cellId": 216
+  },
+  {
+    "gfx": "447",
+    "nameId": "Forêt d'Espartiate",
+    "posX": -55,
+    "posY": 40,
+    "mapId": 76283910,
+    "cellId": 240
+  },
+  {
+    "gfx": "447",
+    "nameId": "Les champs de glaces",
+    "posX": -67,
+    "posY": -44,
+    "mapId": 54167340,
+    "cellId": 219
+  }
+]

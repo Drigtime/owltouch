@@ -1,0 +1,37 @@
+<svg width="219.25074" height="318.30756" xmlns="http://www.w3.org/2000/svg">
+ <metadata id="metadata4292">image/svg+xml</metadata>
+ <defs>
+  <clipPath id="clipPath1490" clipPathUnits="userSpaceOnUse">
+   <rect stroke-width="1.219957" transform="rotate(90 0.000011444091796875002,1) " ry="12.5429" y="-502.22122" x="133.854781" height="318.36765" width="229.381" id="rect1492"/>
+  </clipPath>
+ </defs>
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="402" width="582" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <g transform="matrix(1,0,0,-1,0,318.30757)" clip-path="none" id="g6323"/>
+  <g transform="matrix(1,0,0,-1,0,318.30757) " id="svg_19">
+   <g id="svg_17" transform="matrix(0,-1,1,0,-137.05168,493.35600000000005) " clip-path="url(#clipPath1490)">
+    <path style="--darkreader-inline-fill:#c5c512;" fill="#ffff00" d="m489.498,239.278011l-109.632,-99.929c-3.046,-2.474 -6.376,-2.95 -9.993,-1.427c-3.613,1.525 -5.427,4.283 -5.427,8.282l0,63.954l-356.31,0c-2.666,0 -4.856,0.855 -6.567,2.568c-1.71,1.712 -2.569,3.902 -2.569,6.566l0,54.816c0,2.663 0.855,4.853 2.568,6.563c1.715,1.712 3.905,2.567 6.567,2.567l356.313,0l0,63.953c0,3.812 1.817,6.57 5.428,8.278c3.62,1.529 6.95,0.951 9.996,-1.708l109.632,-101.077c1.903,-1.902 2.852,-4.182 2.852,-6.849c0,-2.468 -0.955,-4.654 -2.858,-6.557z" id="svg_18"/>
+   </g>
+   <g id="svg_16" transform="matrix(1,0,0,1,-1.1708862,-1.5375999999999976) "/>
+   <g id="svg_15" transform="matrix(1,0,0,1,-1.1708862,-1.5375999999999976) "/>
+   <g id="svg_14" transform="matrix(1,0,0,1,-1.1708862,-1.5375999999999976) "/>
+   <g id="svg_13" transform="matrix(1,0,0,1,-1.1708862,-1.5375999999999976) "/>
+   <g id="svg_12" transform="matrix(1,0,0,1,-1.1708862,-1.5375999999999976) "/>
+   <g id="svg_11" transform="matrix(1,0,0,1,-1.1708862,-1.5375999999999976) "/>
+   <g id="svg_10" transform="matrix(1,0,0,1,-1.1708862,-1.5375999999999976) "/>
+   <g id="svg_9" transform="matrix(1,0,0,1,-1.1708862,-1.5375999999999976) "/>
+   <g id="svg_8" transform="matrix(1,0,0,1,-1.1708862,-1.5375999999999976) "/>
+   <g id="svg_7" transform="matrix(1,0,0,1,-1.1708862,-1.5375999999999976) "/>
+   <g id="svg_6" transform="matrix(1,0,0,1,-1.1708862,-1.5375999999999976) "/>
+   <g id="svg_5" transform="matrix(1,0,0,1,-1.1708862,-1.5375999999999976) "/>
+   <g id="svg_4" transform="matrix(1,0,0,1,-1.1708862,-1.5375999999999976) "/>
+   <g id="svg_3" transform="matrix(1,0,0,1,-1.1708862,-1.5375999999999976) "/>
+   <g id="svg_2" transform="matrix(1,0,0,1,-1.1708862,-1.5375999999999976) "/>
+   <rect style="--darkreader-inline-fill:#c5c512;" fill="#ffff00" stroke-width="1.007227" id="svg_1" width="73.102463" height="190.39758" x="70.106308" y="-20.39758" ry="7.316679" transform="matrix(1,0,0,1,3.000011418456779,149.30757) "/>
+  </g>
+ </g>
+</svg>

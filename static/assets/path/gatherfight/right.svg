@@ -1,0 +1,40 @@
+<svg width="107.84864" height="58.01009" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <clipPath id="clipPath1490" clipPathUnits="userSpaceOnUse">
+   <rect stroke-width="1.219957" transform="rotate(90)" ry="12.5429" y="-503.22122" x="133.85477" height="318.36765" width="229.381" id="rect1492"/>
+  </clipPath>
+ </defs>
+ <metadata id="metadata3879">image/svg+xml</metadata>
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="402" width="582" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <g id="layer1">
+   <g transform="matrix(0,-0.26458333,0.26458333,0,0.05515285,58.104301) " clip-path="none" id="g6323">
+    <g id="g6321">
+     <g id="g4255" transform="matrix(0,1,1,0,-137.05168,-86.155006) " clip-path="url(#clipPath1490)">
+      <path style="--darkreader-inline-fill:#c5c512;" fill="#ffff00" d="m490.498,239.278l-109.632,-99.929c-3.046,-2.474 -6.376,-2.95 -9.993,-1.427c-3.613,1.525 -5.427,4.283 -5.427,8.282l0,63.954l-356.31,0c-2.666,0 -4.856,0.855 -6.567,2.568c-1.71,1.712 -2.569,3.902 -2.569,6.566l0,54.816c0,2.663 0.855,4.853 2.568,6.563c1.715,1.712 3.905,2.567 6.567,2.567l356.313,0l0,63.953c0,3.812 1.817,6.57 5.428,8.278c3.62,1.529 6.95,0.951 9.996,-1.708l109.632,-101.077c1.903,-1.902 2.852,-4.182 2.852,-6.849c0,-2.468 -0.955,-4.654 -2.858,-6.557z" id="path4253"/>
+     </g>
+     <g id="g4257" transform="matrix(1,0,0,-1,-1.1708862,319.84517) "/>
+     <g id="g4259" transform="matrix(1,0,0,-1,-1.1708862,319.84517) "/>
+     <g id="g4261" transform="matrix(1,0,0,-1,-1.1708862,319.84517) "/>
+     <g id="g4263" transform="matrix(1,0,0,-1,-1.1708862,319.84517) "/>
+     <g id="g4265" transform="matrix(1,0,0,-1,-1.1708862,319.84517) "/>
+     <g id="g4267" transform="matrix(1,0,0,-1,-1.1708862,319.84517) "/>
+     <g id="g4269" transform="matrix(1,0,0,-1,-1.1708862,319.84517) "/>
+     <g id="g4271" transform="matrix(1,0,0,-1,-1.1708862,319.84517) "/>
+     <g id="g4273" transform="matrix(1,0,0,-1,-1.1708862,319.84517) "/>
+     <g id="g4275" transform="matrix(1,0,0,-1,-1.1708862,319.84517) "/>
+     <g id="g4277" transform="matrix(1,0,0,-1,-1.1708862,319.84517) "/>
+     <g id="g4279" transform="matrix(1,0,0,-1,-1.1708862,319.84517) "/>
+     <g id="g4281" transform="matrix(1,0,0,-1,-1.1708862,319.84517) "/>
+     <g id="g4283" transform="matrix(1,0,0,-1,-1.1708862,319.84517) "/>
+     <g id="g4285" transform="matrix(1,0,0,-1,-1.1708862,319.84517) "/>
+     <rect style="--darkreader-inline-fill:#c5c512;" fill="#ffff00" stroke-width="1.007227" id="rect1494" width="73.102463" height="190.39758" x="73.106308" y="-190.39758" ry="7.316679" transform="scale(1,-1) "/>
+    </g>
+   </g>
+  </g>
+ </g>
+</svg>

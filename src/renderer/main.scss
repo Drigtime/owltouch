@@ -1,0 +1,11 @@
+html,
+body,
+#app {
+  height: 100%;
+  width: 100%;
+}
+
+.leaflet-container {
+  height: calc(100% - 48px);
+  width: 100%;
+}
