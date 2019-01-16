@@ -7,16 +7,28 @@ import SelectMovementType from "renderer/components/ToolBar/SelectMovementType/i
 import ToggleButton from "renderer/components/ToolBar/ToggleButton/index";
 import { toolBarStyles } from "renderer/components/ToolBar/type";
 
+import Modal from "renderer/components/Modal/index";
+
 class ButtonAppBar extends React.Component {
   state = {
-    anchorEl: null
+    anchorEl: null,
+    modalGlobalSettingsOpen: false
   };
 
-  handleClick = event => {
+  modalHandleOpen = () => {
+    this.setState({ modalGlobalSettingsOpen: true });
+    this.menuHandleCLose();
+  };
+
+  modalHandleClose = () => {
+    this.setState({ modalGlobalSettingsOpen: false });
+  };
+
+  menuHandleOpen = event => {
     this.setState({ anchorEl: event.currentTarget });
   };
 
-  handleClose = () => {
+  menuHandleCLose = () => {
     this.setState({ anchorEl: null });
   };
 
@@ -36,7 +48,7 @@ class ButtonAppBar extends React.Component {
               aria-label="Menu"
               aria-owns={anchorEl ? "simple-menu" : undefined}
               aria-haspopup="true"
-              onClick={this.handleClick}
+              onClick={this.menuHandleOpen}
             >
               <MoreVert />
             </IconButton>
@@ -44,13 +56,23 @@ class ButtonAppBar extends React.Component {
               id="simple-menu"
               anchorEl={anchorEl}
               open={Boolean(anchorEl)}
-              onClose={this.handleClose}
+              onClose={this.menuHandleCLose}
             >
-              <MenuItem onClick={this.handleClose}>Global settings</MenuItem>
-              <MenuItem onClick={this.handleClose}>Itinary settings</MenuItem>
+              <MenuItem onClick={this.modalHandleOpen}>
+                Global settings
+              </MenuItem>
+              <MenuItem onClick={this.modalHandleOpen}>
+                Itinerary settings
+              </MenuItem>
             </Menu>
           </Toolbar>
         </AppBar>
+        <Modal
+          open={this.state.modalGlobalSettingsOpen}
+          onClose={this.modalHandleClose}
+        >
+          {<div />}
+        </Modal>
       </div>
     );
   }
