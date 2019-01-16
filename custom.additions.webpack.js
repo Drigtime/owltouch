@@ -10,7 +10,7 @@ module.exports = {
           presets: ["@babel/preset-react"]
         }
       },
-      { test: /\.(png|jpg)$/, loader: "url-loader" },
+      { test: /\.(png|jpg)$/, loader: "url-loader", include: [path.join(__dirname, 'static')] },
       {
         test: /\.json$/,
         loader: "json-loader"
