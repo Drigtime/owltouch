@@ -1,7 +1,8 @@
 import L from "leaflet";
+import fs from "fs";
 import { MapControl, withLeaflet } from "react-leaflet";
-const mapList = require(__static + "/d2o/map.json");
-const areas = require(__static + "/d2o/areas.json");
+const mapList = JSON.parse(fs.readFileSync(__static + "/d2o/map.json", "utf8"))
+const areas = JSON.parse(fs.readFileSync(__static + "/d2o/areas.json", "utf8"))
 
 const actualDofusCoords = { x: 0, y: 0 };
 const dofusMapSubAreaHighlight = [];
@@ -14,7 +15,7 @@ export function getId(x, y) {
       mapList[key].posX === x &&
       mapList[key].posY === y &&
       mapList[key].hasPriorityOnWorldmap &&
-      mapList[key].worldMap === 1
+      (mapList[key].worldMap === 1 || mapList[key].worldMap === -1)
     ) {
       return {
         id: mapList[key].id,
@@ -40,7 +41,7 @@ function mapidToCoord(mapIds) {
     if (
       mapList[element] &&
       mapList[element].hasPriorityOnWorldmap &&
-      mapList[element].worldMap === 1
+      (mapList[element].worldMap === 1 || mapList[element].worldMap === -1)
     ) {
       list.push({
         x: mapList[element].posX,
