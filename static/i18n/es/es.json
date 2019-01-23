@@ -1,0 +1,208 @@
+{
+  "translation": {
+    "titlebar": {
+      "dropdownTrigger": "Archivo",
+      "newFile": "Nuevo Trayecto",
+      "saveFile": "Guardar Trayecto",
+      "loadFile": "Cargar Trayecto",
+      "restart": "Reinicio",
+      "devTools": "Modo Desarrollador"
+    },
+    "dropdown": {
+      "settings": "Opciones",
+      "config": "Configuracion de Trayecto"
+    },
+    "settings": {
+      "keyBinding": {
+        "label": "Atajos",
+        "top": "Arriba",
+        "bottom": "Abajo",
+        "left": "Izquierda",
+        "right": "Derecha",
+        "delete": "Borrar",
+        "bank": "Banco",
+        "phoenix": "Fenix",
+        "zaap": "Zaap"
+      },
+      "language": {
+        "label": "Lenguaje",
+        "fr": "French",
+        "en": "English",
+        "es": "Spanish"
+      },
+      "about": {
+        "label": "Acerda de"
+      },
+      "btn": {
+        "default": "Reiniciar",
+        "confirm": "Validar"
+      }
+    },
+    "config": {
+      "gather": {
+        "label": "Recolecta",
+        "count": "Mostrar Nº de recolectas",
+        "openbag": "Abrir sacos automaticamente",
+        "gather": {
+          "label": "Objetos a recolectar",
+          "placeholder": "ej: Trigo"
+        }
+      },
+      "fight": {
+        "label": "Combate",
+        "count": "Mostrar Nº de combates",
+        "regen": {
+          "label": "Regeneracion",
+          "toggleAutoRegen": "Activar regeneracion automatica",
+          "regenMinMax": "Regenerar minimo / maximo",
+          "items": {
+            "label": "Objetos para regenerar",
+            "placeholder": "ej: Pan"
+          },
+          "quantity": "Cantidad de articulos a retirar del banco"
+        },
+        "monster": {
+          "minMax": "Minimo / Maximo numero de monstruos para atacar",
+          "minMaxLevel": "Nivel del grupo de monstruos",
+          "min": "Minimo",
+          "max": "Maximo",
+          "forbidden": {
+            "label": "Monstruos exentos",
+            "placeholder": "ej: Pio"
+          },
+          "mandatory": {
+            "label": "Monstruos obligatorios",
+            "placeholder": "ej: Pio"
+          },
+          "fightPerMap": "Numero maximo de peleas por mapa"
+        }
+      },
+      "bank": {
+        "label": "Banco",
+        "pods": "Pods maximos antes de visitar el banco",
+        "autoDelete": {
+          "label": "Borrar automaticamente",
+          "placeholder": "ej: Pluma"
+        },
+        "putKamas": {
+          "label": "Kamas a depositar",
+          "helperText": "Si es 0 todos los kamas se depositaran."
+        },
+        "getKamas": {
+          "label": "Kamas a Retirar",
+          "helperText": "Si es 0 todos los kamas se retiraran"
+        },
+        "putItems": {
+          "label": "Objetos a depositar en el banco",
+          "itemName": {
+            "label": "Nombre del objeto a depositar",
+            "placeholder": "ej: Pluma"
+          },
+          "quantity": {
+            "label": "Cantidad",
+            "helperText": "Si es 0, todos los objetos se depositaran."
+          },
+          "btnAdd": "Añadir",
+          "table": {
+            "icon": "Icono",
+            "name": "Nombre",
+            "quantity": "Cantidad",
+            "action": "Accion"
+          }
+        },
+        "getItems": {
+          "label": "Objetos a recuperar del banco",
+          "itemName": {
+            "label": "Nombre del objeto a recuperar",
+            "placeholder": "ej: Pluma"
+          },
+          "quantity": {
+            "label": "Cantidad",
+            "helperText": "Si es 0, se recuperaran todos los objetos."
+          },
+          "btnAdd": "Añadir",
+          "table": {
+            "icon": "Icono",
+            "name": "Nombre",
+            "quantity": "Cantidad",
+            "action": "Accion"
+          }
+        }
+      },
+      "information": {
+        "label": "Informacion",
+        "author": "Nombre del autor",
+        "name": "Nombre del Trayecto",
+        "type": "Tipo de Trayecto",
+        "area": "Area del Trayecto",
+        "job": "Oficio del Trayecto"
+      },
+      "btn": {
+        "default": "Reiniciar",
+        "confirm": "Validar"
+      }
+    },
+    "movement": {
+      "type": {
+        "move": "Mover",
+        "gather": "Recolectar",
+        "fight": "Luchar",
+        "gatherfight": "Recolectar & Luchar",
+        "bank": "Banco",
+        "phoenix": "Fenix"
+      },
+      "special": {
+        "bank": {
+          "label": "Localizacion del Banco",
+          "mapidOutSide": "Mapid fuera del banco",
+          "doorIdOutSide": "Cellid de la puerta para entrar en el banco",
+          "mapidInside": "Mapid dentro del banco",
+          "sunIdInside": "Cellid de la salida del banco",
+          "cancel": "Cancelar",
+          "confirm": "Validar"
+        },
+        "phoenix": {
+          "label": "Localizacion Fenix",
+          "cellid": "Cellid del Fenix",
+          "cancel": "Cancelar",
+          "confirm": "Validar"
+        },
+        "zaap": {
+          "label": "Localizacion del Zaap",
+          "zaap": "Area de Destino",
+          "cancel": "Cancelar",
+          "confirm": "Validar"
+        },
+        "door": {
+          "label": "Usa una puerta",
+          "cellid": "Cellid de la puerta",
+          "cancel": "Cancelar",
+          "confirm": "Validar"
+        }
+      }
+    },
+    "update": {
+      "available": {
+        "title": "Actualización disponible",
+        "content": "Nueva actualización disponible, ¿te gustaría descargarla ?",
+        "comment": "La actualización se puede tardar hasta para una pequeña conexión",
+        "btn": {
+          "confirm": "Descargar",
+          "cancel": "Ahora no"
+        }
+      },
+      "downloading": {
+        "title": "Descargando",
+        "comment": "La actualización se puede tardar hasta para una pequeña conexión"
+      },
+      "downloaded": {
+        "title": "Descargado",
+        "content": "Actualización descargada, para instalarlo reinicie owltouch",
+        "btn": {
+          "confirm": "Reiniciar",
+          "cancel": "Ahora no"
+        }
+      }
+    }
+  }
+}

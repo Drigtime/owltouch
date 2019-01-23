@@ -7,7 +7,7 @@ import SelectMovementType from "renderer/components/ToolBar/SelectMovementType/i
 import ToggleButton from "renderer/components/ToolBar/ToggleButton/index";
 import { toolBarStyles } from "renderer/components/ToolBar/type";
 
-import Modal from "renderer/components/Modal/index";
+import Itinerary from "renderer/components/Modal/ItinerarySettings";
 
 class ButtonAppBar extends React.Component {
   state = {
@@ -67,12 +67,12 @@ class ButtonAppBar extends React.Component {
             </Menu>
           </Toolbar>
         </AppBar>
-        <Modal
+        <Itinerary
           open={this.state.modalGlobalSettingsOpen}
           onClose={this.modalHandleClose}
         >
           {<div />}
-        </Modal>
+        </Itinerary>
       </div>
     );
   }

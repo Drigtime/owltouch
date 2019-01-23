@@ -12,7 +12,8 @@ export const mainTheme = createMuiTheme({
     type: "dark"
   },
   typography: {
-    fontFamily: ["Roboto", '"Segoe UI"', "Tahoma", "sans-serif"].join(",")
+    fontFamily: ["Roboto", '"Segoe UI"', "Tahoma", "sans-serif"].join(","),
+    useNextVariants: true
   }
 });
 
