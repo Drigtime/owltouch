@@ -4,5 +4,12 @@ import * as React from "react";
 import { render } from "react-dom";
 import "./leaflet/leaflet.css";
 import "./main.scss";
+import { Provider } from "react-redux";
+import store from 'renderer/store.js'
 
-render(<Main />, document.getElementById("app"));
+render(
+  <Provider store={store}>
+    <Main />
+  </Provider>,
+  document.getElementById("app")
+);

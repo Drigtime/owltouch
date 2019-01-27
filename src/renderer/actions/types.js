@@ -1,0 +1,1 @@
+export const MOVEMENT_TYPE = 'MOVEMENT_TYPE'

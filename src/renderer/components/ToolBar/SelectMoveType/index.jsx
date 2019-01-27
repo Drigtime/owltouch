@@ -4,15 +4,13 @@ import Select from "@material-ui/core/Select";
 import { withStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import React from "react";
-import { selectStyles } from "renderer/components/ToolBar/SelectMovementType/type";
+import { selectStyles } from "renderer/components/ToolBar/SelectMoveType/type";
+import { connect } from "react-redux";
+import { changeMoveType } from "renderer/actions/moveTypeAction";
 
-class SelectMovementType extends React.Component {
-  state = {
-    movementType: "top"
-  };
-
+class SelectMoveType extends React.Component {
   handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
+    this.props.changeMoveType(event.target.value)
   };
 
   render() {
@@ -23,10 +21,10 @@ class SelectMovementType extends React.Component {
         <FormControl className={classes.formControl}>
           <Select
             onChange={this.handleChange}
-            value={this.state.movementType}
+            value={this.props.moveType}
             inputProps={{
-              id: "movement-type",
-              name: "movementType"
+              id: "move-type",
+              name: "moveType"
             }}
           >
             <MenuItem value={"top"}>Top</MenuItem>
@@ -40,8 +38,17 @@ class SelectMovementType extends React.Component {
   }
 }
 
-SelectMovementType.propTypes = {
-  classes: PropTypes.object.isRequired
+SelectMoveType.propTypes = {
+  classes: PropTypes.object.isRequired,
+  changeMoveType: PropTypes.func.isRequired,
+  moveType: PropTypes.string.isRequired
 };
 
-export default withStyles(selectStyles)(SelectMovementType);
+const mapStateToProps = state => ({
+  moveType: state.moveType.moveType
+});
+
+export default connect(
+  mapStateToProps,
+  { changeMoveType }
+)(withStyles(selectStyles)(SelectMoveType));

@@ -3,7 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import MoreVert from "@material-ui/icons/MoreVert";
 import PropTypes from "prop-types";
 import React from "react";
-import SelectMovementType from "renderer/components/ToolBar/SelectMovementType/index";
+import SelectMovementType from "renderer/components/ToolBar/SelectMoveType/index";
 import ToggleButton from "renderer/components/ToolBar/ToggleButton/index";
 import { toolBarStyles } from "renderer/components/ToolBar/type";
 
