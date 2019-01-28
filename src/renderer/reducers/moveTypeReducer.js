@@ -1,7 +1,7 @@
 import { MOVEMENT_TYPE } from "renderer/actions/types.js";
 
 const initialState = {
-  moveType: "top"
+  type: "move"
 };
 
 export default function(state = initialState, { type, payload }) {
@@ -9,7 +9,7 @@ export default function(state = initialState, { type, payload }) {
     case MOVEMENT_TYPE:
       return {
         ...state,
-        moveType: payload
+        type: payload
       };
     default:
       return state;

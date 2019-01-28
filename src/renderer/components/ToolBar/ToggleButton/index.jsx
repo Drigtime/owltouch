@@ -7,39 +7,33 @@ import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import PropTypes from "prop-types";
 import React from "react";
 import { toggleButtonStyles } from "renderer/components/ToolBar/ToggleButton/type";
+import { connect } from "react-redux";
+import {
+  changeMoveDirection,
+  changeBuildingPlacement,
+  changeFormatTools
+} from "renderer/actions/moveDirectionAction";
 
 class ToggleButtons extends React.Component {
-  state = {
-    formats: null,
-    movementType: [],
-    specialMovementPlacement: null
+  handleMoveDirections = (event, directions) => {
+    this.props.changeMoveDirection(directions);
   };
-  handleMovementType = (event, movementType) => {
-    this.setState({ movementType });
-    this.setState({ formats: null });
-    this.setState({ specialMovementPlacement: null });
+  handleSpecialMovementPlacement = (event, building) => {
+    this.props.changeBuildingPlacement(building);
   };
-  handleSpecialMovementPlacement = (event, specialMovementPlacement) => {
-    this.setState({ specialMovementPlacement });
-    this.setState({ formats: null });
-    this.setState({ movementType: [] });
-  };
-  handleFormats = (event, formats) => {
-    this.setState({ formats });
-    this.setState({ movementType: [] });
-    this.setState({ specialMovementPlacement: null });
+  handleFormats = (event, format) => {
+    this.props.changeFormatTools(format);
   };
   render() {
-    const { classes } = this.props;
-    const { specialMovementPlacement, movementType, formats } = this.state;
+    const { classes, directions, format, building } = this.props;
 
     return (
       <Grid container={true} spacing={16}>
         <Grid item={true}>
           <div className={classes.toggleContainer}>
             <ToggleButtonGroup
-              value={movementType}
-              onChange={this.handleMovementType}
+              value={directions}
+              onChange={this.handleMoveDirections}
             >
               <ToggleButton value="top">
                 <FontAwesomeIcon size="lg" icon="arrow-up" />
@@ -59,7 +53,7 @@ class ToggleButtons extends React.Component {
         <Grid item={true}>
           <div className={classes.toggleContainer}>
             <ToggleButtonGroup
-              value={specialMovementPlacement}
+              value={building}
               exclusive={true}
               onChange={this.handleSpecialMovementPlacement}
             >
@@ -89,7 +83,7 @@ class ToggleButtons extends React.Component {
         <Grid item={true}>
           <div className={classes.toggleContainer}>
             <ToggleButtonGroup
-              value={formats}
+              value={format}
               exclusive={true}
               onChange={this.handleFormats}
             >
@@ -105,7 +99,26 @@ class ToggleButtons extends React.Component {
 }
 
 ToggleButtons.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  directions: PropTypes.array,
+  format: PropTypes.string,
+  building: PropTypes.string,
+  changeMoveDirection: PropTypes.func.isRequired,
+  changeBuildingPlacement: PropTypes.func.isRequired,
+  changeFormatTools: PropTypes.func.isRequired
 };
 
-export default withStyles(toggleButtonStyles)(ToggleButtons);
+const mapStateToProps = state => ({
+  directions: state.moveToggleButtons.moveDirection,
+  format: state.moveToggleButtons.formatTools,
+  building: state.moveToggleButtons.buildingPlacement
+});
+
+export default connect(
+  mapStateToProps,
+  {
+    changeMoveDirection,
+    changeBuildingPlacement,
+    changeFormatTools
+  }
+)(withStyles(toggleButtonStyles)(ToggleButtons));

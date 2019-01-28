@@ -8,6 +8,11 @@ import { withStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import AutoComplete from "renderer/components/Modal/AutoComplete";
+import { connect } from "react-redux";
+import {
+  checkGatherCountSwitch,
+  checkOpenBagSwitch
+} from "renderer/actions/scriptSettingActions/gatherTabAction";
 
 const style = () => ({});
 
@@ -19,16 +24,16 @@ const Interactives = Object.values(
 }));
 
 class GatherTab extends Component {
-  state = {
-    openBag: true,
-    gatherCount: true
+  handleGatherCountChange = event => {
+    this.props.checkGatherCountSwitch(event.target.checked);
   };
-
-  handleSwitchChange = name => event => {
-    this.setState({ [name]: event.target.checked });
+  handleOpenbagChange = event => {
+    this.props.checkOpenBagSwitch(event.target.checked);
   };
 
   render() {
+    const { openBag, gatherCount } = this.props;
+
     return (
       <div>
         <FormControl style={{ width: "100%" }}>
@@ -36,8 +41,8 @@ class GatherTab extends Component {
             <FormControlLabel
               control={
                 <Switch
-                  checked={this.state.openBag}
-                  onChange={this.handleSwitchChange("openBag")}
+                  checked={openBag}
+                  onChange={this.handleOpenbagChange}
                   value="openBag"
                 />
               }
@@ -46,8 +51,8 @@ class GatherTab extends Component {
             <FormControlLabel
               control={
                 <Switch
-                  checked={this.state.gatherCount}
-                  onChange={this.handleSwitchChange("gatherCount")}
+                  checked={gatherCount}
+                  onChange={this.handleGatherCountChange}
                   value="gatherCount"
                 />
               }
@@ -66,7 +71,19 @@ class GatherTab extends Component {
 }
 
 GatherTab.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  gatherCount: PropTypes.bool.isRequired,
+  openBag: PropTypes.bool.isRequired,
+  checkGatherCountSwitch: PropTypes.func.isRequired,
+  checkOpenBagSwitch: PropTypes.func.isRequired
 };
 
-export default withStyles(style)(GatherTab);
+const mapStateToProps = state => ({
+  gatherCount: state.gatherTab.gatherCount,
+  openBag: state.gatherTab.openBag
+});
+
+export default connect(
+  mapStateToProps,
+  { checkGatherCountSwitch, checkOpenBagSwitch }
+)(withStyles(style)(GatherTab));

@@ -14,23 +14,25 @@ class SelectMoveType extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, type } = this.props;
 
     return (
       <form className={classes.root} autoComplete="off">
         <FormControl className={classes.formControl}>
           <Select
             onChange={this.handleChange}
-            value={this.props.moveType}
+            value={type}
             inputProps={{
               id: "move-type",
-              name: "moveType"
+              name: "type"
             }}
           >
-            <MenuItem value={"top"}>Top</MenuItem>
-            <MenuItem value={"bottom"}>Bottom</MenuItem>
-            <MenuItem value={"left"}>Left</MenuItem>
-            <MenuItem value={"right"}>Right</MenuItem>
+            <MenuItem value={"move"}>Move</MenuItem>
+            <MenuItem value={"gather"}>Gather</MenuItem>
+            <MenuItem value={"fight"}>Fight</MenuItem>
+            <MenuItem value={"gatherfight"}>Gather & Figher</MenuItem>
+            <MenuItem value={"bank"}>Bank</MenuItem>
+            <MenuItem value={"phoenix"}>Phoenix</MenuItem>
           </Select>
         </FormControl>
       </form>
@@ -41,11 +43,11 @@ class SelectMoveType extends React.Component {
 SelectMoveType.propTypes = {
   classes: PropTypes.object.isRequired,
   changeMoveType: PropTypes.func.isRequired,
-  moveType: PropTypes.string.isRequired
+  type: PropTypes.string.isRequired
 };
 
 const mapStateToProps = state => ({
-  moveType: state.moveType.moveType
+  type: state.moveType.type
 });
 
 export default connect(
