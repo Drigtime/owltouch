@@ -82,30 +82,40 @@ class FightTab extends Component {
             <Typography className={classes.heading}>Auto regen</Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails className={classes.expansionPanelDetails}>
-            <TextField
-              label="min regen"
-              id="min-regen"
-              type="number"
-              InputProps={{
-                endAdornment: <InputAdornment position="end">%</InputAdornment>
-              }}
-              inputProps={{
-                min: 0,
-                max: 100
-              }}
-            />
-            <TextField
-              label="max regen"
-              id="max-regen"
-              type="number"
-              InputProps={{
-                endAdornment: <InputAdornment position="end">%</InputAdornment>
-              }}
-              inputProps={{
-                min: 0,
-                max: 100
-              }}
-            />
+            <Grid container={true} spacing={24}>
+              <Grid item={true} xs={6}>
+                <TextField
+                  label="min regen"
+                  id="min-regen"
+                  type="number"
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">%</InputAdornment>
+                    )
+                  }}
+                  inputProps={{
+                    min: 0,
+                    max: 100
+                  }}
+                />
+              </Grid>
+              <Grid item={true} xs={6}>
+                <TextField
+                  label="max regen"
+                  id="max-regen"
+                  type="number"
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">%</InputAdornment>
+                    )
+                  }}
+                  inputProps={{
+                    min: 0,
+                    max: 100
+                  }}
+                />
+              </Grid>
+            </Grid>
             <AutoComplete
               suggestions={Items}
               label="Item to regen"
