@@ -3,24 +3,19 @@ import { withStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import React from "react";
 
-function getModalStyle() {
-  const top = 50;
-  const left = 50;
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`
-  };
-}
-
 const styles = theme => ({
   paper: {
     position: "absolute",
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: theme.spacing.unit,
-    outline: "none"
+    outline: "none",
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '50%',
+    height: '60%',
+    overflow: 'overlay'
   }
 });
 
@@ -36,7 +31,7 @@ class SimpleModal extends React.Component {
           open={open}
           onClose={onClose}
         >
-          <div style={getModalStyle()} className={classes.paper}>
+          <div className={classes.paper}>
             {children}
           </div>
         </Modal>

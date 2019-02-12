@@ -1,8 +1,8 @@
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import withStyles from "@material-ui/core/styles/withStyles";
-import Map from "renderer/components/Map/index";
-import ToolBar from "renderer/components/ToolBar/index";
+import Map from "renderer/views/Map/index";
+import ToolBar from "renderer/views/ToolBar/index";
 import * as React from "react";
 import { mainStyles, mainTheme } from "./types";
 
