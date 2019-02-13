@@ -2,24 +2,24 @@ import {
   ExpansionPanel,
   ExpansionPanelDetails,
   ExpansionPanelSummary,
-  Typography,
   FormControl,
   FormControlLabel,
-  Switch,
+  Grid,
   InputAdornment,
+  Switch,
   TextField,
-  Grid
+  Typography
 } from "@material-ui/core";
-import { ExpandMore } from "@material-ui/icons";
 import { withStyles } from "@material-ui/core/styles";
+import { ExpandMore } from "@material-ui/icons";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import AutoComplete from "renderer/components/AutoComplete";
 import { connect } from "react-redux";
 import {
-  checkFightCountSwitch,
-  checkAutoRegenSwitch
+  checkAutoRegenSwitch,
+  checkFightCountSwitch
 } from "renderer/actions/scriptSettingActions/fightTabAction.js";
+import AutoComplete from "renderer/components/AutoComplete";
 import styles from "renderer/views/Modal/ItinerarySettings/Fight/styles.js";
 
 const Items = Object.values(require(__static + "/i18n/fr/Items.json")).map(

@@ -1,8 +1,8 @@
 import {
   FormControl,
   FormControlLabel,
-  FormGroup,
-  Switch
+  Switch,
+  Grid
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
@@ -37,33 +37,39 @@ class GatherTab extends Component {
     return (
       <div>
         <FormControl style={{ width: "100%" }}>
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={openBag}
-                  onChange={this.handleOpenbagChange}
-                  value="openBag"
-                />
-              }
-              label="Open bags"
-            />
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={gatherCount}
-                  onChange={this.handleGatherCountChange}
-                  value="gatherCount"
-                />
-              }
-              label="Gather count"
-            />
-            <AutoComplete
-              suggestions={Interactives}
-              label="Resource to harvest"
-              placeholder="ex : Blé"
-            />
-          </FormGroup>
+          <Grid container={true} spacing={24}>
+            <Grid item={true} xs={6}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={openBag}
+                    onChange={this.handleOpenbagChange}
+                    value="openBag"
+                  />
+                }
+                label="Open bags"
+              />
+            </Grid>
+            <Grid item={true} xs={6}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={gatherCount}
+                    onChange={this.handleGatherCountChange}
+                    value="gatherCount"
+                  />
+                }
+                label="Gather count"
+              />
+            </Grid>
+            <Grid item={true} xs={6}>
+              <AutoComplete
+                suggestions={Interactives}
+                label="Resource to harvest"
+                placeholder="ex : Blé"
+              />
+            </Grid>
+          </Grid>
         </FormControl>
       </div>
     );
