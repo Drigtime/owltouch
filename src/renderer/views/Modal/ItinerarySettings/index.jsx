@@ -4,10 +4,10 @@ import { AppBar, Tabs, Tab } from "@material-ui/core";
 import Modal from "renderer/components/Modal";
 import { withStyles } from "@material-ui/core/styles";
 import TabContainer from "renderer/components/Modal/TabContainer";
-import GatherTab from 'renderer/views/Modal/ItinerarySettings/Gather'
-import Fight from 'renderer/views/Modal/ItinerarySettings/Fight'
-import Bank from 'renderer/views/Modal/ItinerarySettings/Bank'
-import Information from 'renderer/views/Modal/ItinerarySettings/Information'
+import GatherTab from "renderer/views/Modal/ItinerarySettings/Gather";
+import Fight from "renderer/views/Modal/ItinerarySettings/Fight";
+import Bank from "renderer/views/Modal/ItinerarySettings/Bank";
+import Information from "renderer/views/Modal/ItinerarySettings/Information";
 
 const styles = theme => ({
   root: {
@@ -32,17 +32,37 @@ class ItineraryModal extends React.Component {
       <Modal open={open} onClose={onClose}>
         <div className={classes.root}>
           <AppBar position="static">
-            <Tabs value={value} onChange={this.handleChange}>
+            <Tabs
+              value={value}
+              onChange={this.handleChange}
+              variant="fullWidth"
+            >
               <Tab label="Gather" />
               <Tab label="Fight" />
               <Tab label="Bank" />
-              <Tab label="Inforamtion" />
+              <Tab label="Information" />
             </Tabs>
           </AppBar>
-          {value === 0 && <TabContainer><GatherTab/></TabContainer>}
-          {value === 1 && <TabContainer><Fight/></TabContainer>}
-          {value === 2 && <TabContainer><Bank/></TabContainer>}
-          {value === 3 && <TabContainer><Information/></TabContainer>}
+          {value === 0 && (
+            <TabContainer>
+              <GatherTab />
+            </TabContainer>
+          )}
+          {value === 1 && (
+            <TabContainer>
+              <Fight />
+            </TabContainer>
+          )}
+          {value === 2 && (
+            <TabContainer>
+              <Bank />
+            </TabContainer>
+          )}
+          {value === 3 && (
+            <TabContainer>
+              <Information />
+            </TabContainer>
+          )}
         </div>
       </Modal>
     );

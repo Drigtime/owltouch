@@ -1,34 +1,26 @@
-import {
-  FormControl,
-  FormControlLabel,
-  Switch,
-  Grid
-} from "@material-ui/core";
+import { FormControl, FormControlLabel, Grid, Switch } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import AutoComplete from "renderer/components/AutoComplete";
 import { connect } from "react-redux";
-import {
-  checkGatherCountSwitch,
-  checkOpenBagSwitch
-} from "renderer/actions/scriptSettingActions/gatherTabAction";
+import { handleChanges } from "renderer/actions/actions.js";
+import { GATHER_COUNT, OPEN_BAG } from "renderer/actions/types.js";
+import AutoComplete from "renderer/components/AutoComplete";
+import LanguageManager from "renderer/configurations/language/LanguageManager.js";
+import { GATHER } from "renderer/components/AutoComplete/types";
 
-const style = () => ({});
+const Language = new LanguageManager();
 
 const Interactives = Object.values(
-  require(__static + "/i18n/fr/Interactives.json")
+  require(__static + "/langs/fr/Interactives.json")
 ).map(item => ({
   value: item.id,
   label: item.nameId
 }));
 
 class GatherTab extends Component {
-  handleGatherCountChange = event => {
-    this.props.checkGatherCountSwitch(event.target.checked);
-  };
-  handleOpenbagChange = event => {
-    this.props.checkOpenBagSwitch(event.target.checked);
+  handleSwitchChanges = type => event => {
+    this.props.handleChanges(type, event.target.checked);
   };
 
   render() {
@@ -43,11 +35,11 @@ class GatherTab extends Component {
                 control={
                   <Switch
                     checked={openBag}
-                    onChange={this.handleOpenbagChange}
+                    onChange={this.handleSwitchChanges(OPEN_BAG)}
                     value="openBag"
                   />
                 }
-                label="Open bags"
+                label={Language.trans("gatherTabOpenBag")}
               />
             </Grid>
             <Grid item={true} xs={6}>
@@ -55,18 +47,21 @@ class GatherTab extends Component {
                 control={
                   <Switch
                     checked={gatherCount}
-                    onChange={this.handleGatherCountChange}
+                    onChange={this.handleSwitchChanges(GATHER_COUNT)}
                     value="gatherCount"
                   />
                 }
-                label="Gather count"
+                label={Language.trans("gatherTabGatherCount")}
               />
             </Grid>
-            <Grid item={true} xs={6}>
+            <Grid item={true} xs={12}>
               <AutoComplete
                 suggestions={Interactives}
-                label="Resource to harvest"
-                placeholder="ex : Blé"
+                label={Language.trans("gatherTabElementToGather")}
+                placeholder={Language.trans(
+                  "gatherTabElementToGatherPlaceholder"
+                )}
+                type={GATHER}
               />
             </Grid>
           </Grid>
@@ -80,8 +75,7 @@ GatherTab.propTypes = {
   classes: PropTypes.object.isRequired,
   gatherCount: PropTypes.bool.isRequired,
   openBag: PropTypes.bool.isRequired,
-  checkGatherCountSwitch: PropTypes.func.isRequired,
-  checkOpenBagSwitch: PropTypes.func.isRequired
+  handleChanges: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -91,5 +85,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { checkGatherCountSwitch, checkOpenBagSwitch }
-)(withStyles(style)(GatherTab));
+  { handleChanges }
+)(withStyles()(GatherTab));

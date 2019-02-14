@@ -14,6 +14,13 @@ export const mainTheme = createMuiTheme({
   typography: {
     fontFamily: ["Roboto", '"Segoe UI"', "Tahoma", "sans-serif"].join(","),
     useNextVariants: true
+  },
+  overrides: {
+    MuiTab: {
+      fullWidth: {
+        minWidth: "0px"
+      }
+    }
   }
 });
 

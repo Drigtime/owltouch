@@ -8,6 +8,11 @@ import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import MenuItem from "@material-ui/core/MenuItem";
 import Chip from "@material-ui/core/Chip";
+import {
+  ITEMS,
+  MONSTERS,
+  GATHER
+} from "renderer/components/AutoComplete/types";
 
 function renderInput(inputProps) {
   const { InputProps, classes, ref, ...other } = inputProps;
@@ -32,10 +37,43 @@ function renderSuggestion({
   index,
   itemProps,
   highlightedIndex,
-  selectedItem
+  selectedItem,
+  type
 }) {
   const isHighlighted = highlightedIndex === index;
   const isSelected = (selectedItem || "").indexOf(suggestions.label) > -1;
+  let image;
+
+  switch (type) {
+    case ITEMS:
+      image = (
+        <img
+          src={`https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/items/${
+            suggestions.value
+          }.png`}
+          style={{ height: "46px", position: "absolute", right: 0 }}
+        />
+      );
+      break;
+
+    case MONSTERS:
+      image = (
+        <img
+          src={`https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/monsters/${
+            suggestions.value
+          }.png`}
+          style={{ height: "46px", position: "absolute", right: 0 }}
+        />
+      );
+      break;
+
+    case GATHER:
+      image = <div />;
+      break;
+
+    default:
+      break;
+  }
 
   return (
     <MenuItem
@@ -48,12 +86,7 @@ function renderSuggestion({
       }}
     >
       {suggestions.label}
-      <img
-        src={`https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/items/${
-          suggestions.value
-        }.png`}
-        style={{ height: "46px", position: "absolute", right: 0 }}
-      />
+      {image}
     </MenuItem>
   );
 }
@@ -62,7 +95,8 @@ renderSuggestion.propTypes = {
   index: PropTypes.number,
   itemProps: PropTypes.object,
   selectedItem: PropTypes.string,
-  suggestions: PropTypes.shape({ label: PropTypes.string }).isRequired
+  suggestions: PropTypes.shape({ label: PropTypes.string }).isRequired,
+  type: PropTypes.string
 };
 
 function getSuggestions(value, suggestions) {
@@ -130,7 +164,7 @@ class DownshiftMultiple extends React.Component {
   };
 
   render() {
-    const { classes, suggestions, label, placeholder } = this.props;
+    const { classes, suggestions, label, placeholder, type } = this.props;
     const { inputValue, selectedItem } = this.state;
 
     return (
@@ -139,6 +173,7 @@ class DownshiftMultiple extends React.Component {
         inputValue={inputValue}
         onChange={this.handleChange}
         selectedItem={selectedItem}
+        // style={{ width: "100%" }}
       >
         {({
           getInputProps,
@@ -177,7 +212,8 @@ class DownshiftMultiple extends React.Component {
                       index,
                       itemProps: getItemProps({ item: suggestion.label }),
                       highlightedIndex,
-                      selectedItem: selectedItem2
+                      selectedItem: selectedItem2,
+                      type
                     })
                 )}
               </Paper>
@@ -193,7 +229,8 @@ DownshiftMultiple.propTypes = {
   classes: PropTypes.object.isRequired,
   suggestions: PropTypes.array.isRequired,
   label: PropTypes.string,
-  placeholder: PropTypes.string
+  placeholder: PropTypes.string,
+  type: PropTypes.string
 };
 
 const styles = theme => ({

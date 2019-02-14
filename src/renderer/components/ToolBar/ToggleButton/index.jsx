@@ -8,22 +8,18 @@ import PropTypes from "prop-types";
 import React from "react";
 import { toggleButtonStyles } from "renderer/components/ToolBar/ToggleButton/type";
 import { connect } from "react-redux";
+import { handleChanges } from "renderer/actions/actions.js";
 import {
-  changeMoveDirection,
-  changeBuildingPlacement,
-  changeFormatTools
-} from "renderer/actions/moveDirectionAction";
+  MOVEMENT_DIRECTION,
+  BUILDING_PLACEMENT,
+  FORMAT_TOOL
+} from "renderer/actions/types.js";
 
 class ToggleButtons extends React.Component {
-  handleMoveDirections = (event, directions) => {
-    this.props.changeMoveDirection(directions);
+  handleToggleChanges = type => (event, value) => {
+    this.props.handleChanges(type, value);
   };
-  handleSpecialMovementPlacement = (event, building) => {
-    this.props.changeBuildingPlacement(building);
-  };
-  handleFormats = (event, format) => {
-    this.props.changeFormatTools(format);
-  };
+
   render() {
     const { classes, directions, format, building } = this.props;
 
@@ -33,7 +29,7 @@ class ToggleButtons extends React.Component {
           <div className={classes.toggleContainer}>
             <ToggleButtonGroup
               value={directions}
-              onChange={this.handleMoveDirections}
+              onChange={this.handleToggleChanges(MOVEMENT_DIRECTION)}
             >
               <ToggleButton value="top">
                 <FontAwesomeIcon size="lg" icon="arrow-up" />
@@ -55,7 +51,7 @@ class ToggleButtons extends React.Component {
             <ToggleButtonGroup
               value={building}
               exclusive={true}
-              onChange={this.handleSpecialMovementPlacement}
+              onChange={this.handleToggleChanges(BUILDING_PLACEMENT)}
             >
               <ToggleButton value="door">
                 <Tooltip title="porte">
@@ -85,7 +81,7 @@ class ToggleButtons extends React.Component {
             <ToggleButtonGroup
               value={format}
               exclusive={true}
-              onChange={this.handleFormats}
+              onChange={this.handleToggleChanges(FORMAT_TOOL)}
             >
               <ToggleButton value="delete">
                 <FontAwesomeIcon size="lg" icon="eraser" />
@@ -103,9 +99,7 @@ ToggleButtons.propTypes = {
   directions: PropTypes.array,
   format: PropTypes.string,
   building: PropTypes.string,
-  changeMoveDirection: PropTypes.func.isRequired,
-  changeBuildingPlacement: PropTypes.func.isRequired,
-  changeFormatTools: PropTypes.func.isRequired
+  handleChanges: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -117,8 +111,6 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   {
-    changeMoveDirection,
-    changeBuildingPlacement,
-    changeFormatTools
+    handleChanges
   }
 )(withStyles(toggleButtonStyles)(ToggleButtons));

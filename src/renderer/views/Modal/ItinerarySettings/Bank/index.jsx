@@ -1,69 +1,74 @@
-import { ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, FormControl, FormControlLabel, Grid, InputAdornment, Switch, TextField, Typography } from "@material-ui/core";
+import {
+  ExpansionPanel,
+  ExpansionPanelDetails,
+  ExpansionPanelSummary,
+  FormControl,
+  FormControlLabel,
+  Grid,
+  InputAdornment,
+  Switch,
+  TextField,
+  Typography
+} from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { ExpandMore } from "@material-ui/icons";
-import Slider from "@material-ui/lab/Slider";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import AutoComplete from "renderer/components/AutoComplete";
+import styles from "renderer/views/Modal/ItinerarySettings/Bank/styles.js";
+import { handleChanges } from "renderer/actions/actions.js";
+import {
+  MAX_PODS,
+  TAKE_KAMAS,
+  TAKE_KAMAS_QUANT,
+  PUT_KAMAS,
+  PUT_KAMAS_QUANT
+} from "renderer/actions/types";
 
-const Items = Object.values(require(__static + "/i18n/fr/Items.json")).map(
+const Items = Object.values(require(__static + "/langs/fr/Items.json")).map(
   item => ({
     value: item.iconId,
     label: item.nameId
   })
 );
 
-const style = () => ({});
-
 class BankTab extends Component {
-  state = {
-    putKamas: true,
-    getKamas: true,
-    podMax: 80
+  handleSwitchChanges = type => event => {
+    this.props.handleChanges(type, event.target.checked);
   };
 
-  handleSwitchChange = name => event => {
-    this.setState({ [name]: event.target.checked });
+  handleInputChanges = type => event => {
+    this.props.handleChanges(type, Number(event.target.value));
   };
 
-  handleSliderChange = (event, podMax) => {
-    this.setState({ podMax });
-  };
-
-  handleInputChange = event => {
-    this.setState({
-      podMax: event.target.value > 100 ? 100 : event.target.value
-    });
+  handleInputWithLimitChanges = (type, max) => event => {
+    this.props.handleChanges(
+      type,
+      Number(event.target.value > max ? max : event.target.value)
+    );
   };
 
   render() {
-    const { classes } = this.props;
-    const { podMax } = this.state;
-
+    const {
+      classes,
+      maxPods,
+      takeKamas,
+      takeKamasQuant,
+      putKamas,
+      putKamasQuant
+    } = this.props;
     return (
       <div className={classes.root}>
         <Grid container={true} spacing={24}>
-          <Grid
-            item={true}
-            xs={10}
-            style={{ display: "flex", "align-items": "center" }}
-          >
-            <Slider
-              classes={{ container: classes.slider }}
-              value={podMax}
-              min={0}
-              max={100}
-              step={1}
-              onChange={this.handleSliderChange}
-            />
-          </Grid>
-          <Grid item={true} xs={2}>
+          <Grid item={true} xs={12}>
             <TextField
-              label="max regen"
+              label="Pod max"
               id="max-regen"
               type="number"
-              value={podMax}
-              onChange={this.handleInputChange}
+              value={maxPods}
+              onChange={this.handleInputWithLimitChanges(MAX_PODS, 100)}
+              className={classes.input}
               InputProps={{
                 endAdornment: <InputAdornment position="end">%</InputAdornment>
               }}
@@ -85,9 +90,8 @@ class BankTab extends Component {
               <FormControlLabel
                 control={
                   <Switch
-                    checked={true}
-                    // onChange={this.handleAutoRegenSwitchChange}
-                    // value="maxFight"
+                    checked={takeKamas}
+                    onChange={this.handleSwitchChanges(TAKE_KAMAS)}
                   />
                 }
                 label="take kamas from bank"
@@ -98,8 +102,10 @@ class BankTab extends Component {
             <TextField
               id="max-fightper-map"
               type="number"
-              // className={classes.input}
-              //
+              disabled={!takeKamas}
+              className={classes.input}
+              value={takeKamasQuant}
+              onChange={this.handleInputChanges(TAKE_KAMAS_QUANT)}
               InputLabelProps={{
                 shrink: true
               }}
@@ -113,9 +119,8 @@ class BankTab extends Component {
               <FormControlLabel
                 control={
                   <Switch
-                    checked={true}
-                    // onChange={this.handleAutoRegenSwitchChange}
-                    // value="maxFight"
+                    checked={putKamas}
+                    onChange={this.handleSwitchChanges(PUT_KAMAS)}
                   />
                 }
                 label="put kamas to the bank"
@@ -126,8 +131,10 @@ class BankTab extends Component {
             <TextField
               id="max-fightper-map"
               type="number"
-              // className={classes.input}
-              //
+              disabled={!putKamas}
+              className={classes.input}
+              value={putKamasQuant}
+              onChange={this.handleInputChanges(PUT_KAMAS_QUANT)}
               InputLabelProps={{
                 shrink: true
               }}
@@ -139,7 +146,9 @@ class BankTab extends Component {
           <Grid item={true} xs={12}>
             <ExpansionPanel>
               <ExpansionPanelSummary expandIcon={<ExpandMore />}>
-                <Typography>item to get from the bank</Typography>
+                <Typography className={classes.heading}>
+                  item to get from the bank
+                </Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails className={classes.expansionPanelDetails}>
                 <Grid container={true} spacing={24}>
@@ -151,7 +160,9 @@ class BankTab extends Component {
           <Grid item={true} xs={12}>
             <ExpansionPanel>
               <ExpansionPanelSummary expandIcon={<ExpandMore />}>
-                <Typography>item to put in the bank</Typography>
+                <Typography className={classes.heading}>
+                  item to put in the bank
+                </Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails className={classes.expansionPanelDetails}>
                 <Grid container={true} spacing={24}>
@@ -167,7 +178,24 @@ class BankTab extends Component {
 }
 
 BankTab.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  maxPods: PropTypes.number.isRequired,
+  takeKamas: PropTypes.bool.isRequired,
+  takeKamasQuant: PropTypes.number.isRequired,
+  putKamas: PropTypes.bool.isRequired,
+  putKamasQuant: PropTypes.number.isRequired,
+  handleChanges: PropTypes.func.isRequired
 };
 
-export default withStyles(style)(BankTab);
+const mapStateToProps = state => ({
+  maxPods: state.bankTab.maxPods,
+  takeKamas: state.bankTab.takeKamas,
+  takeKamasQuant: state.bankTab.takeKamasQuant,
+  putKamas: state.bankTab.putKamas,
+  putKamasQuant: state.bankTab.putKamasQuant
+});
+
+export default connect(
+  mapStateToProps,
+  { handleChanges }
+)(withStyles(styles)(BankTab));

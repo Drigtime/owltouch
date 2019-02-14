@@ -6,11 +6,12 @@ import PropTypes from "prop-types";
 import React from "react";
 import { selectStyles } from "renderer/components/ToolBar/SelectMoveType/type";
 import { connect } from "react-redux";
-import { changeMoveType } from "renderer/actions/moveTypeAction";
+import { handleChanges } from "renderer/actions/actions.js";
+import { MOVEMENT_TYPE } from "renderer/actions/types.js";
 
 class SelectMoveType extends React.Component {
-  handleChange = event => {
-    this.props.changeMoveType(event.target.value)
+  handleSelectChanges = type => event => {
+    this.props.handleChanges(type, event.target.value);
   };
 
   render() {
@@ -20,7 +21,7 @@ class SelectMoveType extends React.Component {
       <form className={classes.root} autoComplete="off">
         <FormControl className={classes.formControl}>
           <Select
-            onChange={this.handleChange}
+            onChange={this.handleSelectChanges(MOVEMENT_TYPE)}
             value={type}
             inputProps={{
               id: "move-type",
@@ -42,8 +43,8 @@ class SelectMoveType extends React.Component {
 
 SelectMoveType.propTypes = {
   classes: PropTypes.object.isRequired,
-  changeMoveType: PropTypes.func.isRequired,
-  type: PropTypes.string.isRequired
+  type: PropTypes.string.isRequired,
+  handleChanges: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -52,5 +53,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { changeMoveType }
+  { handleChanges }
 )(withStyles(selectStyles)(SelectMoveType));

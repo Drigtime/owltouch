@@ -1,4 +1,10 @@
 {
+  "gatherTabOpenBag": "Ouverture automatique des sacs de récolte",
+  "gatherTabLabel": "Récolte",
+  "gatherTabGatherCount": "Afficher le compteur de récoltes",
+  "gatherTabElementToGather": "Ressources à récolter",
+  "gatherTabElementToGatherPlaceholder": "ex : Blé",
+
   "translation": {
     "titlebar": {
       "dropdownTrigger": "Fichier",
@@ -39,7 +45,7 @@
       "gather": {
         "label": "Récolte",
         "count": "Afficher le compteur de récoltes",
-        "openbag": "Ouverture automatique des sacs de récolte",
+
         "gather": {
           "label": "Ressources à récolter",
           "placeholder": "ex: Blé"

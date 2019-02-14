@@ -15,14 +15,28 @@ import { ExpandMore } from "@material-ui/icons";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { handleChanges } from "renderer/actions/actions.js";
 import {
-  checkAutoRegenSwitch,
-  checkFightCountSwitch
-} from "renderer/actions/scriptSettingActions/fightTabAction.js";
+  AUTO_REGEN,
+  FIGHT_COUNT,
+  MAX_FIGHT_NUMBER_PER_MAP,
+  MAX_FIGHT_PER_MAP,
+  MAX_MONSTER,
+  // FORBIDDEN_MONSTER,
+  // MANDATORY_MONSTER
+  MAX_MONSTER_LEVEL,
+  MAX_REGEN,
+  MIN_MONSTER,
+  MIN_MONSTER_LEVEL,
+  MIN_REGEN,
+  // REGEN_ITEM,
+  REGEN_ITEM_QUANT
+} from "renderer/actions/types";
 import AutoComplete from "renderer/components/AutoComplete";
 import styles from "renderer/views/Modal/ItinerarySettings/Fight/styles.js";
+import { MONSTERS } from "renderer/components/AutoComplete/types";
 
-const Items = Object.values(require(__static + "/i18n/fr/Items.json")).map(
+const Items = Object.values(require(__static + "/langs/fr/Items.json")).map(
   item => ({
     value: item.iconId,
     label: item.nameId
@@ -30,15 +44,39 @@ const Items = Object.values(require(__static + "/i18n/fr/Items.json")).map(
 );
 
 class FightTab extends Component {
-  handleFightCountSwitchChange = event => {
-    this.props.checkFightCountSwitch(event.target.checked);
+  handleSwitchChanges = type => event => {
+    this.props.handleChanges(type, event.target.checked);
   };
-  handleAutoRegenSwitchChange = event => {
-    this.props.checkAutoRegenSwitch(event.target.checked);
+
+  handleInputChanges = type => event => {
+    this.props.handleChanges(type, Number(event.target.value));
+  };
+
+  handleInputWithLimitChanges = (type, max) => event => {
+    this.props.handleChanges(
+      type,
+      Number(event.target.value > max ? max : event.target.value)
+    );
   };
 
   render() {
-    const { classes, fightCount, autoRegen } = this.props;
+    const {
+      classes,
+      fightCount,
+      autoRegen,
+      maxFightPerMap,
+      maxFightNumberPerMap,
+      minRegen,
+      maxRegen,
+      // regenItem,
+      regenItemQuant,
+      minMonsterLevel,
+      maxMonsterLevel,
+      minMonster,
+      maxMonster
+      // forbiddenMonster,
+      // mandatoryMonster
+    } = this.props;
     return (
       <div className={classes.root}>
         <Grid container={true} spacing={24}>
@@ -48,7 +86,7 @@ class FightTab extends Component {
                 control={
                   <Switch
                     checked={fightCount}
-                    onChange={this.handleFightCountSwitchChange}
+                    onChange={this.handleSwitchChanges(FIGHT_COUNT)}
                     value="fightCount"
                   />
                 }
@@ -62,7 +100,7 @@ class FightTab extends Component {
                 control={
                   <Switch
                     checked={autoRegen}
-                    onChange={this.handleAutoRegenSwitchChange}
+                    onChange={this.handleSwitchChanges(AUTO_REGEN)}
                     value="autoRegen"
                   />
                 }
@@ -75,8 +113,8 @@ class FightTab extends Component {
               <FormControlLabel
                 control={
                   <Switch
-                    checked={autoRegen}
-                    onChange={this.handleAutoRegenSwitchChange}
+                    checked={maxFightPerMap}
+                    onChange={this.handleSwitchChanges(MAX_FIGHT_PER_MAP)}
                     value="maxFight"
                   />
                 }
@@ -88,8 +126,10 @@ class FightTab extends Component {
             <TextField
               id="max-fightper-map"
               type="number"
+              onChange={this.handleInputChanges(MAX_FIGHT_NUMBER_PER_MAP)}
               className={classes.input}
-              disabled={!autoRegen}
+              disabled={!maxFightPerMap}
+              value={maxFightNumberPerMap}
               InputLabelProps={{
                 shrink: true
               }}
@@ -110,6 +150,11 @@ class FightTab extends Component {
                       label="min regen"
                       id="min-regen"
                       type="number"
+                      onChange={this.handleInputWithLimitChanges(
+                        MIN_REGEN,
+                        100
+                      )}
+                      value={minRegen}
                       className={classes.input}
                       InputProps={{
                         endAdornment: (
@@ -127,6 +172,11 @@ class FightTab extends Component {
                       label="max regen"
                       id="max-regen"
                       type="number"
+                      onChange={this.handleInputWithLimitChanges(
+                        MAX_REGEN,
+                        100
+                      )}
+                      value={maxRegen}
                       className={classes.input}
                       InputProps={{
                         endAdornment: (
@@ -153,7 +203,9 @@ class FightTab extends Component {
                       label="number of item to take from the bank"
                       id="nb-item-regen"
                       type="number"
+                      onChange={this.handleInputChanges(REGEN_ITEM_QUANT)}
                       className={classes.input}
+                      value={regenItemQuant}
                       inputProps={{
                         min: 0
                       }}
@@ -168,12 +220,14 @@ class FightTab extends Component {
               label="min monster level"
               id="min-monster-lvl"
               type="number"
+              onChange={this.handleInputChanges(MIN_MONSTER_LEVEL)}
+              value={minMonsterLevel}
               className={classes.input}
               InputLabelProps={{
                 shrink: true
               }}
               inputProps={{
-                min: 0
+                min: 1
               }}
             />
           </Grid>
@@ -182,12 +236,14 @@ class FightTab extends Component {
               label="max monster level"
               id="max-monster-lvl"
               type="number"
+              onChange={this.handleInputChanges(MAX_MONSTER_LEVEL)}
+              value={maxMonsterLevel}
               className={classes.input}
               InputLabelProps={{
                 shrink: true
               }}
               inputProps={{
-                min: 0
+                min: 1
               }}
             />
           </Grid>
@@ -196,12 +252,15 @@ class FightTab extends Component {
               label="min monster number"
               id="min-monster-number"
               type="number"
+              onChange={this.handleInputWithLimitChanges(MIN_MONSTER, 8)}
+              value={minMonster}
               className={classes.input}
               InputLabelProps={{
                 shrink: true
               }}
               inputProps={{
-                min: 0
+                min: 1,
+                max: 8
               }}
             />
           </Grid>
@@ -210,12 +269,15 @@ class FightTab extends Component {
               label="max monster number"
               id="max-monster-number"
               type="number"
+              onChange={this.handleInputWithLimitChanges(MAX_MONSTER, 8)}
+              value={maxMonster}
               className={classes.input}
               InputLabelProps={{
                 shrink: true
               }}
               inputProps={{
-                min: 0
+                min: 1,
+                max: 8
               }}
             />
           </Grid>
@@ -224,6 +286,7 @@ class FightTab extends Component {
               suggestions={Items}
               label="Forbidden monster"
               placeholder="ex : Piou bleu"
+              type={MONSTERS}
             />
           </Grid>
           <Grid item={true} xs={12}>
@@ -231,6 +294,7 @@ class FightTab extends Component {
               suggestions={Items}
               label="Mandatory monster"
               placeholder="ex : Piou bleu"
+              type={MONSTERS}
             />
           </Grid>
         </Grid>
@@ -243,16 +307,39 @@ FightTab.propTypes = {
   classes: PropTypes.object.isRequired,
   fightCount: PropTypes.bool.isRequired,
   autoRegen: PropTypes.bool.isRequired,
-  checkFightCountSwitch: PropTypes.func.isRequired,
-  checkAutoRegenSwitch: PropTypes.func.isRequired
+  maxFightPerMap: PropTypes.bool.isRequired,
+  maxFightNumberPerMap: PropTypes.number.isRequired,
+  minRegen: PropTypes.number.isRequired,
+  maxRegen: PropTypes.number.isRequired,
+  regenItem: PropTypes.object.isRequired,
+  regenItemQuant: PropTypes.number.isRequired,
+  minMonsterLevel: PropTypes.number.isRequired,
+  maxMonsterLevel: PropTypes.number.isRequired,
+  minMonster: PropTypes.number.isRequired,
+  maxMonster: PropTypes.number.isRequired,
+  forbiddenMonster: PropTypes.object.isRequired,
+  mandatoryMonster: PropTypes.object.isRequired,
+  handleChanges: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   fightCount: state.fightTab.fightCount,
-  autoRegen: state.fightTab.autoRegen
+  autoRegen: state.fightTab.autoRegen,
+  maxFightPerMap: state.fightTab.maxFightPerMap,
+  maxFightNumberPerMap: state.fightTab.maxFightNumberPerMap,
+  minRegen: state.fightTab.minRegen,
+  maxRegen: state.fightTab.maxRegen,
+  regenItem: state.fightTab.regenItem,
+  regenItemQuant: state.fightTab.regenItemQuant,
+  minMonsterLevel: state.fightTab.minMonsterLevel,
+  maxMonsterLevel: state.fightTab.maxMonsterLevel,
+  minMonster: state.fightTab.minMonster,
+  maxMonster: state.fightTab.maxMonster,
+  forbiddenMonster: state.fightTab.forbiddenMonster,
+  mandatoryMonster: state.fightTab.mandatoryMonster
 });
 
 export default connect(
   mapStateToProps,
-  { checkFightCountSwitch, checkAutoRegenSwitch }
+  { handleChanges }
 )(withStyles(styles)(FightTab));
