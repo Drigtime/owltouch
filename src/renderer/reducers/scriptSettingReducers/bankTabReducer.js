@@ -1,5 +1,6 @@
 import {
   MAX_PODS,
+  AUTO_DELETE,
   TAKE_KAMAS,
   TAKE_KAMAS_QUANT,
   PUT_KAMAS,
@@ -8,6 +9,7 @@ import {
 
 const initialState = {
   maxPods: 80,
+  autoDelete: [],
   takeKamas: false,
   takeKamasQuant: 0,
   putKamas: false,
@@ -20,6 +22,11 @@ export default function(state = initialState, { type, payload }) {
       return {
         ...state,
         maxPods: payload
+      };
+    case AUTO_DELETE:
+      return {
+        ...state,
+        autoDelete: payload
       };
     case TAKE_KAMAS:
       return {

@@ -29,7 +29,11 @@ class ItineraryModal extends React.Component {
     const { classes, open, onClose } = this.props;
     const { value } = this.state;
     return (
-      <Modal open={open} onClose={onClose}>
+      <Modal
+        open={open}
+        onClose={onClose}
+        actions={[{ label: "close", onClick: onClose }]}
+      >
         <div className={classes.root}>
           <AppBar position="static">
             <Tabs

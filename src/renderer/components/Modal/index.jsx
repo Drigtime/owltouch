@@ -1,41 +1,46 @@
-import Modal from "@material-ui/core/Modal";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  Button
+} from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import React from "react";
 
-const styles = theme => ({
+const MuiDialog = withStyles(() => ({
   paper: {
-    position: "absolute",
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing.unit,
-    outline: "none",
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '50%',
-    height: '60%',
-    overflow: 'overlay'
+    width: "50%",
+    height: "60%"
   }
-});
+}))(Dialog);
+
+const MuiDialogContent = withStyles(() => ({
+  root: {
+    padding: "0px 8px 0px 8px"
+  },
+  rootFirstChild: {
+    paddingTop: "8px"
+  }
+}))(DialogContent);
 
 class SimpleModal extends React.Component {
   render() {
-    const { classes, open, onClose, children } = this.props;
+    const { open, onClose, children, actions } = this.props;
 
     return (
-      <div>
-        <Modal
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
-          open={open}
-          onClose={onClose}
-        >
-          <div className={classes.paper}>
-            {children}
-          </div>
-        </Modal>
-      </div>
+      <MuiDialog open={open} onClose={onClose}>
+        <MuiDialogContent>{children}</MuiDialogContent>
+        <DialogActions>
+          {actions.map((action, index) => {
+            return (
+              <Button key={index} onClick={action.onClick}>
+                {action.label}
+              </Button>
+            );
+          })}
+        </DialogActions>
+      </MuiDialog>
     );
   }
 }
@@ -44,8 +49,9 @@ SimpleModal.propTypes = {
   classes: PropTypes.object.isRequired,
   children: PropTypes.node,
   open: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired
+  onClose: PropTypes.func.isRequired,
+  actions: PropTypes.array.isRequired
 };
 
 // We need an intermediary variable for handling the recursive nesting.
-export default withStyles(styles)(SimpleModal);
+export default SimpleModal;

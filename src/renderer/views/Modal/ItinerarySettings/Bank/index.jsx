@@ -1,39 +1,29 @@
-import {
-  ExpansionPanel,
-  ExpansionPanelDetails,
-  ExpansionPanelSummary,
-  FormControl,
-  FormControlLabel,
-  Grid,
-  InputAdornment,
-  Switch,
-  TextField,
-  Typography
-} from "@material-ui/core";
+import { ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, FormControl, FormControlLabel, Grid, InputAdornment, Switch, TextField, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { ExpandMore } from "@material-ui/icons";
+import keycode from "keycode";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import AutoComplete from "renderer/components/AutoComplete";
-import styles from "renderer/views/Modal/ItinerarySettings/Bank/styles.js";
 import { handleChanges } from "renderer/actions/actions.js";
-import {
-  MAX_PODS,
-  TAKE_KAMAS,
-  TAKE_KAMAS_QUANT,
-  PUT_KAMAS,
-  PUT_KAMAS_QUANT
-} from "renderer/actions/types";
+import { AUTO_DELETE, MAX_PODS, PUT_KAMAS, PUT_KAMAS_QUANT, TAKE_KAMAS, TAKE_KAMAS_QUANT } from "renderer/actions/types";
+import AutoComplete from "renderer/components/AutoComplete";
+import { ITEMS } from "renderer/components/AutoComplete/types";
+import styles from "renderer/views/Modal/ItinerarySettings/Bank/styles.js";
 
 const Items = Object.values(require(__static + "/langs/fr/Items.json")).map(
   item => ({
-    value: item.iconId,
+    id: item.id,
+    iconId: item.iconId,
     label: item.nameId
   })
 );
 
 class BankTab extends Component {
+  state = {
+    autoDeleteInputValue: ""
+  }
+
   handleSwitchChanges = type => event => {
     this.props.handleChanges(type, event.target.checked);
   };
@@ -49,10 +39,50 @@ class BankTab extends Component {
     );
   };
 
+  handleAutoCompleteChange = (
+    type,
+    autoCompleteProp,
+    autoCompleteState
+  ) => element => {
+    if (autoCompleteProp.indexOf(element) === -1) {
+      autoCompleteProp = [...autoCompleteProp, element];
+    }
+    this.setState({ [autoCompleteState]: "" });
+    this.props.handleChanges(type, autoCompleteProp);
+  };
+
+  handleAutoCompleteKeyDown = (
+    type,
+    autoCompleteProp,
+    autoCompleteState
+  ) => event => {
+    if (
+      autoCompleteProp.length &&
+      !this.state[autoCompleteState].length &&
+      keycode(event) === "backspace"
+    ) {
+      this.props.handleChanges(
+        type,
+        autoCompleteProp.slice(0, autoCompleteProp.length - 1)
+      );
+    }
+  };
+
+  handleAutoCompleteInputChange = autoCompleteState => event => {
+    this.setState({ [autoCompleteState]: event.target.value });
+  };
+
+  handleAutoCompleteDelete = (type, autoCompleteProp) => item => () => {
+    const selectedItem = [...autoCompleteProp];
+    selectedItem.splice(selectedItem.indexOf(item), 1);
+    this.props.handleChanges(type, selectedItem);
+  };
+
   render() {
     const {
       classes,
       maxPods,
+      autoDelete,
       takeKamas,
       takeKamasQuant,
       putKamas,
@@ -64,7 +94,7 @@ class BankTab extends Component {
           <Grid item={true} xs={12}>
             <TextField
               label="Pod max"
-              id="max-regen"
+              id="pod-max"
               type="number"
               value={maxPods}
               onChange={this.handleInputWithLimitChanges(MAX_PODS, 100)}
@@ -83,6 +113,26 @@ class BankTab extends Component {
               suggestions={Items}
               label="Auto delete"
               placeholder="ex : Pain au Blé Complet"
+              type={ITEMS}
+              selectedItem={autoDelete}
+              onChange={this.handleAutoCompleteChange(
+                AUTO_DELETE,
+                autoDelete,
+                "autoDeleteInputValue"
+              )}
+              inputValue={this.state.autoDeleteInputValue}
+              handleDelete={this.handleAutoCompleteDelete(
+                AUTO_DELETE,
+                autoDelete
+              )}
+              handleInputChange={this.handleAutoCompleteInputChange(
+                "autoDeleteInputValue"
+              )}
+              handleKeyDown={this.handleAutoCompleteKeyDown(
+                AUTO_DELETE,
+                autoDelete,
+                "autoDeleteInputValue"
+              )}
             />
           </Grid>
           <Grid item={true} xs={6}>
@@ -100,7 +150,7 @@ class BankTab extends Component {
           </Grid>
           <Grid item={true} xs={6}>
             <TextField
-              id="max-fightper-map"
+              id="take-kamas-quant"
               type="number"
               disabled={!takeKamas}
               className={classes.input}
@@ -129,7 +179,7 @@ class BankTab extends Component {
           </Grid>
           <Grid item={true} xs={6}>
             <TextField
-              id="max-fightper-map"
+              id="put-kamas-quant"
               type="number"
               disabled={!putKamas}
               className={classes.input}
@@ -180,6 +230,7 @@ class BankTab extends Component {
 BankTab.propTypes = {
   classes: PropTypes.object.isRequired,
   maxPods: PropTypes.number.isRequired,
+  autoDelete: PropTypes.array.isRequired,
   takeKamas: PropTypes.bool.isRequired,
   takeKamasQuant: PropTypes.number.isRequired,
   putKamas: PropTypes.bool.isRequired,
@@ -189,6 +240,7 @@ BankTab.propTypes = {
 
 const mapStateToProps = state => ({
   maxPods: state.bankTab.maxPods,
+  autoDelete: state.bankTab.autoDelete,
   takeKamas: state.bankTab.takeKamas,
   takeKamasQuant: state.bankTab.takeKamasQuant,
   putKamas: state.bankTab.putKamas,

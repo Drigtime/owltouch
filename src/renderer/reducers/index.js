@@ -4,11 +4,13 @@ import moveDirectionReducer from "renderer/reducers/moveDirectionReducer.js";
 import gatherTabReducer from "renderer/reducers/scriptSettingReducers/gatherTabReducer.js";
 import fightTabReducer from "renderer/reducers/scriptSettingReducers/fightTabReducer.js";
 import bankTabReducer from "renderer/reducers/scriptSettingReducers/bankTabReducer.js";
+import informationTabReducer from "renderer/reducers/scriptSettingReducers/informationTabReducer.js";
 
 export default combineReducers({
   moveType: moveTypeReducer,
   moveToggleButtons: moveDirectionReducer,
   gatherTab: gatherTabReducer,
   fightTab: fightTabReducer,
-  bankTab: bankTabReducer
+  bankTab: bankTabReducer,
+  informationTab: informationTabReducer
 });
