@@ -1,8 +1,13 @@
-import { GATHER_COUNT, OPEN_BAG } from "renderer/actions/types.js";
+import {
+  GATHER_COUNT,
+  OPEN_BAG,
+  ELEMENT_TO_GATHER
+} from "renderer/actions/types.js";
 
 const initialState = {
   openBag: true,
-  gatherCount: true
+  gatherCount: true,
+  elementToGather: []
 };
 
 export default function(state = initialState, { type, payload }) {
@@ -16,6 +21,11 @@ export default function(state = initialState, { type, payload }) {
       return {
         ...state,
         gatherCount: payload
+      };
+    case ELEMENT_TO_GATHER:
+      return {
+        ...state,
+        elementToGather: payload
       };
     default:
       return state;

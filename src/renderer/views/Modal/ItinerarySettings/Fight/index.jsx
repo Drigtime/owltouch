@@ -13,6 +13,7 @@ import {
 import { withStyles } from "@material-ui/core/styles";
 import { ExpandMore } from "@material-ui/icons";
 import PropTypes from "prop-types";
+import keycode from "keycode";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { handleChanges } from "renderer/actions/actions.js";
@@ -22,28 +23,43 @@ import {
   MAX_FIGHT_NUMBER_PER_MAP,
   MAX_FIGHT_PER_MAP,
   MAX_MONSTER,
-  // FORBIDDEN_MONSTER,
-  // MANDATORY_MONSTER
+  FORBIDDEN_MONSTER,
+  MANDATORY_MONSTER,
   MAX_MONSTER_LEVEL,
   MAX_REGEN,
   MIN_MONSTER,
   MIN_MONSTER_LEVEL,
   MIN_REGEN,
-  // REGEN_ITEM,
+  REGEN_ITEM,
   REGEN_ITEM_QUANT
 } from "renderer/actions/types";
 import AutoComplete from "renderer/components/AutoComplete";
 import styles from "renderer/views/Modal/ItinerarySettings/Fight/styles.js";
-import { MONSTERS } from "renderer/components/AutoComplete/types";
+import { MONSTERS, ITEMS } from "renderer/components/AutoComplete/types";
 
 const Items = Object.values(require(__static + "/langs/fr/Items.json")).map(
   item => ({
-    value: item.iconId,
+    id: item.id,
+    iconId: item.iconId,
     label: item.nameId
   })
 );
 
+const Monsters = Object.values(
+  require(__static + "/langs/fr/Monsters.json")
+).map(monster => ({
+  id: monster.id,
+  iconId: monster.id,
+  label: monster.nameId
+}));
+
 class FightTab extends Component {
+  state = {
+    regenItemsInputValue: "",
+    mandatoryMonstersInputValue: "",
+    forbiddenMonstersInputValue: ""
+  };
+
   handleSwitchChanges = type => event => {
     this.props.handleChanges(type, event.target.checked);
   };
@@ -59,6 +75,45 @@ class FightTab extends Component {
     );
   };
 
+  handleAutoCompleteChange = (
+    type,
+    autoCompleteProp,
+    autoCompleteState
+  ) => element => {
+    if (autoCompleteProp.indexOf(element) === -1) {
+      autoCompleteProp = [...autoCompleteProp, element];
+    }
+    this.setState({ [autoCompleteState]: "" });
+    this.props.handleChanges(type, autoCompleteProp);
+  };
+
+  handleAutoCompleteKeyDown = (
+    type,
+    autoCompleteProp,
+    autoCompleteState
+  ) => event => {
+    if (
+      autoCompleteProp.length &&
+      !this.state[autoCompleteState].length &&
+      keycode(event) === "backspace"
+    ) {
+      this.props.handleChanges(
+        type,
+        autoCompleteProp.slice(0, autoCompleteProp.length - 1)
+      );
+    }
+  };
+
+  handleAutoCompleteInputChange = autoCompleteState => event => {
+    this.setState({ [autoCompleteState]: event.target.value });
+  };
+
+  handleAutoCompleteDelete = (type, autoCompleteProp) => item => () => {
+    const selectedItem = [...autoCompleteProp];
+    selectedItem.splice(selectedItem.indexOf(item), 1);
+    this.props.handleChanges(type, selectedItem);
+  };
+
   render() {
     const {
       classes,
@@ -68,14 +123,14 @@ class FightTab extends Component {
       maxFightNumberPerMap,
       minRegen,
       maxRegen,
-      // regenItem,
+      regenItem,
       regenItemQuant,
       minMonsterLevel,
       maxMonsterLevel,
       minMonster,
-      maxMonster
-      // forbiddenMonster,
-      // mandatoryMonster
+      maxMonster,
+      forbiddenMonster,
+      mandatoryMonster
     } = this.props;
     return (
       <div className={classes.root}>
@@ -196,6 +251,26 @@ class FightTab extends Component {
                       suggestions={Items}
                       label="Item to regen"
                       placeholder="ex : Pain au Blé Complet"
+                      type={ITEMS}
+                      selectedItem={regenItem}
+                      onChange={this.handleAutoCompleteChange(
+                        REGEN_ITEM,
+                        regenItem,
+                        "regenItemsInputValue"
+                      )}
+                      inputValue={this.state.regenItemsInputValue}
+                      handleDelete={this.handleAutoCompleteDelete(
+                        REGEN_ITEM,
+                        regenItem
+                      )}
+                      handleInputChange={this.handleAutoCompleteInputChange(
+                        "regenItemsInputValue"
+                      )}
+                      handleKeyDown={this.handleAutoCompleteKeyDown(
+                        REGEN_ITEM,
+                        regenItem,
+                        "regenItemsInputValue"
+                      )}
                     />
                   </Grid>
                   <Grid item={true} xs={2}>
@@ -283,18 +358,56 @@ class FightTab extends Component {
           </Grid>
           <Grid item={true} xs={12}>
             <AutoComplete
-              suggestions={Items}
+              suggestions={Monsters}
               label="Forbidden monster"
               placeholder="ex : Piou bleu"
               type={MONSTERS}
+              selectedItem={forbiddenMonster}
+              onChange={this.handleAutoCompleteChange(
+                FORBIDDEN_MONSTER,
+                forbiddenMonster,
+                "forbiddenMonstersInputValue"
+              )}
+              inputValue={this.state.forbiddenMonstersInputValue}
+              handleDelete={this.handleAutoCompleteDelete(
+                FORBIDDEN_MONSTER,
+                forbiddenMonster
+              )}
+              handleInputChange={this.handleAutoCompleteInputChange(
+                "forbiddenMonstersInputValue"
+              )}
+              handleKeyDown={this.handleAutoCompleteKeyDown(
+                FORBIDDEN_MONSTER,
+                forbiddenMonster,
+                "forbiddenMonstersInputValue"
+              )}
             />
           </Grid>
           <Grid item={true} xs={12}>
             <AutoComplete
-              suggestions={Items}
+              suggestions={Monsters}
               label="Mandatory monster"
               placeholder="ex : Piou bleu"
               type={MONSTERS}
+              selectedItem={mandatoryMonster}
+              onChange={this.handleAutoCompleteChange(
+                MANDATORY_MONSTER,
+                mandatoryMonster,
+                "mandatoryMonstersInputValue"
+              )}
+              inputValue={this.state.mandatoryMonstersInputValue}
+              handleDelete={this.handleAutoCompleteDelete(
+                MANDATORY_MONSTER,
+                mandatoryMonster
+              )}
+              handleInputChange={this.handleAutoCompleteInputChange(
+                "mandatoryMonstersInputValue"
+              )}
+              handleKeyDown={this.handleAutoCompleteKeyDown(
+                MANDATORY_MONSTER,
+                mandatoryMonster,
+                "mandatoryMonstersInputValue"
+              )}
             />
           </Grid>
         </Grid>
@@ -311,14 +424,14 @@ FightTab.propTypes = {
   maxFightNumberPerMap: PropTypes.number.isRequired,
   minRegen: PropTypes.number.isRequired,
   maxRegen: PropTypes.number.isRequired,
-  regenItem: PropTypes.object.isRequired,
+  regenItem: PropTypes.array.isRequired,
   regenItemQuant: PropTypes.number.isRequired,
   minMonsterLevel: PropTypes.number.isRequired,
   maxMonsterLevel: PropTypes.number.isRequired,
   minMonster: PropTypes.number.isRequired,
   maxMonster: PropTypes.number.isRequired,
-  forbiddenMonster: PropTypes.object.isRequired,
-  mandatoryMonster: PropTypes.object.isRequired,
+  forbiddenMonster: PropTypes.array.isRequired,
+  mandatoryMonster: PropTypes.array.isRequired,
   handleChanges: PropTypes.func.isRequired
 };
 

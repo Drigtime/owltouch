@@ -4,6 +4,7 @@ export const BUILDING_PLACEMENT = "BUILDING_PLACEMENT";
 export const FORMAT_TOOL = "FORMAT_TOOL";
 export const OPEN_BAG = "OPEN_BAG";
 export const GATHER_COUNT = "GATHER_COUNT";
+export const ELEMENT_TO_GATHER = "ELEMENT_TO_GATHER";
 export const FIGHT_COUNT = "FIGHT_COUNT";
 export const AUTO_REGEN = "AUTO_REGEN";
 export const MAX_FIGHT_PER_MAP = "MAX_FIGHT_PER_MAP";

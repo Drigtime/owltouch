@@ -1,30 +1,76 @@
 import { FormControl, FormControlLabel, Grid, Switch } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
+import keycode from "keycode";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { handleChanges } from "renderer/actions/actions.js";
-import { GATHER_COUNT, OPEN_BAG } from "renderer/actions/types.js";
+import {
+  ELEMENT_TO_GATHER,
+  GATHER_COUNT,
+  OPEN_BAG
+} from "renderer/actions/types.js";
 import AutoComplete from "renderer/components/AutoComplete";
-import LanguageManager from "renderer/configurations/language/LanguageManager.js";
 import { GATHER } from "renderer/components/AutoComplete/types";
-
-const Language = new LanguageManager();
+import Language from "renderer/configurations/language/LanguageManager.js";
 
 const Interactives = Object.values(
   require(__static + "/langs/fr/Interactives.json")
 ).map(item => ({
-  value: item.id,
+  id: item.id,
   label: item.nameId
 }));
 
 class GatherTab extends Component {
+  state = {
+    elementToGatherInputValue: ""
+  };
+
   handleSwitchChanges = type => event => {
     this.props.handleChanges(type, event.target.checked);
   };
 
+  handleAutoCompleteChange = (
+    type,
+    autoCompleteProp,
+    autoCompleteState
+  ) => element => {
+    if (autoCompleteProp.indexOf(element) === -1) {
+      autoCompleteProp = [...autoCompleteProp, element];
+    }
+    this.setState({ [autoCompleteState]: "" });
+    this.props.handleChanges(type, autoCompleteProp);
+  };
+
+  handleAutoCompleteKeyDown = (
+    type,
+    autoCompleteProp,
+    autoCompleteState
+  ) => event => {
+    if (
+      autoCompleteProp.length &&
+      !this.state[autoCompleteState].length &&
+      keycode(event) === "backspace"
+    ) {
+      this.props.handleChanges(
+        type,
+        autoCompleteProp.slice(0, autoCompleteProp.length - 1)
+      );
+    }
+  };
+
+  handleAutoCompleteInputChange = autoCompleteState => event => {
+    this.setState({ [autoCompleteState]: event.target.value });
+  };
+
+  handleAutoCompleteDelete = (type, autoCompleteProp) => item => () => {
+    const selectedItem = [...autoCompleteProp];
+    selectedItem.splice(selectedItem.indexOf(item), 1);
+    this.props.handleChanges(type, selectedItem);
+  };
+
   render() {
-    const { openBag, gatherCount } = this.props;
+    const { openBag, gatherCount, elementToGather } = this.props;
 
     return (
       <div>
@@ -62,6 +108,25 @@ class GatherTab extends Component {
                   "gatherTabElementToGatherPlaceholder"
                 )}
                 type={GATHER}
+                selectedItem={elementToGather}
+                onChange={this.handleAutoCompleteChange(
+                  ELEMENT_TO_GATHER,
+                  elementToGather,
+                  "elementToGatherInputValue"
+                )}
+                inputValue={this.state.elementToGatherInputValue}
+                handleDelete={this.handleAutoCompleteDelete(
+                  ELEMENT_TO_GATHER,
+                  elementToGather
+                )}
+                handleInputChange={this.handleAutoCompleteInputChange(
+                  "elementToGatherInputValue"
+                )}
+                handleKeyDown={this.handleAutoCompleteKeyDown(
+                  ELEMENT_TO_GATHER,
+                  elementToGather,
+                  "elementToGatherInputValue"
+                )}
               />
             </Grid>
           </Grid>
@@ -75,12 +140,14 @@ GatherTab.propTypes = {
   classes: PropTypes.object.isRequired,
   gatherCount: PropTypes.bool.isRequired,
   openBag: PropTypes.bool.isRequired,
+  elementToGather: PropTypes.array.isRequired,
   handleChanges: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   gatherCount: state.gatherTab.gatherCount,
-  openBag: state.gatherTab.openBag
+  openBag: state.gatherTab.openBag,
+  elementToGather: state.gatherTab.elementToGather
 });
 
 export default connect(

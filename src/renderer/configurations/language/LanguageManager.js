@@ -4,7 +4,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { Map } from "core-js";
 
-export default class LanguageManager {
+class LanguageManager {
   constructor() {
     const enFile = fs.readFileSync(path.join(__static, "./langs/en/en.json"));
     const en = JSON.parse(enFile.toString());
@@ -32,3 +32,5 @@ export default class LanguageManager {
     return value;
   }
 }
+
+export default new LanguageManager();

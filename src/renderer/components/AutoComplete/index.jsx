@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import deburr from "lodash/deburr";
-import keycode from "keycode";
 import Downshift from "downshift";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
@@ -32,6 +31,29 @@ function renderInput(inputProps) {
   );
 }
 
+function checkIfAvailablePic(type, id) {
+  const getPicture = (type, id) => (
+    <img
+      src={`https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/${type}/${id}.png`}
+      style={{ height: "46px", position: "absolute", right: 0 }}
+    />
+  );
+
+  switch (type) {
+    case ITEMS:
+      return getPicture("items", id);
+
+    case MONSTERS:
+      return getPicture("monsters", id);
+
+    case GATHER:
+      break;
+
+    default:
+      break;
+  }
+}
+
 function renderSuggestion({
   suggestions,
   index,
@@ -42,43 +64,11 @@ function renderSuggestion({
 }) {
   const isHighlighted = highlightedIndex === index;
   const isSelected = (selectedItem || "").indexOf(suggestions.label) > -1;
-  let image;
-
-  switch (type) {
-    case ITEMS:
-      image = (
-        <img
-          src={`https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/items/${
-            suggestions.value
-          }.png`}
-          style={{ height: "46px", position: "absolute", right: 0 }}
-        />
-      );
-      break;
-
-    case MONSTERS:
-      image = (
-        <img
-          src={`https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/monsters/${
-            suggestions.value
-          }.png`}
-          style={{ height: "46px", position: "absolute", right: 0 }}
-        />
-      );
-      break;
-
-    case GATHER:
-      image = <div />;
-      break;
-
-    default:
-      break;
-  }
 
   return (
     <MenuItem
       {...itemProps}
-      key={suggestions.label}
+      key={suggestions.id}
       selected={isHighlighted}
       component="div"
       style={{
@@ -86,7 +76,10 @@ function renderSuggestion({
       }}
     >
       {suggestions.label}
-      {image}
+      {checkIfAvailablePic(
+        type,
+        suggestions.iconId ? suggestions.iconId : null
+      )}
     </MenuItem>
   );
 }
@@ -109,6 +102,7 @@ function getSuggestions(value, suggestions) {
     : suggestions.filter(suggestions => {
         const keep =
           count < 5 &&
+          suggestions.label &&
           suggestions.label.slice(0, inputLength).toLowerCase() === inputValue;
 
         if (keep) {
@@ -125,53 +119,26 @@ class DownshiftMultiple extends React.Component {
     selectedItem: []
   };
 
-  handleKeyDown = event => {
-    const { inputValue, selectedItem } = this.state;
-    if (
-      selectedItem.length &&
-      !inputValue.length &&
-      keycode(event) === "backspace"
-    ) {
-      this.setState({
-        selectedItem: selectedItem.slice(0, selectedItem.length - 1)
-      });
-    }
-  };
-
-  handleInputChange = event => {
-    this.setState({ inputValue: event.target.value });
-  };
-
-  handleChange = item => {
-    let { selectedItem } = this.state;
-
-    if (selectedItem.indexOf(item) === -1) {
-      selectedItem = [...selectedItem, item];
-    }
-
-    this.setState({
-      inputValue: "",
-      selectedItem
-    });
-  };
-
-  handleDelete = item => () => {
-    this.setState(state => {
-      const selectedItem = [...state.selectedItem];
-      selectedItem.splice(selectedItem.indexOf(item), 1);
-      return { selectedItem };
-    });
-  };
-
   render() {
-    const { classes, suggestions, label, placeholder, type } = this.props;
-    const { inputValue, selectedItem } = this.state;
+    const {
+      classes,
+      suggestions,
+      label,
+      placeholder,
+      type,
+      onChange,
+      selectedItem,
+      inputValue,
+      handleDelete,
+      handleInputChange,
+      handleKeyDown
+    } = this.props;
 
     return (
       <Downshift
         id="downshift-multiple"
         inputValue={inputValue}
-        onChange={this.handleChange}
+        onChange={onChange}
         selectedItem={selectedItem}
         // style={{ width: "100%" }}
       >
@@ -194,11 +161,11 @@ class DownshiftMultiple extends React.Component {
                     tabIndex={-1}
                     label={item}
                     className={classes.chip}
-                    onDelete={this.handleDelete(item)}
+                    onDelete={handleDelete(item)}
                   />
                 )),
-                onChange: this.handleInputChange,
-                onKeyDown: this.handleKeyDown,
+                onChange: handleInputChange,
+                onKeyDown: handleKeyDown,
                 placeholder: placeholder
               }),
               label: label
@@ -230,7 +197,13 @@ DownshiftMultiple.propTypes = {
   suggestions: PropTypes.array.isRequired,
   label: PropTypes.string,
   placeholder: PropTypes.string,
-  type: PropTypes.string
+  inputValue: PropTypes.string,
+  type: PropTypes.string,
+  selectedItem: PropTypes.array,
+  onChange: PropTypes.func,
+  handleDelete: PropTypes.func,
+  handleInputChange: PropTypes.func,
+  handleKeyDown: PropTypes.func
 };
 
 const styles = theme => ({
