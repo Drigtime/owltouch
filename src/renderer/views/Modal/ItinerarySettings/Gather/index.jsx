@@ -10,7 +10,7 @@ import {
   GATHER_COUNT,
   OPEN_BAG
 } from "renderer/actions/types.js";
-import AutoComplete from "renderer/components/AutoComplete";
+import MultipleChoiceAutoComplete from "renderer/components/AutoComplete/MultipleChoiceAutoComplete";
 import { GATHER } from "renderer/components/AutoComplete/types";
 import Language from "renderer/configurations/language/LanguageManager.js";
 
@@ -101,7 +101,7 @@ class GatherTab extends Component {
               />
             </Grid>
             <Grid item={true} xs={12}>
-              <AutoComplete
+              <MultipleChoiceAutoComplete
                 suggestions={Interactives}
                 label={Language.trans("gatherTabElementToGather")}
                 placeholder={Language.trans(

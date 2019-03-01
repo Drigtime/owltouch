@@ -166,9 +166,9 @@ class DownshiftMultiple extends React.Component {
                 )),
                 onChange: handleInputChange,
                 onKeyDown: handleKeyDown,
-                placeholder: placeholder
+                placeholder
               }),
-              label: label
+              label
             })}
             {isOpen ? (
               <Paper className={classes.paper} square>

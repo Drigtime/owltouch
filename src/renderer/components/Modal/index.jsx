@@ -8,29 +8,38 @@ import { withStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import React from "react";
 
-const MuiDialog = withStyles(() => ({
-  paper: {
+const styles = () => ({
+  dialog: {
     width: "50%",
     height: "60%"
-  }
-}))(Dialog);
-
-const MuiDialogContent = withStyles(() => ({
-  root: {
-    padding: "0px 8px 0px 8px"
   },
-  rootFirstChild: {
-    paddingTop: "8px"
+  dialogContent: {
+    padding: "0px 8px 0px 8px",
+    "&:first-child": {
+      paddingTop: "8px"
+    }
   }
-}))(DialogContent);
+});
 
 class SimpleModal extends React.Component {
   render() {
-    const { open, onClose, children, actions } = this.props;
+    const { classes, open, onClose, children, actions } = this.props;
 
     return (
-      <MuiDialog open={open} onClose={onClose}>
-        <MuiDialogContent>{children}</MuiDialogContent>
+      <Dialog
+        classes={{
+          paper: classes.dialog
+        }}
+        open={open}
+        onClose={onClose}
+      >
+        <DialogContent
+          classes={{
+            root: classes.dialogContent
+          }}
+        >
+          {children}
+        </DialogContent>
         <DialogActions>
           {actions.map((action, index) => {
             return (
@@ -40,7 +49,7 @@ class SimpleModal extends React.Component {
             );
           })}
         </DialogActions>
-      </MuiDialog>
+      </Dialog>
     );
   }
 }
@@ -54,4 +63,4 @@ SimpleModal.propTypes = {
 };
 
 // We need an intermediary variable for handling the recursive nesting.
-export default SimpleModal;
+export default withStyles(styles)(SimpleModal);

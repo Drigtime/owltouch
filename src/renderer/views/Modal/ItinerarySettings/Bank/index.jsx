@@ -1,4 +1,15 @@
-import { ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, FormControl, FormControlLabel, Grid, InputAdornment, Switch, TextField, Typography } from "@material-ui/core";
+import {
+  ExpansionPanel,
+  ExpansionPanelDetails,
+  ExpansionPanelSummary,
+  FormControl,
+  FormControlLabel,
+  Grid,
+  InputAdornment,
+  Switch,
+  TextField,
+  Typography
+} from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { ExpandMore } from "@material-ui/icons";
 import keycode from "keycode";
@@ -6,10 +17,20 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { handleChanges } from "renderer/actions/actions.js";
-import { AUTO_DELETE, MAX_PODS, PUT_KAMAS, PUT_KAMAS_QUANT, TAKE_KAMAS, TAKE_KAMAS_QUANT } from "renderer/actions/types";
-import AutoComplete from "renderer/components/AutoComplete";
+import {
+  AUTO_DELETE,
+  MAX_PODS,
+  PUT_KAMAS,
+  PUT_KAMAS_QUANT,
+  TAKE_KAMAS,
+  TAKE_KAMAS_QUANT,
+  TAKE_ITEM
+} from "renderer/actions/types";
+import MultipleChoiceAutoComplete from "renderer/components/AutoComplete/MultipleChoiceAutoComplete";
+import BankItemManager from "renderer/views/Modal/ItinerarySettings/Bank/BankItemManager";
 import { ITEMS } from "renderer/components/AutoComplete/types";
 import styles from "renderer/views/Modal/ItinerarySettings/Bank/styles.js";
+import Language from "renderer/configurations/language/LanguageManager.js";
 
 const Items = Object.values(require(__static + "/langs/fr/Items.json")).map(
   item => ({
@@ -22,7 +43,7 @@ const Items = Object.values(require(__static + "/langs/fr/Items.json")).map(
 class BankTab extends Component {
   state = {
     autoDeleteInputValue: ""
-  }
+  };
 
   handleSwitchChanges = type => event => {
     this.props.handleChanges(type, event.target.checked);
@@ -86,14 +107,15 @@ class BankTab extends Component {
       takeKamas,
       takeKamasQuant,
       putKamas,
-      putKamasQuant
+      putKamasQuant,
+      takeItem
     } = this.props;
     return (
       <div className={classes.root}>
         <Grid container={true} spacing={24}>
           <Grid item={true} xs={12}>
             <TextField
-              label="Pod max"
+              label={Language.trans("BankTabPodMax")}
               id="pod-max"
               type="number"
               value={maxPods}
@@ -109,10 +131,10 @@ class BankTab extends Component {
             />
           </Grid>
           <Grid item={true} xs={12}>
-            <AutoComplete
+            <MultipleChoiceAutoComplete
               suggestions={Items}
-              label="Auto delete"
-              placeholder="ex : Pain au Blé Complet"
+              label={Language.trans("BankTabAutoDelete")}
+              placeholder={Language.trans("BankTabAutoDeletePlaceHolder")}
               type={ITEMS}
               selectedItem={autoDelete}
               onChange={this.handleAutoCompleteChange(
@@ -144,7 +166,7 @@ class BankTab extends Component {
                     onChange={this.handleSwitchChanges(TAKE_KAMAS)}
                   />
                 }
-                label="take kamas from bank"
+                label={Language.trans("BankTabTakeKamas")}
               />
             </FormControl>
           </Grid>
@@ -173,7 +195,7 @@ class BankTab extends Component {
                     onChange={this.handleSwitchChanges(PUT_KAMAS)}
                   />
                 }
-                label="put kamas to the bank"
+                label={Language.trans("BankTabPutKamas")}
               />
             </FormControl>
           </Grid>
@@ -197,12 +219,18 @@ class BankTab extends Component {
             <ExpansionPanel>
               <ExpansionPanelSummary expandIcon={<ExpandMore />}>
                 <Typography className={classes.heading}>
-                  item to get from the bank
+                  {Language.trans("BankTabTakeItem")}
                 </Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails className={classes.expansionPanelDetails}>
                 <Grid container={true} spacing={24}>
-                  <Grid item={true} xs={6} />
+                  <Grid item={true} xs={12}>
+                    <BankItemManager
+                      items={takeItem}
+                      type={TAKE_ITEM}
+                      suggestionsType={ITEMS}
+                    />
+                  </Grid>
                 </Grid>
               </ExpansionPanelDetails>
             </ExpansionPanel>
@@ -211,7 +239,7 @@ class BankTab extends Component {
             <ExpansionPanel>
               <ExpansionPanelSummary expandIcon={<ExpandMore />}>
                 <Typography className={classes.heading}>
-                  item to put in the bank
+                  {Language.trans("BankTabPutItem")}
                 </Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails className={classes.expansionPanelDetails}>
@@ -235,7 +263,9 @@ BankTab.propTypes = {
   takeKamasQuant: PropTypes.number.isRequired,
   putKamas: PropTypes.bool.isRequired,
   putKamasQuant: PropTypes.number.isRequired,
-  handleChanges: PropTypes.func.isRequired
+  handleChanges: PropTypes.func.isRequired,
+  takeItem: PropTypes.array.isRequired,
+  putItem: PropTypes.array.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -244,7 +274,9 @@ const mapStateToProps = state => ({
   takeKamas: state.bankTab.takeKamas,
   takeKamasQuant: state.bankTab.takeKamasQuant,
   putKamas: state.bankTab.putKamas,
-  putKamasQuant: state.bankTab.putKamasQuant
+  putKamasQuant: state.bankTab.putKamasQuant,
+  takeItem: state.bankTab.takeItem,
+  putItem: state.bankTab.putItem
 });
 
 export default connect(

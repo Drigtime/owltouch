@@ -12,19 +12,19 @@ import {
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { ExpandMore } from "@material-ui/icons";
-import PropTypes from "prop-types";
 import keycode from "keycode";
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { handleChanges } from "renderer/actions/actions.js";
 import {
   AUTO_REGEN,
   FIGHT_COUNT,
+  FORBIDDEN_MONSTER,
+  MANDATORY_MONSTER,
   MAX_FIGHT_NUMBER_PER_MAP,
   MAX_FIGHT_PER_MAP,
   MAX_MONSTER,
-  FORBIDDEN_MONSTER,
-  MANDATORY_MONSTER,
   MAX_MONSTER_LEVEL,
   MAX_REGEN,
   MIN_MONSTER,
@@ -33,9 +33,10 @@ import {
   REGEN_ITEM,
   REGEN_ITEM_QUANT
 } from "renderer/actions/types";
-import AutoComplete from "renderer/components/AutoComplete";
+import MultipleChoiceAutoComplete from "renderer/components/AutoComplete/MultipleChoiceAutoComplete";
+import { ITEMS, MONSTERS } from "renderer/components/AutoComplete/types";
+import Language from "renderer/configurations/language/LanguageManager.js";
 import styles from "renderer/views/Modal/ItinerarySettings/Fight/styles.js";
-import { MONSTERS, ITEMS } from "renderer/components/AutoComplete/types";
 
 const Items = Object.values(require(__static + "/langs/fr/Items.json")).map(
   item => ({
@@ -145,7 +146,7 @@ class FightTab extends Component {
                     value="fightCount"
                   />
                 }
-                label="fight count"
+                label={Language.trans("FightTabFightCount")}
               />
             </FormControl>
           </Grid>
@@ -159,7 +160,7 @@ class FightTab extends Component {
                     value="autoRegen"
                   />
                 }
-                label="auto regen"
+                label={Language.trans("FightTabAutoRegen")}
               />
             </FormControl>
           </Grid>
@@ -173,7 +174,7 @@ class FightTab extends Component {
                     value="maxFight"
                   />
                 }
-                label="Max fight per map"
+                label={Language.trans("FightTabMaxFight")}
               />
             </FormControl>
           </Grid>
@@ -202,7 +203,7 @@ class FightTab extends Component {
                 <Grid container={true} spacing={24}>
                   <Grid item={true} xs={6}>
                     <TextField
-                      label="min regen"
+                      label={Language.trans("FightTabMinRegen")}
                       id="min-regen"
                       type="number"
                       onChange={this.handleInputWithLimitChanges(
@@ -224,7 +225,7 @@ class FightTab extends Component {
                   </Grid>
                   <Grid item={true} xs={6}>
                     <TextField
-                      label="max regen"
+                      label={Language.trans("FightTabMaxRegen")}
                       id="max-regen"
                       type="number"
                       onChange={this.handleInputWithLimitChanges(
@@ -247,10 +248,12 @@ class FightTab extends Component {
                 </Grid>
                 <Grid container={true} spacing={24}>
                   <Grid item={true} xs={10}>
-                    <AutoComplete
+                    <MultipleChoiceAutoComplete
                       suggestions={Items}
-                      label="Item to regen"
-                      placeholder="ex : Pain au Blé Complet"
+                      label={Language.trans("FightTabRegenItem")}
+                      placeholder={Language.trans(
+                        "FightTabRegenItemPlaceHolder"
+                      )}
                       type={ITEMS}
                       selectedItem={regenItem}
                       onChange={this.handleAutoCompleteChange(
@@ -275,7 +278,7 @@ class FightTab extends Component {
                   </Grid>
                   <Grid item={true} xs={2}>
                     <TextField
-                      label="number of item to take from the bank"
+                      label={Language.trans("FightTabRegenItemQuant")}
                       id="nb-item-regen"
                       type="number"
                       onChange={this.handleInputChanges(REGEN_ITEM_QUANT)}
@@ -292,7 +295,7 @@ class FightTab extends Component {
           </Grid>
           <Grid item={true} xs={6}>
             <TextField
-              label="min monster level"
+              label={Language.trans("FightTabMinMonsterLevel")}
               id="min-monster-lvl"
               type="number"
               onChange={this.handleInputChanges(MIN_MONSTER_LEVEL)}
@@ -308,7 +311,7 @@ class FightTab extends Component {
           </Grid>
           <Grid item={true} xs={6}>
             <TextField
-              label="max monster level"
+              label={Language.trans("FightTabMaxMonsterLevel")}
               id="max-monster-lvl"
               type="number"
               onChange={this.handleInputChanges(MAX_MONSTER_LEVEL)}
@@ -324,7 +327,7 @@ class FightTab extends Component {
           </Grid>
           <Grid item={true} xs={6}>
             <TextField
-              label="min monster number"
+              label={Language.trans("FightTabMinMonster")}
               id="min-monster-number"
               type="number"
               onChange={this.handleInputWithLimitChanges(MIN_MONSTER, 8)}
@@ -341,7 +344,7 @@ class FightTab extends Component {
           </Grid>
           <Grid item={true} xs={6}>
             <TextField
-              label="max monster number"
+              label={Language.trans("FightTabMaxMonster")}
               id="max-monster-number"
               type="number"
               onChange={this.handleInputWithLimitChanges(MAX_MONSTER, 8)}
@@ -357,10 +360,12 @@ class FightTab extends Component {
             />
           </Grid>
           <Grid item={true} xs={12}>
-            <AutoComplete
+            <MultipleChoiceAutoComplete
               suggestions={Monsters}
-              label="Forbidden monster"
-              placeholder="ex : Piou bleu"
+              label={Language.trans("FightTabForbiddenMonster")}
+              placeholder={Language.trans(
+                "FightTabForbiddenMonsterPlaceHolder"
+              )}
               type={MONSTERS}
               selectedItem={forbiddenMonster}
               onChange={this.handleAutoCompleteChange(
@@ -384,10 +389,12 @@ class FightTab extends Component {
             />
           </Grid>
           <Grid item={true} xs={12}>
-            <AutoComplete
+            <MultipleChoiceAutoComplete
               suggestions={Monsters}
-              label="Mandatory monster"
-              placeholder="ex : Piou bleu"
+              label={Language.trans("FightTabMandatoryMonster")}
+              placeholder={Language.trans(
+                "FightTabMandatoryMonsterPlaceHolder"
+              )}
               type={MONSTERS}
               selectedItem={mandatoryMonster}
               onChange={this.handleAutoCompleteChange(

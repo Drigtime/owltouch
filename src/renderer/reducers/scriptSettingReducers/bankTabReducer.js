@@ -4,7 +4,9 @@ import {
   TAKE_KAMAS,
   TAKE_KAMAS_QUANT,
   PUT_KAMAS,
-  PUT_KAMAS_QUANT
+  PUT_KAMAS_QUANT,
+  TAKE_ITEM,
+  PUT_ITEM
 } from "renderer/actions/types.js";
 
 const initialState = {
@@ -13,7 +15,9 @@ const initialState = {
   takeKamas: false,
   takeKamasQuant: 0,
   putKamas: false,
-  putKamasQuant: 0
+  putKamasQuant: 0,
+  takeItem: [],
+  putItem: []
 };
 
 export default function(state = initialState, { type, payload }) {
@@ -47,6 +51,16 @@ export default function(state = initialState, { type, payload }) {
       return {
         ...state,
         putKamasQuant: payload
+      };
+    case TAKE_ITEM:
+      return {
+        ...state,
+        takeItem: payload
+      };
+    case PUT_ITEM:
+      return {
+        ...state,
+        putItem: payload
       };
     default:
       return state;
