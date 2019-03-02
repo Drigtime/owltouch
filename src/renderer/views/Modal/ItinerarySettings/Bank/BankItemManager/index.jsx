@@ -37,7 +37,6 @@ const styles = () => ({
 class BankItemManager extends Component {
   state = {
     id: 0,
-    rows: [],
     quant: 0,
     itemName: ""
   };
@@ -54,53 +53,54 @@ class BankItemManager extends Component {
     this.setState({ quant: event.target.value });
   };
 
-  addItem = () => {
+  addItem = type => () => {
     const index = Items.findIndex(index => index.label === this.state.itemName);
     this.createData(
       Items[index].iconId,
+      Items[index].id,
       Items[index].label,
       this.state.quant,
-      this.deleteData
+      this.deleteData,
+      type
     );
   };
 
-  createData = (icon, name, quant, action) => {
-    this.setState({
-      rows: [
-        ...this.state.rows,
-        {
-          id: this.state.id,
-          icon: (
-            <img
-              src={`https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/items/${icon}.png`}
-              style={{ height: "46px" }}
-            />
-          ),
-          name,
-          quant,
-          action: (
-            <Button id={this.state.id} onClick={action}>
-              Delete
-            </Button>
-          )
-        }
-      ]
-    });
+  createData = (icon, id, name, quant, action, type) => {
+    this.props.handleChanges(type, [
+      ...this.props.items,
+      {
+        id: this.state.id,
+        itemId: id,
+        icon: (
+          <img
+            src={`https://ankama.akamaized.net/games/dofus-tablette/assets/2.22.1/gfx/items/${icon}.png`}
+            style={{ height: "46px" }}
+          />
+        ),
+        name,
+        quant,
+        action: (
+          <Button id={this.state.id} onClick={action(type)}>
+            Delete
+          </Button>
+        )
+      }
+    ]);
     this.setState({ id: this.state.id + 1 });
   };
 
-  deleteData = event => {
-    const index = this.state.rows.findIndex(
+  deleteData = type => event => {
+    const index = this.props.items.findIndex(
       index => index.id === Number(event.currentTarget.id)
     );
-    this.state.rows.splice(index, 1);
-
-    this.setState({ rows: this.state.rows });
-    this.setState({ id: this.state.id - 1 });
+    const tmpRows = this.props.items;
+    tmpRows.splice(index, 1);
+    this.props.handleChanges(type, tmpRows);
+    this.forceUpdate();
   };
 
   render() {
-    const { classes, suggestionsType } = this.props;
+    const { classes, suggestionsType, items, type } = this.props;
     return (
       <Grid container={true} spacing={24}>
         <Grid item={true} xs={6}>
@@ -129,7 +129,7 @@ class BankItemManager extends Component {
           />
         </Grid>
         <Grid item={true} xs={3}>
-          <Button variant="contained" onClick={this.addItem}>
+          <Button variant="contained" onClick={this.addItem(type)}>
             {Language.trans("BankTabItemManagerAddButton")}
           </Button>
         </Grid>
@@ -151,7 +151,7 @@ class BankItemManager extends Component {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {this.state.rows.map(row => (
+                {items.map(row => (
                   <TableRow key={row.id}>
                     <TableCell padding="none" align="center">
                       {row.icon}

@@ -24,7 +24,8 @@ import {
   PUT_KAMAS_QUANT,
   TAKE_KAMAS,
   TAKE_KAMAS_QUANT,
-  TAKE_ITEM
+  TAKE_ITEM,
+  PUT_ITEM
 } from "renderer/actions/types";
 import MultipleChoiceAutoComplete from "renderer/components/AutoComplete/MultipleChoiceAutoComplete";
 import BankItemManager from "renderer/views/Modal/ItinerarySettings/Bank/BankItemManager";
@@ -108,7 +109,8 @@ class BankTab extends Component {
       takeKamasQuant,
       putKamas,
       putKamasQuant,
-      takeItem
+      takeItem,
+      putItem
     } = this.props;
     return (
       <div className={classes.root}>
@@ -244,7 +246,13 @@ class BankTab extends Component {
               </ExpansionPanelSummary>
               <ExpansionPanelDetails className={classes.expansionPanelDetails}>
                 <Grid container={true} spacing={24}>
-                  <Grid item={true} xs={6} />
+                  <Grid item={true} xs={12}>
+                    <BankItemManager
+                      items={putItem}
+                      type={PUT_ITEM}
+                      suggestionsType={ITEMS}
+                    />
+                  </Grid>
                 </Grid>
               </ExpansionPanelDetails>
             </ExpansionPanel>
