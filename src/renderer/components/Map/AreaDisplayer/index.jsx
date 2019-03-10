@@ -1,12 +1,10 @@
 import { Typography } from "@material-ui/core";
 import L from "leaflet";
+import GeoToDofusCoord from "owl/utils/GeoToDofusCoord.js";
 import React from "react";
 import { render } from "react-dom";
 import { MapControl, withLeaflet } from "react-leaflet";
-import {
-  geoCoordsToDofusCoords,
-  getId
-} from "renderer/components/Map/HightLight/index";
+import { getId } from "renderer/components/Map/HightLight/index";
 import LeafletControl from "renderer/components/Map/LeafletControl/index";
 
 class MapInfo extends MapControl {
@@ -28,7 +26,7 @@ class MapInfo extends MapControl {
 
   componentDidMount() {
     this.map.addEventListener("mousemove", event => {
-      const dofusCoord = geoCoordsToDofusCoords(
+      const dofusCoord = GeoToDofusCoord.geoCoordsToDofusCoords(
         event.latlng,
         this.props.leaflet.map
       );

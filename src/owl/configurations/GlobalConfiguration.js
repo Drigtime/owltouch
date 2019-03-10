@@ -1,4 +1,4 @@
-import { Languages } from "renderer/configurations/language/Languages";
+import { Languages } from "owl/configurations/language/Languages";
 
 export default class GlobalConfiguration {
   constructor() {

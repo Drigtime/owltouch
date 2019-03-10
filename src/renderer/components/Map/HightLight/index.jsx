@@ -1,8 +1,9 @@
 import L from "leaflet";
 import fs from "fs";
 import { MapControl, withLeaflet } from "react-leaflet";
-const mapList = JSON.parse(fs.readFileSync(__static + "/d2o/map.json", "utf8"))
-const areas = JSON.parse(fs.readFileSync(__static + "/d2o/areas.json", "utf8"))
+import GeoToDofusCoord from "owl/utils/GeoToDofusCoord.js";
+const mapList = JSON.parse(fs.readFileSync(__static + "/d2o/map.json", "utf8"));
+const areas = JSON.parse(fs.readFileSync(__static + "/d2o/areas.json", "utf8"));
 
 const actualDofusCoords = { x: 0, y: 0 };
 const dofusMapSubAreaHighlight = [];
@@ -51,38 +52,22 @@ function mapidToCoord(mapIds) {
   });
   return list;
 }
-function geoCoordsToPixelCoords(geoCoords, map) {
-  return map.project(geoCoords, map.getMaxZoom());
-}
-function pixelCoordsToGeoCoords(pixelCoords, map) {
-  return map.unproject(pixelCoords, map.getMaxZoom());
-}
-function pixelCoordsToDofusCoords(pixelCoords) {
-  const coordsTransform = new L.Transformation(69.5, 6517, 50, 4973);
-  const { x, y } = coordsTransform.untransform(pixelCoords).round();
-  return [x, y];
-}
-// in: dofus [x,y] out: pixel coords (x,y) of the [x,y] map's center pixel
-function dofusCoordsToPixelCoords(dofusMapCoord) {
-  const newDofusCoords = L.point(dofusMapCoord);
-  const coordsTransform = new L.Transformation(69.5, 6517, 50, 4973);
-  return coordsTransform.transform(newDofusCoords);
-}
-export function geoCoordsToDofusCoords(geoCoords, map) {
-  const pixelCoords = geoCoordsToPixelCoords(geoCoords, map);
-  return pixelCoordsToDofusCoords(pixelCoords);
-}
 
 function getDofusMapBounds(dofusMapCoord, map) {
-  const topLeftCornerCorner = dofusCoordsToPixelCoords(dofusMapCoord);
+  const topLeftCornerCorner = GeoToDofusCoord.dofusCoordsToPixelCoords(
+    dofusMapCoord
+  );
   topLeftCornerCorner.x -= 69.5 / 2;
   topLeftCornerCorner.y -= 50 / 2;
   const bottomRightCornerCorner = L.point(
     topLeftCornerCorner.x + 69.5,
     topLeftCornerCorner.y + 50
   );
-  const nW = pixelCoordsToGeoCoords(topLeftCornerCorner, map);
-  const sE = pixelCoordsToGeoCoords(bottomRightCornerCorner, map);
+  const nW = GeoToDofusCoord.pixelCoordsToGeoCoords(topLeftCornerCorner, map);
+  const sE = GeoToDofusCoord.pixelCoordsToGeoCoords(
+    bottomRightCornerCorner,
+    map
+  );
   return L.latLngBounds(nW, sE);
 }
 
@@ -96,15 +81,17 @@ function drawRectangle(point, map) {
     weight: 1.2
   }).addTo(map);
 }
+
 function resetHighlightArea(map) {
   dofusMapSubAreaHighlight.forEach(hilightedMap => {
     map.removeLayer(hilightedMap);
   });
   dofusMapSubAreaHighlight.length = 0;
 }
+
 function highlightSubArea(event, map) {
   const geoCoords = event.latlng;
-  const [x, y] = geoCoordsToDofusCoords(geoCoords, map);
+  const [x, y] = GeoToDofusCoord.geoCoordsToDofusCoords(geoCoords, map);
   if (actualDofusCoords.x === x && actualDofusCoords.y === y) {
     return;
   }
@@ -137,9 +124,10 @@ function highlightSubArea(event, map) {
     dofusMapSubAreaHighlight.push(highlight);
   });
 }
+
 function drawDofusMapBoundsOnMouseMove(event, map) {
   const geoCoords = event.latlng;
-  const dofusCoords = geoCoordsToDofusCoords(geoCoords, map);
+  const dofusCoords = GeoToDofusCoord.geoCoordsToDofusCoords(geoCoords, map);
   if (dofusMapUnderMouse !== null) {
     if (map.hasLayer(dofusMapUnderMouse)) {
       if (dofusMapUnderMouse.getBounds().contains(event.latlng)) {
@@ -153,6 +141,7 @@ function drawDofusMapBoundsOnMouseMove(event, map) {
     drawRectangle(dofusCoords, map);
   }
 }
+
 class MapInfo extends MapControl {
   constructor(props) {
     super(props);
@@ -161,6 +150,7 @@ class MapInfo extends MapControl {
   createLeafletElement() {
     //
   }
+
   componentDidMount() {
     this.map.addEventListener("mousemove", event => {
       drawDofusMapBoundsOnMouseMove(event, this.map);

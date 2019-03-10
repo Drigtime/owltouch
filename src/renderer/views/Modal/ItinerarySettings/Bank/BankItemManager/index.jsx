@@ -15,7 +15,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { handleChanges } from "renderer/actions/actions.js";
 import SimpleAutoComplete from "renderer/components/AutoComplete/SimpleAutoComplete";
-import Language from "renderer/configurations/language/LanguageManager.js";
+import Language from "owl/configurations/language/LanguageManager.js";
 
 const Items = Object.values(require(__static + "/langs/fr/Items.json")).map(
   item => ({

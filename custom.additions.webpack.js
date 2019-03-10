@@ -10,14 +10,19 @@ module.exports = {
           presets: ["@babel/preset-react"]
         }
       },
-      { test: /\.(png|jpg)$/, loader: "url-loader", include: [path.join(__dirname, 'static')] }
+      {
+        test: /\.(png|jpg)$/,
+        loader: "url-loader",
+        include: [path.join(__dirname, "static")]
+      }
     ]
   },
   resolve: {
     extensions: [".js", ".jsx"],
     alias: {
       main: path.resolve(__dirname, "src/main/"),
-      renderer: path.resolve(__dirname, "src/renderer/")
+      renderer: path.resolve(__dirname, "src/renderer/"),
+      owl: path.resolve(__dirname, "src/owl/")
     }
   }
 };

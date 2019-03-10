@@ -35,7 +35,7 @@ import {
 } from "renderer/actions/types";
 import MultipleChoiceAutoComplete from "renderer/components/AutoComplete/MultipleChoiceAutoComplete";
 import { ITEMS, MONSTERS } from "renderer/components/AutoComplete/types";
-import Language from "renderer/configurations/language/LanguageManager.js";
+import Language from "owl/configurations/language/LanguageManager.js";
 import styles from "renderer/views/Modal/ItinerarySettings/Fight/styles.js";
 
 const Items = Object.values(require(__static + "/langs/fr/Items.json")).map(

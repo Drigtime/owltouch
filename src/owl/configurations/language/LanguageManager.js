@@ -1,5 +1,5 @@
-import GlobalConfiguration from "renderer/configurations/GlobalConfiguration";
-import { Languages } from "renderer/configurations/language/Languages";
+import GlobalConfiguration from "owl/configurations/GlobalConfiguration";
+import { Languages } from "owl/configurations/language/Languages";
 import * as fs from "fs";
 import * as path from "path";
 import { Map } from "core-js";

@@ -31,3 +31,4 @@ export const SCRIPT_NAME = "SCRIPT_NAME";
 export const SCRIPT_AREA = "SCRIPT_AREA";
 export const SCRIPT_TYPE = "SCRIPT_TYPE";
 export const SCRIPT_AUTHOR_NAME = "SCRIPT_AUTHOR_NAME";
+export const SCRIPT_ACTIONS = "SCRIPT_ACTIONS";

@@ -1,16 +1,13 @@
 import { Grid, TextField } from "@material-ui/core";
-import {
-  geoCoordsToDofusCoords,
-  getId
-} from "renderer/components/Map/HightLight/index";
-import LeafletControl from "renderer/components/Map/LeafletControl/index";
 import L from "leaflet";
+import GeoToDofusCoord from "owl/utils/GeoToDofusCoord.js";
 import React from "react";
 import { render } from "react-dom";
 import { MapControl, withLeaflet } from "react-leaflet";
+import { getId } from "renderer/components/Map/HightLight/index";
+import LeafletControl from "renderer/components/Map/LeafletControl/index";
 
 class MapInfo extends MapControl {
-  dofusCoord;
   constructor(props) {
     super(props);
     this.state = {};
@@ -49,7 +46,10 @@ class MapInfo extends MapControl {
 
   componentDidMount() {
     this.map.addEventListener("mousemove", event => {
-      const dofusCoord = geoCoordsToDofusCoords(event.latlng, this.map);
+      const dofusCoord = GeoToDofusCoord.geoCoordsToDofusCoords(
+        event.latlng,
+        this.map
+      );
       const dofusMapId = getId(dofusCoord[0], dofusCoord[1]);
       render(
         <LeafletControl>

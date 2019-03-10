@@ -31,7 +31,7 @@ import MultipleChoiceAutoComplete from "renderer/components/AutoComplete/Multipl
 import BankItemManager from "renderer/views/Modal/ItinerarySettings/Bank/BankItemManager";
 import { ITEMS } from "renderer/components/AutoComplete/types";
 import styles from "renderer/views/Modal/ItinerarySettings/Bank/styles.js";
-import Language from "renderer/configurations/language/LanguageManager.js";
+import Language from "owl/configurations/language/LanguageManager.js";
 
 const Items = Object.values(require(__static + "/langs/fr/Items.json")).map(
   item => ({

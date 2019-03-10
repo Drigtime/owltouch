@@ -12,7 +12,7 @@ import {
 } from "renderer/actions/types.js";
 import MultipleChoiceAutoComplete from "renderer/components/AutoComplete/MultipleChoiceAutoComplete";
 import { GATHER } from "renderer/components/AutoComplete/types";
-import Language from "renderer/configurations/language/LanguageManager.js";
+import Language from "owl/configurations/language/LanguageManager.js";
 
 const Interactives = Object.values(
   require(__static + "/langs/fr/Interactives.json")

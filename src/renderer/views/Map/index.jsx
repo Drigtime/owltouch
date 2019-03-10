@@ -1,6 +1,7 @@
 import MapArea from "renderer/components/Map/AreaDisplayer/index";
 import MapCoord from "renderer/components/Map/CoordDisplayer/index";
 import HightLight from "renderer/components/Map/HightLight/index";
+import PathDraw from "renderer/components/Map/PathDrawer/index";
 import L from "leaflet";
 import { join } from "path";
 import React, { Component } from "react";
@@ -32,6 +33,7 @@ class MapComponent extends Component {
         <MapCoord />
         <MapArea />
         <HightLight />
+        <PathDraw />
         <TileLayer url={join(__static, "./tiles/amakna/{z}/{x}/{y}.jpg")} />
         {/* {this.state.hightLight.map((positions, idx) => ()} */}
       </Map>
