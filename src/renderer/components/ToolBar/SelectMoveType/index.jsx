@@ -33,7 +33,7 @@ class SelectMoveType extends React.Component {
             <MenuItem value={"fight"}>Fight</MenuItem>
             <MenuItem value={"gatherfight"}>Gather & Figher</MenuItem>
             <MenuItem value={"bank"}>Bank</MenuItem>
-            <MenuItem value={"phoenix"}>Phoenix</MenuItem>
+            <MenuItem value={"phenix"}>Phoenix</MenuItem>
           </Select>
         </FormControl>
       </form>
