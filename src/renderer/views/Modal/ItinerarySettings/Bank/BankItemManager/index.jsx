@@ -1,14 +1,4 @@
-import {
-  Button,
-  Grid,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  TextField
-} from "@material-ui/core";
+import { Button, Grid, Paper, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
@@ -17,13 +7,11 @@ import { handleChanges } from "renderer/actions/actions.js";
 import SimpleAutoComplete from "renderer/components/AutoComplete/SimpleAutoComplete";
 import Language from "owl/configurations/language/LanguageManager.js";
 
-const Items = Object.values(require(__static + "/langs/fr/Items.json")).map(
-  item => ({
-    id: item.id,
-    iconId: item.iconId,
-    label: item.nameId
-  })
-);
+const Items = Object.values(require(__static + "/langs/fr/Items.json")).map(item => ({
+  id: item.id,
+  iconId: item.iconId,
+  label: item.nameId
+}));
 
 const styles = () => ({
   root: {
@@ -31,6 +19,9 @@ const styles = () => ({
   },
   input: {
     width: "100%"
+  },
+  container: {
+    alignItems: "center"
   }
 });
 
@@ -55,14 +46,7 @@ class BankItemManager extends Component {
 
   addItem = type => () => {
     const index = Items.findIndex(index => index.label === this.state.itemName);
-    this.createData(
-      Items[index].iconId,
-      Items[index].id,
-      Items[index].label,
-      this.state.quant,
-      this.deleteData,
-      type
-    );
+    this.createData(Items[index].iconId, Items[index].id, Items[index].label, this.state.quant, this.deleteData, type);
   };
 
   createData = (icon, id, name, quant, action, type) => {
@@ -90,9 +74,7 @@ class BankItemManager extends Component {
   };
 
   deleteData = type => event => {
-    const index = this.props.items.findIndex(
-      index => index.id === Number(event.currentTarget.id)
-    );
+    const index = this.props.items.findIndex(index => index.id === Number(event.currentTarget.id));
     const tmpRows = this.props.items;
     tmpRows.splice(index, 1);
     this.props.handleChanges(type, tmpRows);
@@ -102,14 +84,12 @@ class BankItemManager extends Component {
   render() {
     const { classes, suggestionsType, items, type } = this.props;
     return (
-      <Grid container={true} spacing={24}>
+      <Grid container={true} spacing={24} className={classes.container}>
         <Grid item={true} xs={6}>
           <SimpleAutoComplete
             suggestions={Items}
             label={Language.trans("BankTabTakeItemAutoCompleteLabel")}
-            placeholder={Language.trans(
-              "BankTabItemManagerAutoCompletePlaceHolder"
-            )}
+            placeholder={Language.trans("BankTabItemManagerAutoCompletePlaceHolder")}
             type={suggestionsType}
             onSelect={this.handleOnSelect}
             onInputChange={this.handleOnInputChange}
@@ -139,15 +119,9 @@ class BankItemManager extends Component {
               <TableHead>
                 <TableRow>
                   <TableCell align="center" />
-                  <TableCell align="left">
-                    {Language.trans("BankTabItemManagerName")}
-                  </TableCell>
-                  <TableCell align="right">
-                    {Language.trans("BankTabItemManagerQuant")}
-                  </TableCell>
-                  <TableCell align="center">
-                    {Language.trans("BankTabItemManagerAction")}
-                  </TableCell>
+                  <TableCell align="left">{Language.trans("BankTabItemManagerName")}</TableCell>
+                  <TableCell align="right">{Language.trans("BankTabItemManagerQuant")}</TableCell>
+                  <TableCell align="center">{Language.trans("BankTabItemManagerAction")}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

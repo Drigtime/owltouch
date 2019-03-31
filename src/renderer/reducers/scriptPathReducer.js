@@ -1,4 +1,4 @@
-import { SCRIPT_ACTIONS } from "renderer/actions/types";
+import { SCRIPT_ACTIONS_AMAKNA, SCRIPT_ACTIONS_INCARNAM } from "renderer/actions/types";
 
 const initialState = {
   scriptActions: {
@@ -17,33 +17,29 @@ const initialState = {
 
 export default function(state = initialState, { type, payload }) {
   switch (type) {
-    case SCRIPT_ACTIONS:
+    case SCRIPT_ACTIONS_AMAKNA:
       return {
         ...state,
         scriptActions: {
           amakna: {
-            move:
-              payload.type == "move"
-                ? payload.value
-                : state.scriptActions.amakna.move,
-            bank:
-              payload.type == "bank"
-                ? payload.value
-                : state.scriptActions.amakna.bank,
-            phenix:
-              payload.type == "phenix"
-                ? payload.value
-                : state.scriptActions.amakna.phenix
-          }
-          // incarnam: Object.entries(state.scriptActions.incarnam))
+            move: payload.type == "move" ? payload.value : state.scriptActions.amakna.move,
+            bank: payload.type == "bank" ? payload.value : state.scriptActions.amakna.bank,
+            phenix: payload.type == "phenix" ? payload.value : state.scriptActions.amakna.phenix
+          },
+          incarnam: state.scriptActions.incarnam
         }
-        // {
-        //   ...state,
-        //   scriptActions: {
-        //     amakna: {
-        //       [payload.type]: payload.value
-        //     }
-        //   }
+      };
+    case SCRIPT_ACTIONS_INCARNAM:
+      return {
+        ...state,
+        scriptActions: {
+          amakna: state.scriptActions.amakna,
+          incarnam: {
+            move: payload.type == "move" ? payload.value : state.scriptActions.incarnam.move,
+            bank: payload.type == "bank" ? payload.value : state.scriptActions.incarnam.bank,
+            phenix: payload.type == "phenix" ? payload.value : state.scriptActions.incarnam.phenix
+          }
+        }
       };
     default:
       return state;

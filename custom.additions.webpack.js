@@ -22,7 +22,8 @@ module.exports = {
     alias: {
       main: path.resolve(__dirname, "src/main/"),
       renderer: path.resolve(__dirname, "src/renderer/"),
-      owl: path.resolve(__dirname, "src/owl/")
+      owl: path.resolve(__dirname, "src/owl/"),
+      static: path.resolve(__dirname, "static/")
     }
   }
 };

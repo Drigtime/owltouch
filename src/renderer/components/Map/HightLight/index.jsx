@@ -1,7 +1,7 @@
-import L from "leaflet";
 import fs from "fs";
+import L from "leaflet";
+import GeoToDofusCoord, { mapTileLayer } from "owl/utils/GeoToDofusCoord.js";
 import { MapControl, withLeaflet } from "react-leaflet";
-import GeoToDofusCoord from "owl/utils/GeoToDofusCoord.js";
 const mapList = JSON.parse(fs.readFileSync(__static + "/d2o/map.json", "utf8"));
 const areas = JSON.parse(fs.readFileSync(__static + "/d2o/areas.json", "utf8"));
 
@@ -10,13 +10,14 @@ const dofusMapSubAreaHighlight = [];
 let dofusMapUnderMouse;
 let actualID = -1;
 
-export function getId(x, y) {
+export function getId(x, y, world) {
   for (const key in mapList) {
     if (
       mapList[key].posX === x &&
       mapList[key].posY === y &&
       mapList[key].hasPriorityOnWorldmap &&
-      (mapList[key].worldMap === 1 || mapList[key].worldMap === -1)
+      mapList[key].subAreaId !== -1 &&
+      (mapList[key].worldMap === world.worldMap || mapList[key].worldMap === -1)
     ) {
       return {
         id: mapList[key].id,
@@ -36,13 +37,13 @@ export function getId(x, y) {
   };
 }
 
-function mapidToCoord(mapIds) {
+function mapidToCoord(mapIds, world) {
   const list = [];
   mapIds.forEach(element => {
     if (
       mapList[element] &&
       mapList[element].hasPriorityOnWorldmap &&
-      (mapList[element].worldMap === 1 || mapList[element].worldMap === -1)
+      (mapList[element].worldMap === world.worldMap || mapList[element].worldMap === -1)
     ) {
       list.push({
         x: mapList[element].posX,
@@ -53,26 +54,21 @@ function mapidToCoord(mapIds) {
   return list;
 }
 
-function getDofusMapBounds(dofusMapCoord, map) {
-  const topLeftCornerCorner = GeoToDofusCoord.dofusCoordsToPixelCoords(
-    dofusMapCoord
-  );
-  topLeftCornerCorner.x -= 69.5 / 2;
-  topLeftCornerCorner.y -= 50 / 2;
+function getDofusMapBounds(dofusMapCoord, map, world) {
+  const topLeftCornerCorner = GeoToDofusCoord.dofusCoordsToPixelCoords(dofusMapCoord);
+  topLeftCornerCorner.x -= world.topLeftCornerCorner / 2;
+  topLeftCornerCorner.y -= world.bottomRightCornerCorner / 2;
   const bottomRightCornerCorner = L.point(
-    topLeftCornerCorner.x + 69.5,
-    topLeftCornerCorner.y + 50
+    topLeftCornerCorner.x + world.topLeftCornerCorner,
+    topLeftCornerCorner.y + world.bottomRightCornerCorner
   );
   const nW = GeoToDofusCoord.pixelCoordsToGeoCoords(topLeftCornerCorner, map);
-  const sE = GeoToDofusCoord.pixelCoordsToGeoCoords(
-    bottomRightCornerCorner,
-    map
-  );
+  const sE = GeoToDofusCoord.pixelCoordsToGeoCoords(bottomRightCornerCorner, map);
   return L.latLngBounds(nW, sE);
 }
 
-function drawRectangle(point, map) {
-  const bounds = getDofusMapBounds(point, map);
+function drawRectangle(point, map, world) {
+  const bounds = getDofusMapBounds(point, map, world);
   dofusMapUnderMouse = L.rectangle(bounds, {
     color: "black",
     fillOpacity: 0,
@@ -89,7 +85,7 @@ function resetHighlightArea(map) {
   dofusMapSubAreaHighlight.length = 0;
 }
 
-function highlightSubArea(event, map) {
+function highlightSubArea(event, map, world) {
   const geoCoords = event.latlng;
   const [x, y] = GeoToDofusCoord.geoCoordsToDofusCoords(geoCoords, map);
   if (actualDofusCoords.x === x && actualDofusCoords.y === y) {
@@ -97,7 +93,7 @@ function highlightSubArea(event, map) {
   }
   actualDofusCoords.x = x;
   actualDofusCoords.y = y;
-  const subAreas = getId(x, y);
+  const subAreas = getId(x, y, world);
   if (!subAreas.subAreaId) {
     resetHighlightArea(map);
     actualID = -1;
@@ -109,12 +105,9 @@ function highlightSubArea(event, map) {
   }
   resetHighlightArea(map);
   actualID = subAreaId;
-  const subAreaMapIds = mapidToCoord(subAreas.mapIds);
+  const subAreaMapIds = mapidToCoord(subAreas.mapIds, world);
   Object.keys(subAreaMapIds).forEach(key => {
-    const bounds = getDofusMapBounds(
-      [subAreaMapIds[key].x, subAreaMapIds[key].y],
-      map
-    );
+    const bounds = getDofusMapBounds([subAreaMapIds[key].x, subAreaMapIds[key].y], map, world);
     const highlight = L.rectangle(bounds, {
       color: "#00ffcc",
       fillOpacity: 0.25,
@@ -125,7 +118,7 @@ function highlightSubArea(event, map) {
   });
 }
 
-function drawDofusMapBoundsOnMouseMove(event, map) {
+function drawDofusMapBoundsOnMouseMove(event, map, world) {
   const geoCoords = event.latlng;
   const dofusCoords = GeoToDofusCoord.geoCoordsToDofusCoords(geoCoords, map);
   if (dofusMapUnderMouse !== null) {
@@ -133,12 +126,12 @@ function drawDofusMapBoundsOnMouseMove(event, map) {
       if (dofusMapUnderMouse.getBounds().contains(event.latlng)) {
         return;
       }
-      dofusMapUnderMouse.setBounds(getDofusMapBounds(dofusCoords, map));
+      dofusMapUnderMouse.setBounds(getDofusMapBounds(dofusCoords, map, world));
     } else {
-      drawRectangle(dofusCoords, map);
+      drawRectangle(dofusCoords, map, world);
     }
   } else {
-    drawRectangle(dofusCoords, map);
+    drawRectangle(dofusCoords, map, world);
   }
 }
 
@@ -146,6 +139,7 @@ class MapInfo extends MapControl {
   constructor(props) {
     super(props);
     this.map = props.leaflet.map;
+    this.world = props.world;
   }
   createLeafletElement() {
     //
@@ -153,8 +147,8 @@ class MapInfo extends MapControl {
 
   componentDidMount() {
     this.map.addEventListener("mousemove", event => {
-      drawDofusMapBoundsOnMouseMove(event, this.map);
-      highlightSubArea(event, this.map);
+      drawDofusMapBoundsOnMouseMove(event, this.map, mapTileLayer.getTileLayer());
+      highlightSubArea(event, this.map, mapTileLayer.getTileLayer());
     });
   }
 }

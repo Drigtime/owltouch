@@ -1,6 +1,6 @@
 import { Grid, TextField } from "@material-ui/core";
 import L from "leaflet";
-import GeoToDofusCoord from "owl/utils/GeoToDofusCoord.js";
+import GeoToDofusCoord, { mapTileLayer } from "owl/utils/GeoToDofusCoord.js";
 import React from "react";
 import { render } from "react-dom";
 import { MapControl, withLeaflet } from "react-leaflet";
@@ -17,8 +17,11 @@ class MapInfo extends MapControl {
   createLeafletElement() {
     const mapInfo = L.Control.extend({
       onAdd: () => {
-        this.dofusCoord = L.DomUtil.create("div", "info");
-        this.dofusCoord.style.width = "150px";
+        this.container = L.DomUtil.create("div", "info");
+        L.DomEvent.disableScrollPropagation(this.container);
+        L.DomEvent.disableClickPropagation(this.container);
+        L.DomEvent.addListener(this.container, "mousemove", L.DomEvent.stop);
+        this.container.style.width = "105px";
         render(
           <LeafletControl>
             <form noValidate={true} autoComplete="off">
@@ -35,22 +38,18 @@ class MapInfo extends MapControl {
               </Grid>
             </form>
           </LeafletControl>,
-          this.dofusCoord
+          this.container
         );
-        return this.dofusCoord;
-      },
-      position: "topright"
+        return this.container;
+      }
     });
     return new mapInfo();
   }
 
   componentDidMount() {
     this.map.addEventListener("mousemove", event => {
-      const dofusCoord = GeoToDofusCoord.geoCoordsToDofusCoords(
-        event.latlng,
-        this.map
-      );
-      const dofusMapId = getId(dofusCoord[0], dofusCoord[1]);
+      const dofusCoord = GeoToDofusCoord.geoCoordsToDofusCoords(event.latlng, this.map);
+      const dofusMapId = getId(dofusCoord[0], dofusCoord[1], mapTileLayer.getTileLayer());
       render(
         <LeafletControl>
           <form noValidate={true} autoComplete="off">
@@ -67,7 +66,7 @@ class MapInfo extends MapControl {
             </Grid>
           </form>
         </LeafletControl>,
-        this.dofusCoord
+        this.container
       );
     });
     this.leafletElement.addTo(this.map);

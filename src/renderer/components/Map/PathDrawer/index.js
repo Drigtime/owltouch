@@ -1,15 +1,13 @@
+import fs from "fs";
 import L from "leaflet";
-import GeoToDofusCoord from "owl/utils/GeoToDofusCoord.js";
+import GeoToDofusCoord, { mapTileLayer } from "owl/utils/GeoToDofusCoord.js";
 import { join } from "path";
 import { MapControl, withLeaflet } from "react-leaflet";
 import { connect } from "react-redux";
 import { handleChanges } from "renderer/actions/actions.js";
-import { SCRIPT_ACTIONS } from "renderer/actions/types";
+import { SCRIPT_ACTIONS_AMAKNA, SCRIPT_ACTIONS_INCARNAM } from "renderer/actions/types";
 import store from "renderer/store";
-import fs from "fs";
-const iconSize = JSON.parse(
-  fs.readFileSync(__static + "/assets/path/iconSize.json", "utf8")
-);
+const iconSize = JSON.parse(fs.readFileSync(__static + "/assets/path/iconSize.json", "utf8"));
 
 class PathDrawer extends MapControl {
   constructor(props) {
@@ -21,20 +19,14 @@ class PathDrawer extends MapControl {
   }
 
   getDofusMapBounds(dofusMapCoord, map) {
-    const topLeftCornerCorner = GeoToDofusCoord.dofusCoordsToPixelCoords(
-      dofusMapCoord
-    );
-    topLeftCornerCorner.x -= 69.5 / 2;
-    topLeftCornerCorner.y -= 50 / 2;
+    const topLeftCornerCorner = GeoToDofusCoord.dofusCoordsToPixelCoords(dofusMapCoord);
+    topLeftCornerCorner.x -= mapTileLayer.getTileLayer().topLeftCornerCorner / 2;
+    topLeftCornerCorner.y -= mapTileLayer.getTileLayer().bottomRightCornerCorner / 2;
     const bottomRightCornerCorner = L.point(
-      topLeftCornerCorner.x + 69.5 / 2,
-      topLeftCornerCorner.y + 50 / 2
+      topLeftCornerCorner.x + mapTileLayer.getTileLayer().topLeftCornerCorner / 2,
+      topLeftCornerCorner.y + mapTileLayer.getTileLayer().bottomRightCornerCorner / 2
     );
-    //   const nW = pixelCoordsToGeoCoords(topLeftCornerCorner, map);
-    const bound = GeoToDofusCoord.pixelCoordsToGeoCoords(
-      bottomRightCornerCorner,
-      map
-    );
+    const bound = GeoToDofusCoord.pixelCoordsToGeoCoords(bottomRightCornerCorner, map);
     return bound;
   }
 
@@ -69,24 +61,20 @@ class PathDrawer extends MapControl {
     };
   }
 
+  getType(type) {
+    return type == "gather" || type == "fight" || type == "gatherfight" ? "move" : type;
+  }
+
   resizeMarkers() {
-    const actionsList = store.getState().scriptPath.scriptActions.amakna;
+    const actionsList = store.getState().scriptPath.scriptActions[mapTileLayer.actualLayerName];
     Object.keys(actionsList).forEach(type => {
       actionsList[type].forEach(action => {
         action.markers.forEach(marker => {
-          const markerSize =
-            iconSize.size.amakna[
-              type == "gather" || type == "fight" || type == "gatherfight"
-                ? "move"
-                : type
-            ][marker.direction];
+          const markerSize = iconSize.size[mapTileLayer.actualLayerName][this.getType(type)][marker.direction];
           const icon = marker.marker.options.icon;
           const newIconSize = this.getArrowSize(markerSize);
           icon.options.iconSize = [newIconSize.width, newIconSize.height];
-          icon.options.iconAnchor = [
-            newIconSize.marginLeft,
-            newIconSize.topMargin
-          ];
+          icon.options.iconAnchor = [newIconSize.marginLeft, newIconSize.topMargin];
           marker.marker.setIcon(icon);
         });
       });
@@ -97,12 +85,7 @@ class PathDrawer extends MapControl {
     // eslint-disable-next-line no-console
     console.log("addMarker");
     let markers = [];
-    const markerSize =
-      iconSize.size.amakna[
-        type == "gather" || type == "fight" || type == "gatherfight"
-          ? "move"
-          : type
-      ][direction];
+    const markerSize = iconSize.size[mapTileLayer.actualLayerName][this.getType(type)][direction];
     const newIconSize = this.getArrowSize(markerSize);
     markers = [
       ...markers,
@@ -118,39 +101,26 @@ class PathDrawer extends MapControl {
       }
     ];
 
-    this.state.handleChanges(SCRIPT_ACTIONS, {
-      value: [
-        ...store.getState().scriptPath.scriptActions.amakna[
-          type == "gather" || type == "fight" || type == "gatherfight"
-            ? "move"
-            : type
+    this.state.handleChanges(
+      mapTileLayer.actualLayerName == "amakna" ? SCRIPT_ACTIONS_AMAKNA : SCRIPT_ACTIONS_INCARNAM,
+      {
+        value: [
+          ...store.getState().scriptPath.scriptActions[mapTileLayer.actualLayerName][this.getType(type)],
+          { directions: [{ direction, type }], coords, markers }
         ],
-        { directions: [direction], coords, markers }
-      ],
-      type:
-        type == "gather" || type == "fight" || type == "gatherfight"
-          ? "move"
-          : type
-    });
+        type: this.getType(type)
+      }
+    );
     // eslint-disable-next-line no-console
-    console.log(store.getState().scriptPath.scriptActions.amakna);
+    console.log(store.getState().scriptPath.scriptActions[mapTileLayer.actualLayerName]);
   }
 
   appendMarker(coords, map, direction, type) {
     // eslint-disable-next-line no-console
     console.log("appendMarker");
-    const actionsList = store.getState().scriptPath.scriptActions.amakna[
-      type == "gather" || type == "fight" || type == "gatherfight"
-        ? "move"
-        : type
-    ];
+    const actionsList = store.getState().scriptPath.scriptActions[mapTileLayer.actualLayerName][this.getType(type)];
     const actionIndex = this.getActionIndex(coords, type);
-    const markerSize =
-      iconSize.size.amakna[
-        type == "gather" || type == "fight" || type == "gatherfight"
-          ? "move"
-          : type
-      ][direction];
+    const markerSize = iconSize.size[mapTileLayer.actualLayerName][this.getType(type)][direction];
     const newIconSize = this.getArrowSize(markerSize);
     actionsList[actionIndex].markers = [
       ...actionsList[actionIndex].markers,
@@ -165,57 +135,60 @@ class PathDrawer extends MapControl {
         direction
       }
     ];
-    actionsList[actionIndex].directions = [
-      ...actionsList[actionIndex].directions,
-      direction
-    ];
-    this.state.handleChanges(SCRIPT_ACTIONS, {
-      value: actionsList,
-      type:
-        type == "gather" || type == "fight" || type == "gatherfight"
-          ? "move"
-          : type
-    });
+    actionsList[actionIndex].directions = [...actionsList[actionIndex].directions, { direction, type }];
+    this.state.handleChanges(
+      mapTileLayer.actualLayerName == "amakna" ? SCRIPT_ACTIONS_AMAKNA : SCRIPT_ACTIONS_INCARNAM,
+      {
+        value: actionsList,
+        type: this.getType(type)
+      }
+    );
   }
 
   removeMarker(coords, map, direction, type) {
-    const actionsList = store.getState().scriptPath.scriptActions.amakna[
-      type == "gather" || type == "fight" || type == "gatherfight"
-        ? "move"
-        : type
-    ];
+    const actionsList = store.getState().scriptPath.scriptActions[mapTileLayer.actualLayerName][this.getType(type)];
     const actionIndex = this.getActionIndex(coords, type);
     const action = actionsList[actionIndex];
     action.markers.forEach(marker => {
       if (direction == marker.direction) {
         marker.marker.removeFrom(map);
-        action.markers.splice(
-          action.markers.map(marker => marker.direction).indexOf(direction),
-          1
-        );
-        action.directions.splice(action.directions.indexOf(direction), 1);
+        action.markers.splice(action.markers.map(marker => marker.direction).indexOf(direction), 1);
+        action.directions.splice(action.directions.map(direction => direction.direction).indexOf(direction), 1);
         if (action.directions.length === 0) {
           actionsList.splice(actionIndex, 1);
         }
       }
     });
-    this.state.handleChanges(SCRIPT_ACTIONS, actionsList);
-    // eslint-disable-next-line no-console
-    console.log(
-      store.getState().scriptPath.scriptActions.amakna[
-        type == "gather" || type == "fight" || type == "gatherfight"
-          ? "move"
-          : type
-      ]
+    this.state.handleChanges(
+      mapTileLayer.actualLayerName == "amakna" ? SCRIPT_ACTIONS_AMAKNA : SCRIPT_ACTIONS_INCARNAM,
+      actionsList
     );
+    // eslint-disable-next-line no-console
+    console.log(store.getState().scriptPath.scriptActions[mapTileLayer.actualLayerName][this.getType(type)]);
+  }
+
+  removeAllMarkers(coords, map) {
+    const types = ["move", "gather", "fight", "gatherfight", "bank", "phenix"];
+    types.forEach(type => {
+      const actionsList = store.getState().scriptPath.scriptActions[mapTileLayer.actualLayerName][this.getType(type)];
+      const actionIndex = this.getActionIndex(coords, type);
+      const action = actionsList[actionIndex];
+      if (action === undefined) return;
+      action.markers.forEach(marker => {
+        marker.marker.removeFrom(map);
+      });
+      actionsList.splice(actionIndex, 1);
+      this.state.handleChanges(
+        mapTileLayer.actualLayerName == "amakna" ? SCRIPT_ACTIONS_AMAKNA : SCRIPT_ACTIONS_INCARNAM,
+        actionsList
+      );
+      // eslint-disable-next-line no-console
+      console.log(store.getState().scriptPath.scriptActions[mapTileLayer.actualLayerName]);
+    });
   }
 
   actionAlreadyExist(coords, type) {
-    const actionsList = store.getState().scriptPath.scriptActions.amakna[
-      type == "gather" || type == "fight" || type == "gatherfight"
-        ? "move"
-        : type
-    ];
+    const actionsList = store.getState().scriptPath.scriptActions[mapTileLayer.actualLayerName][this.getType(type)];
     let exist = false;
     actionsList.forEach(action => {
       if (action.coords[0] == coords[0] && action.coords[1] == coords[1]) {
@@ -226,15 +199,11 @@ class PathDrawer extends MapControl {
   }
 
   actionDirectionsAlreadyExist(coords, actualDirection, type) {
-    const actionsList = store.getState().scriptPath.scriptActions.amakna[
-      type == "gather" || type == "fight" || type == "gatherfight"
-        ? "move"
-        : type
-    ];
+    const actionsList = store.getState().scriptPath.scriptActions[mapTileLayer.actualLayerName][this.getType(type)];
     const actionIndex = this.getActionIndex(coords, type);
     let exist = false;
     actionsList[actionIndex].directions.forEach(direction => {
-      if (direction == actualDirection) {
+      if (direction.direction == actualDirection) {
         exist = true;
       }
     });
@@ -242,11 +211,7 @@ class PathDrawer extends MapControl {
   }
 
   getActionIndex(coords, type) {
-    const actionsList = store.getState().scriptPath.scriptActions.amakna[
-      type == "gather" || type == "fight" || type == "gatherfight"
-        ? "move"
-        : type
-    ];
+    const actionsList = store.getState().scriptPath.scriptActions[mapTileLayer.actualLayerName][this.getType(type)];
     let index = -1;
     actionsList.forEach((action, i) => {
       if (action.coords[0] == coords[0] && action.coords[1] == coords[1]) {
@@ -262,25 +227,29 @@ class PathDrawer extends MapControl {
 
   componentDidMount() {
     this.state.map.addEventListener("click", event => {
-      const dofusCoords = GeoToDofusCoord.geoCoordsToDofusCoords(
-        event.latlng,
-        this.state.map
-      );
+      const dofusCoords = GeoToDofusCoord.geoCoordsToDofusCoords(event.latlng, this.state.map);
       const directions = store.getState().moveToggleButtons.moveDirection;
+      const buildingPlacement = store.getState().moveToggleButtons.buildingPlacement;
+      const formatTools = store.getState().moveToggleButtons.formatTools;
       const type = store.getState().moveType.type;
-      directions.forEach(direction => {
-        const actionAlreadyExist = this.actionAlreadyExist(dofusCoords, type);
-        const actionDirectionsAlreadyExist =
-          actionAlreadyExist &&
-          this.actionDirectionsAlreadyExist(dofusCoords, direction, type);
-        if (!actionAlreadyExist) {
-          this.addMarker(dofusCoords, this.state.map, direction, type);
-        } else if (actionDirectionsAlreadyExist) {
-          this.removeMarker(dofusCoords, this.state.map, direction, type);
-        } else {
-          this.appendMarker(dofusCoords, this.state.map, direction, type);
-        }
-      });
+      if (directions.length > 0) {
+        directions.forEach(direction => {
+          const actionAlreadyExist = this.actionAlreadyExist(dofusCoords, type);
+          const actionDirectionsAlreadyExist =
+            actionAlreadyExist && this.actionDirectionsAlreadyExist(dofusCoords, direction, type);
+          if (!actionAlreadyExist) {
+            this.addMarker(dofusCoords, this.state.map, direction, type);
+          } else if (actionDirectionsAlreadyExist) {
+            this.removeMarker(dofusCoords, this.state.map, direction, type);
+          } else {
+            this.appendMarker(dofusCoords, this.state.map, direction, type);
+          }
+        });
+      } else if (buildingPlacement !== null) {
+        //
+      } else if (formatTools !== null) {
+        this.removeAllMarkers(dofusCoords, this.state.map);
+      }
     });
     this.state.map.addEventListener("zoom", () => {
       const type = store.getState().moveType.type;

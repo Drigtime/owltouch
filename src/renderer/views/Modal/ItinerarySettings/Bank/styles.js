@@ -11,5 +11,8 @@ export default theme => ({
   },
   expansionPanelDetails: {
     display: "block"
+  },
+  gridContainer: {
+    alignItems: "center"
   }
 });

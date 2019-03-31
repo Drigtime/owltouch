@@ -38,17 +38,13 @@ import { ITEMS, MONSTERS } from "renderer/components/AutoComplete/types";
 import Language from "owl/configurations/language/LanguageManager.js";
 import styles from "renderer/views/Modal/ItinerarySettings/Fight/styles.js";
 
-const Items = Object.values(require(__static + "/langs/fr/Items.json")).map(
-  item => ({
-    id: item.id,
-    iconId: item.iconId,
-    label: item.nameId
-  })
-);
+const Items = Object.values(require(__static + "/langs/fr/Items.json")).map(item => ({
+  id: item.id,
+  iconId: item.iconId,
+  label: item.nameId
+}));
 
-const Monsters = Object.values(
-  require(__static + "/langs/fr/Monsters.json")
-).map(monster => ({
+const Monsters = Object.values(require(__static + "/langs/fr/Monsters.json")).map(monster => ({
   id: monster.id,
   iconId: monster.id,
   label: monster.nameId
@@ -70,17 +66,10 @@ class FightTab extends Component {
   };
 
   handleInputWithLimitChanges = (type, max) => event => {
-    this.props.handleChanges(
-      type,
-      Number(event.target.value > max ? max : event.target.value)
-    );
+    this.props.handleChanges(type, Number(event.target.value > max ? max : event.target.value));
   };
 
-  handleAutoCompleteChange = (
-    type,
-    autoCompleteProp,
-    autoCompleteState
-  ) => element => {
+  handleAutoCompleteChange = (type, autoCompleteProp, autoCompleteState) => element => {
     if (autoCompleteProp.indexOf(element) === -1) {
       autoCompleteProp = [...autoCompleteProp, element];
     }
@@ -88,20 +77,9 @@ class FightTab extends Component {
     this.props.handleChanges(type, autoCompleteProp);
   };
 
-  handleAutoCompleteKeyDown = (
-    type,
-    autoCompleteProp,
-    autoCompleteState
-  ) => event => {
-    if (
-      autoCompleteProp.length &&
-      !this.state[autoCompleteState].length &&
-      keycode(event) === "backspace"
-    ) {
-      this.props.handleChanges(
-        type,
-        autoCompleteProp.slice(0, autoCompleteProp.length - 1)
-      );
+  handleAutoCompleteKeyDown = (type, autoCompleteProp, autoCompleteState) => event => {
+    if (autoCompleteProp.length && !this.state[autoCompleteState].length && keycode(event) === "backspace") {
+      this.props.handleChanges(type, autoCompleteProp.slice(0, autoCompleteProp.length - 1));
     }
   };
 
@@ -135,16 +113,12 @@ class FightTab extends Component {
     } = this.props;
     return (
       <div className={classes.root}>
-        <Grid container={true} spacing={24}>
+        <Grid container={true} spacing={24} style={{ alignItems: "center" }}>
           <Grid item={true} xs={3}>
             <FormControl style={{ width: "100%" }}>
               <FormControlLabel
                 control={
-                  <Switch
-                    checked={fightCount}
-                    onChange={this.handleSwitchChanges(FIGHT_COUNT)}
-                    value="fightCount"
-                  />
+                  <Switch checked={fightCount} onChange={this.handleSwitchChanges(FIGHT_COUNT)} value="fightCount" />
                 }
                 label={Language.trans("FightTabFightCount")}
               />
@@ -154,11 +128,7 @@ class FightTab extends Component {
             <FormControl style={{ width: "100%" }}>
               <FormControlLabel
                 control={
-                  <Switch
-                    checked={autoRegen}
-                    onChange={this.handleSwitchChanges(AUTO_REGEN)}
-                    value="autoRegen"
-                  />
+                  <Switch checked={autoRegen} onChange={this.handleSwitchChanges(AUTO_REGEN)} value="autoRegen" />
                 }
                 label={Language.trans("FightTabAutoRegen")}
               />
@@ -206,16 +176,11 @@ class FightTab extends Component {
                       label={Language.trans("FightTabMinRegen")}
                       id="min-regen"
                       type="number"
-                      onChange={this.handleInputWithLimitChanges(
-                        MIN_REGEN,
-                        100
-                      )}
+                      onChange={this.handleInputWithLimitChanges(MIN_REGEN, 100)}
                       value={minRegen}
                       className={classes.input}
                       InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">%</InputAdornment>
-                        )
+                        endAdornment: <InputAdornment position="end">%</InputAdornment>
                       }}
                       inputProps={{
                         min: 0,
@@ -228,16 +193,11 @@ class FightTab extends Component {
                       label={Language.trans("FightTabMaxRegen")}
                       id="max-regen"
                       type="number"
-                      onChange={this.handleInputWithLimitChanges(
-                        MAX_REGEN,
-                        100
-                      )}
+                      onChange={this.handleInputWithLimitChanges(MAX_REGEN, 100)}
                       value={maxRegen}
                       className={classes.input}
                       InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">%</InputAdornment>
-                        )
+                        endAdornment: <InputAdornment position="end">%</InputAdornment>
                       }}
                       inputProps={{
                         min: 0,
@@ -251,29 +211,14 @@ class FightTab extends Component {
                     <MultipleChoiceAutoComplete
                       suggestions={Items}
                       label={Language.trans("FightTabRegenItem")}
-                      placeholder={Language.trans(
-                        "FightTabRegenItemPlaceHolder"
-                      )}
+                      placeholder={Language.trans("FightTabRegenItemPlaceHolder")}
                       type={ITEMS}
                       selectedItem={regenItem}
-                      onChange={this.handleAutoCompleteChange(
-                        REGEN_ITEM,
-                        regenItem,
-                        "regenItemsInputValue"
-                      )}
+                      onChange={this.handleAutoCompleteChange(REGEN_ITEM, regenItem, "regenItemsInputValue")}
                       inputValue={this.state.regenItemsInputValue}
-                      handleDelete={this.handleAutoCompleteDelete(
-                        REGEN_ITEM,
-                        regenItem
-                      )}
-                      handleInputChange={this.handleAutoCompleteInputChange(
-                        "regenItemsInputValue"
-                      )}
-                      handleKeyDown={this.handleAutoCompleteKeyDown(
-                        REGEN_ITEM,
-                        regenItem,
-                        "regenItemsInputValue"
-                      )}
+                      handleDelete={this.handleAutoCompleteDelete(REGEN_ITEM, regenItem)}
+                      handleInputChange={this.handleAutoCompleteInputChange("regenItemsInputValue")}
+                      handleKeyDown={this.handleAutoCompleteKeyDown(REGEN_ITEM, regenItem, "regenItemsInputValue")}
                     />
                   </Grid>
                   <Grid item={true} xs={2}>
@@ -363,9 +308,7 @@ class FightTab extends Component {
             <MultipleChoiceAutoComplete
               suggestions={Monsters}
               label={Language.trans("FightTabForbiddenMonster")}
-              placeholder={Language.trans(
-                "FightTabForbiddenMonsterPlaceHolder"
-              )}
+              placeholder={Language.trans("FightTabForbiddenMonsterPlaceHolder")}
               type={MONSTERS}
               selectedItem={forbiddenMonster}
               onChange={this.handleAutoCompleteChange(
@@ -374,13 +317,8 @@ class FightTab extends Component {
                 "forbiddenMonstersInputValue"
               )}
               inputValue={this.state.forbiddenMonstersInputValue}
-              handleDelete={this.handleAutoCompleteDelete(
-                FORBIDDEN_MONSTER,
-                forbiddenMonster
-              )}
-              handleInputChange={this.handleAutoCompleteInputChange(
-                "forbiddenMonstersInputValue"
-              )}
+              handleDelete={this.handleAutoCompleteDelete(FORBIDDEN_MONSTER, forbiddenMonster)}
+              handleInputChange={this.handleAutoCompleteInputChange("forbiddenMonstersInputValue")}
               handleKeyDown={this.handleAutoCompleteKeyDown(
                 FORBIDDEN_MONSTER,
                 forbiddenMonster,
@@ -392,9 +330,7 @@ class FightTab extends Component {
             <MultipleChoiceAutoComplete
               suggestions={Monsters}
               label={Language.trans("FightTabMandatoryMonster")}
-              placeholder={Language.trans(
-                "FightTabMandatoryMonsterPlaceHolder"
-              )}
+              placeholder={Language.trans("FightTabMandatoryMonsterPlaceHolder")}
               type={MONSTERS}
               selectedItem={mandatoryMonster}
               onChange={this.handleAutoCompleteChange(
@@ -403,13 +339,8 @@ class FightTab extends Component {
                 "mandatoryMonstersInputValue"
               )}
               inputValue={this.state.mandatoryMonstersInputValue}
-              handleDelete={this.handleAutoCompleteDelete(
-                MANDATORY_MONSTER,
-                mandatoryMonster
-              )}
-              handleInputChange={this.handleAutoCompleteInputChange(
-                "mandatoryMonstersInputValue"
-              )}
+              handleDelete={this.handleAutoCompleteDelete(MANDATORY_MONSTER, mandatoryMonster)}
+              handleInputChange={this.handleAutoCompleteInputChange("mandatoryMonstersInputValue")}
               handleKeyDown={this.handleAutoCompleteKeyDown(
                 MANDATORY_MONSTER,
                 mandatoryMonster,

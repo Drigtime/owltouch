@@ -1,13 +1,8 @@
-import {
-  Card,
-  CardContent,
-  MuiThemeProvider,
-  withStyles
-} from "@material-ui/core";
-import { mainTheme } from "renderer/main/types";
+import { Card, CardContent, MuiThemeProvider, withStyles } from "@material-ui/core";
 import PropTypes from "prop-types";
 import React from "react";
-import { mapControlStyle } from "./type";
+import { mainTheme } from "renderer/main/types";
+import { mapControlStyle } from "./style";
 
 class MapControl extends React.Component {
   render() {

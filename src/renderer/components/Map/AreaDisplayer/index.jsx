@@ -1,6 +1,6 @@
 import { Typography } from "@material-ui/core";
 import L from "leaflet";
-import GeoToDofusCoord from "owl/utils/GeoToDofusCoord.js";
+import GeoToDofusCoord, { mapTileLayer } from "owl/utils/GeoToDofusCoord.js";
 import React from "react";
 import { render } from "react-dom";
 import { MapControl, withLeaflet } from "react-leaflet";
@@ -16,30 +16,32 @@ class MapInfo extends MapControl {
   createLeafletElement() {
     const mapInfo = L.Control.extend({
       onAdd: () => {
-        this.areaName = L.DomUtil.create("div", "info");
-        return this.areaName;
+        this.container = L.DomUtil.create("div", "info");
+        L.DomEvent.disableScrollPropagation(this.container);
+        L.DomEvent.disableClickPropagation(this.container);
+        L.DomEvent.addListener(this.container, "mousemove", L.DomEvent.stop);
+        return this.container;
       },
-      position: "topright"
+      options: {
+        position: "topright"
+      }
     });
     return new mapInfo();
   }
 
   componentDidMount() {
     this.map.addEventListener("mousemove", event => {
-      const dofusCoord = GeoToDofusCoord.geoCoordsToDofusCoords(
-        event.latlng,
-        this.props.leaflet.map
-      );
-      const dofusAreaId = getId(dofusCoord[0], dofusCoord[1]);
+      const dofusCoord = GeoToDofusCoord.geoCoordsToDofusCoords(event.latlng, this.props.leaflet.map);
+      const dofusAreaId = getId(dofusCoord[0], dofusCoord[1], mapTileLayer.getTileLayer());
       if (dofusAreaId.subAreaName !== null) {
         render(
           <LeafletControl>
             <Typography>{dofusAreaId.subAreaName}</Typography>
           </LeafletControl>,
-          this.areaName
+          this.container
         );
       } else {
-        render(<div />, this.areaName);
+        render(<div />, this.container);
       }
     });
     this.leafletElement.addTo(this.map);

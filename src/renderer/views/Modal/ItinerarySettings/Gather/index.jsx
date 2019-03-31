@@ -5,18 +5,12 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { handleChanges } from "renderer/actions/actions.js";
-import {
-  ELEMENT_TO_GATHER,
-  GATHER_COUNT,
-  OPEN_BAG
-} from "renderer/actions/types.js";
+import { ELEMENT_TO_GATHER, GATHER_COUNT, OPEN_BAG } from "renderer/actions/types.js";
 import MultipleChoiceAutoComplete from "renderer/components/AutoComplete/MultipleChoiceAutoComplete";
 import { GATHER } from "renderer/components/AutoComplete/types";
 import Language from "owl/configurations/language/LanguageManager.js";
 
-const Interactives = Object.values(
-  require(__static + "/langs/fr/Interactives.json")
-).map(item => ({
+const Interactives = Object.values(require(__static + "/langs/fr/Interactives.json")).map(item => ({
   id: item.id,
   label: item.nameId
 }));
@@ -30,11 +24,7 @@ class GatherTab extends Component {
     this.props.handleChanges(type, event.target.checked);
   };
 
-  handleAutoCompleteChange = (
-    type,
-    autoCompleteProp,
-    autoCompleteState
-  ) => element => {
+  handleAutoCompleteChange = (type, autoCompleteProp, autoCompleteState) => element => {
     if (autoCompleteProp.indexOf(element) === -1) {
       autoCompleteProp = [...autoCompleteProp, element];
     }
@@ -42,20 +32,9 @@ class GatherTab extends Component {
     this.props.handleChanges(type, autoCompleteProp);
   };
 
-  handleAutoCompleteKeyDown = (
-    type,
-    autoCompleteProp,
-    autoCompleteState
-  ) => event => {
-    if (
-      autoCompleteProp.length &&
-      !this.state[autoCompleteState].length &&
-      keycode(event) === "backspace"
-    ) {
-      this.props.handleChanges(
-        type,
-        autoCompleteProp.slice(0, autoCompleteProp.length - 1)
-      );
+  handleAutoCompleteKeyDown = (type, autoCompleteProp, autoCompleteState) => event => {
+    if (autoCompleteProp.length && !this.state[autoCompleteState].length && keycode(event) === "backspace") {
+      this.props.handleChanges(type, autoCompleteProp.slice(0, autoCompleteProp.length - 1));
     }
   };
 
@@ -75,27 +54,17 @@ class GatherTab extends Component {
     return (
       <div>
         <FormControl style={{ width: "100%" }}>
-          <Grid container={true} spacing={24}>
+          <Grid container={true} spacing={24} style={{ alignItems: "center" }}>
             <Grid item={true} xs={6}>
               <FormControlLabel
-                control={
-                  <Switch
-                    checked={openBag}
-                    onChange={this.handleSwitchChanges(OPEN_BAG)}
-                    value="openBag"
-                  />
-                }
+                control={<Switch checked={openBag} onChange={this.handleSwitchChanges(OPEN_BAG)} value="openBag" />}
                 label={Language.trans("gatherTabOpenBag")}
               />
             </Grid>
             <Grid item={true} xs={6}>
               <FormControlLabel
                 control={
-                  <Switch
-                    checked={gatherCount}
-                    onChange={this.handleSwitchChanges(GATHER_COUNT)}
-                    value="gatherCount"
-                  />
+                  <Switch checked={gatherCount} onChange={this.handleSwitchChanges(GATHER_COUNT)} value="gatherCount" />
                 }
                 label={Language.trans("gatherTabGatherCount")}
               />
@@ -104,9 +73,7 @@ class GatherTab extends Component {
               <MultipleChoiceAutoComplete
                 suggestions={Interactives}
                 label={Language.trans("gatherTabElementToGather")}
-                placeholder={Language.trans(
-                  "gatherTabElementToGatherPlaceholder"
-                )}
+                placeholder={Language.trans("gatherTabElementToGatherPlaceholder")}
                 type={GATHER}
                 selectedItem={elementToGather}
                 onChange={this.handleAutoCompleteChange(
@@ -115,13 +82,8 @@ class GatherTab extends Component {
                   "elementToGatherInputValue"
                 )}
                 inputValue={this.state.elementToGatherInputValue}
-                handleDelete={this.handleAutoCompleteDelete(
-                  ELEMENT_TO_GATHER,
-                  elementToGather
-                )}
-                handleInputChange={this.handleAutoCompleteInputChange(
-                  "elementToGatherInputValue"
-                )}
+                handleDelete={this.handleAutoCompleteDelete(ELEMENT_TO_GATHER, elementToGather)}
+                handleInputChange={this.handleAutoCompleteInputChange("elementToGatherInputValue")}
                 handleKeyDown={this.handleAutoCompleteKeyDown(
                   ELEMENT_TO_GATHER,
                   elementToGather,

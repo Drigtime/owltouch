@@ -33,13 +33,11 @@ import { ITEMS } from "renderer/components/AutoComplete/types";
 import styles from "renderer/views/Modal/ItinerarySettings/Bank/styles.js";
 import Language from "owl/configurations/language/LanguageManager.js";
 
-const Items = Object.values(require(__static + "/langs/fr/Items.json")).map(
-  item => ({
-    id: item.id,
-    iconId: item.iconId,
-    label: item.nameId
-  })
-);
+const Items = Object.values(require(__static + "/langs/fr/Items.json")).map(item => ({
+  id: item.id,
+  iconId: item.iconId,
+  label: item.nameId
+}));
 
 class BankTab extends Component {
   state = {
@@ -55,17 +53,10 @@ class BankTab extends Component {
   };
 
   handleInputWithLimitChanges = (type, max) => event => {
-    this.props.handleChanges(
-      type,
-      Number(event.target.value > max ? max : event.target.value)
-    );
+    this.props.handleChanges(type, Number(event.target.value > max ? max : event.target.value));
   };
 
-  handleAutoCompleteChange = (
-    type,
-    autoCompleteProp,
-    autoCompleteState
-  ) => element => {
+  handleAutoCompleteChange = (type, autoCompleteProp, autoCompleteState) => element => {
     if (autoCompleteProp.indexOf(element) === -1) {
       autoCompleteProp = [...autoCompleteProp, element];
     }
@@ -73,20 +64,9 @@ class BankTab extends Component {
     this.props.handleChanges(type, autoCompleteProp);
   };
 
-  handleAutoCompleteKeyDown = (
-    type,
-    autoCompleteProp,
-    autoCompleteState
-  ) => event => {
-    if (
-      autoCompleteProp.length &&
-      !this.state[autoCompleteState].length &&
-      keycode(event) === "backspace"
-    ) {
-      this.props.handleChanges(
-        type,
-        autoCompleteProp.slice(0, autoCompleteProp.length - 1)
-      );
+  handleAutoCompleteKeyDown = (type, autoCompleteProp, autoCompleteState) => event => {
+    if (autoCompleteProp.length && !this.state[autoCompleteState].length && keycode(event) === "backspace") {
+      this.props.handleChanges(type, autoCompleteProp.slice(0, autoCompleteProp.length - 1));
     }
   };
 
@@ -114,7 +94,7 @@ class BankTab extends Component {
     } = this.props;
     return (
       <div className={classes.root}>
-        <Grid container={true} spacing={24}>
+        <Grid container={true} spacing={24} className={classes.gridContainer}>
           <Grid item={true} xs={12}>
             <TextField
               label={Language.trans("BankTabPodMax")}
@@ -139,35 +119,17 @@ class BankTab extends Component {
               placeholder={Language.trans("BankTabAutoDeletePlaceHolder")}
               type={ITEMS}
               selectedItem={autoDelete}
-              onChange={this.handleAutoCompleteChange(
-                AUTO_DELETE,
-                autoDelete,
-                "autoDeleteInputValue"
-              )}
+              onChange={this.handleAutoCompleteChange(AUTO_DELETE, autoDelete, "autoDeleteInputValue")}
               inputValue={this.state.autoDeleteInputValue}
-              handleDelete={this.handleAutoCompleteDelete(
-                AUTO_DELETE,
-                autoDelete
-              )}
-              handleInputChange={this.handleAutoCompleteInputChange(
-                "autoDeleteInputValue"
-              )}
-              handleKeyDown={this.handleAutoCompleteKeyDown(
-                AUTO_DELETE,
-                autoDelete,
-                "autoDeleteInputValue"
-              )}
+              handleDelete={this.handleAutoCompleteDelete(AUTO_DELETE, autoDelete)}
+              handleInputChange={this.handleAutoCompleteInputChange("autoDeleteInputValue")}
+              handleKeyDown={this.handleAutoCompleteKeyDown(AUTO_DELETE, autoDelete, "autoDeleteInputValue")}
             />
           </Grid>
           <Grid item={true} xs={6}>
             <FormControl style={{ width: "100%" }}>
               <FormControlLabel
-                control={
-                  <Switch
-                    checked={takeKamas}
-                    onChange={this.handleSwitchChanges(TAKE_KAMAS)}
-                  />
-                }
+                control={<Switch checked={takeKamas} onChange={this.handleSwitchChanges(TAKE_KAMAS)} />}
                 label={Language.trans("BankTabTakeKamas")}
               />
             </FormControl>
@@ -191,12 +153,7 @@ class BankTab extends Component {
           <Grid item={true} xs={6}>
             <FormControl style={{ width: "100%" }}>
               <FormControlLabel
-                control={
-                  <Switch
-                    checked={putKamas}
-                    onChange={this.handleSwitchChanges(PUT_KAMAS)}
-                  />
-                }
+                control={<Switch checked={putKamas} onChange={this.handleSwitchChanges(PUT_KAMAS)} />}
                 label={Language.trans("BankTabPutKamas")}
               />
             </FormControl>
@@ -220,18 +177,12 @@ class BankTab extends Component {
           <Grid item={true} xs={12}>
             <ExpansionPanel>
               <ExpansionPanelSummary expandIcon={<ExpandMore />}>
-                <Typography className={classes.heading}>
-                  {Language.trans("BankTabTakeItem")}
-                </Typography>
+                <Typography className={classes.heading}>{Language.trans("BankTabTakeItem")}</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails className={classes.expansionPanelDetails}>
                 <Grid container={true} spacing={24}>
                   <Grid item={true} xs={12}>
-                    <BankItemManager
-                      items={takeItem}
-                      type={TAKE_ITEM}
-                      suggestionsType={ITEMS}
-                    />
+                    <BankItemManager items={takeItem} type={TAKE_ITEM} suggestionsType={ITEMS} />
                   </Grid>
                 </Grid>
               </ExpansionPanelDetails>
@@ -240,18 +191,12 @@ class BankTab extends Component {
           <Grid item={true} xs={12}>
             <ExpansionPanel>
               <ExpansionPanelSummary expandIcon={<ExpandMore />}>
-                <Typography className={classes.heading}>
-                  {Language.trans("BankTabPutItem")}
-                </Typography>
+                <Typography className={classes.heading}>{Language.trans("BankTabPutItem")}</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails className={classes.expansionPanelDetails}>
                 <Grid container={true} spacing={24}>
                   <Grid item={true} xs={12}>
-                    <BankItemManager
-                      items={putItem}
-                      type={PUT_ITEM}
-                      suggestionsType={ITEMS}
-                    />
+                    <BankItemManager items={putItem} type={PUT_ITEM} suggestionsType={ITEMS} />
                   </Grid>
                 </Grid>
               </ExpansionPanelDetails>
