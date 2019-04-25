@@ -1,0 +1,378 @@
+{
+  "1": {
+    "name": "Divers",
+    "id": 1,
+    "resources": [
+      {
+        "id": 410,
+        "nameId": "Zaap"
+      },
+      {
+        "id": 140,
+        "nameId": "Classes"
+      },
+      {
+        "id": 304,
+        "nameId": "Atelier"
+      },
+      {
+        "id": "water",
+        "nameId": "Eau"
+      },
+      {
+        "id": 401,
+        "nameId": "Banque"
+      },
+      {
+        "id": 447,
+        "nameId": "Phoenix"
+      },
+      {
+        "id": 422,
+        "nameId": "Dongeon"
+      },
+      {
+        "id": 425,
+        "nameId": "Hotel de vente"
+      },
+      {
+        "id": 448,
+        "nameId": "Taniére"
+      },
+      {
+        "id": "all",
+        "nameId": "Divers"
+      }
+    ]
+  },
+  "2": {
+    "name": "Bûcheron",
+    "id": 2,
+    "resources": [
+      {
+        "id": 303,
+        "nameId": "Bois de Frêne",
+        "iconId": 38017,
+        "level": 1
+      },
+      {
+        "id": 473,
+        "nameId": "Bois de Châtaignier",
+        "iconId": 38086,
+        "level": 10
+      },
+      {
+        "id": 476,
+        "nameId": "Bois de Noyer",
+        "iconId": 38095,
+        "level": 20
+      },
+      {
+        "id": 460,
+        "nameId": "Bois de Chêne",
+        "iconId": 38092,
+        "level": 30
+      },
+      {
+        "id": 471,
+        "nameId": "Bois d'Erable",
+        "iconId": 38153,
+        "level": 40
+      },
+      {
+        "id": 461,
+        "nameId": "Bois d'If",
+        "iconId": 38094,
+        "level": 50
+      },
+      {
+        "id": 2358,
+        "nameId": "Bois de Bombu",
+        "iconId": 38482,
+        "level": 50
+      },
+      {
+        "id": 2357,
+        "nameId": "Bois d'Oliviolet",
+        "iconId": 38481,
+        "level": 50
+      },
+      {
+        "id": 7013,
+        "nameId": "Bois de Bambou",
+        "iconId": 38673,
+        "level": 50
+      },
+      {
+        "id": 7925,
+        "nameId": "Bois de Kaliptus",
+        "iconId": 38001,
+        "level": 50
+      },
+      {
+        "id": 474,
+        "nameId": "Bois de Merisier",
+        "iconId": 38139,
+        "level": 60
+      },
+      {
+        "id": 7016,
+        "nameId": "Bois de Bambou Sombre",
+        "iconId": 38672,
+        "level": 60
+      },
+      {
+        "id": 449,
+        "nameId": "Bois d'Ebène",
+        "iconId": 38073,
+        "level": 70
+      },
+      {
+        "id": 472,
+        "nameId": "Bois de Charme",
+        "iconId": 38138,
+        "level": 80
+      },
+      {
+        "id": 470,
+        "nameId": "Bois d'Orme",
+        "iconId": 38140,
+        "level": 90
+      },
+      {
+        "id": 7014,
+        "nameId": "Bois de Bambou Sacré",
+        "iconId": 38671,
+        "level": 100
+      },
+      {
+        "id": 11107,
+        "nameId": "Bois de Tremble",
+        "iconId": 38677,
+        "level": 100
+      }
+    ]
+  },
+  "24": {
+    "name": "Mineur",
+    "id": 24,
+    "resources": [
+      {
+        "id": 312,
+        "nameId": "Fer",
+        "iconId": 39024,
+        "level": 1
+      },
+      {
+        "id": 441,
+        "nameId": "Cuivre",
+        "iconId": 39108,
+        "level": 10
+      },
+      {
+        "id": 442,
+        "nameId": "Bronze",
+        "iconId": 39109,
+        "level": 20
+      },
+      {
+        "id": 443,
+        "nameId": "Kobalte",
+        "iconId": 39077,
+        "level": 30
+      },
+      {
+        "id": 445,
+        "nameId": "Manganèse",
+        "iconId": 39397,
+        "level": 40
+      },
+      {
+        "id": 444,
+        "nameId": "Etain",
+        "iconId": 39078,
+        "level": 50
+      },
+      {
+        "id": 350,
+        "nameId": "Argent",
+        "iconId": 39028,
+        "level": 60
+      },
+      {
+        "id": 446,
+        "nameId": "Bauxite",
+        "iconId": 39076,
+        "level": 70
+      },
+      {
+        "id": 7032,
+        "nameId": "Silicate",
+        "iconId": 39111,
+        "level": 70
+      },
+      {
+        "id": 313,
+        "nameId": "Or",
+        "iconId": 39022,
+        "level": 80
+      },
+      {
+        "id": 7033,
+        "nameId": "Dolomite",
+        "iconId": 39110,
+        "level": 80
+      },
+      {
+        "id": 11110,
+        "nameId": "Obsidienne",
+        "iconId": 39112,
+        "level": 100
+      }
+    ]
+  },
+  "26": {
+    "name": "Alchimiste",
+    "id": 26,
+    "resources": [
+      {
+        "id": 421,
+        "nameId": "Fleur de Lin",
+        "iconId": 35117,
+        "level": 1
+      },
+      {
+        "id": 428,
+        "nameId": "Fleur de Chanvre",
+        "iconId": 35156,
+        "level": 10
+      },
+      {
+        "id": 395,
+        "nameId": "Trèfle à 5 feuilles",
+        "iconId": 36067,
+        "level": 20
+      },
+      {
+        "id": 380,
+        "nameId": "Feuille de Menthe Sauvage",
+        "iconId": 36052,
+        "level": 30
+      },
+      {
+        "id": 593,
+        "nameId": "Orchidée Freyesque",
+        "iconId": 35192,
+        "level": 40
+      },
+      {
+        "id": 594,
+        "nameId": "Edelweiss",
+        "iconId": 35191,
+        "level": 50
+      },
+      {
+        "id": 7059,
+        "nameId": "Graine de Pandouille",
+        "iconId": 58067,
+        "level": 100
+      },
+      {
+        "id": 11102,
+        "nameId": "Perce-Neige",
+        "iconId": 35635,
+        "level": 100
+      }
+    ]
+  },
+  "28": {
+    "name": "Paysan",
+    "id": 28,
+    "resources": [
+      {
+        "id": 289,
+        "nameId": "Blé",
+        "iconId": 34009,
+        "level": 1
+      },
+      {
+        "id": 400,
+        "nameId": "Orge",
+        "iconId": 34082,
+        "level": 10
+      },
+      {
+        "id": 533,
+        "nameId": "Avoine",
+        "iconId": 34154,
+        "level": 20
+      },
+      {
+        "id": 7018,
+        "nameId": "Riz",
+        "iconId": 34010,
+        "level": 20
+      },
+      {
+        "id": 401,
+        "nameId": "Houblon",
+        "iconId": 34080,
+        "level": 30
+      },
+      {
+        "id": 423,
+        "nameId": "Lin",
+        "iconId": 34122,
+        "level": 40
+      },
+      {
+        "id": 532,
+        "nameId": "Seigle",
+        "iconId": 34082,
+        "level": 50
+      },
+      {
+        "id": 405,
+        "nameId": "Malt",
+        "iconId": 34083,
+        "level": 60
+      },
+      {
+        "id": 425,
+        "nameId": "Chanvre",
+        "iconId": 34121,
+        "level": 70
+      },
+      {
+        "id": 11109,
+        "nameId": "Frostiz",
+        "iconId": 34552,
+        "level": 100
+      }
+    ]
+  },
+  "36": {
+    "name": "Pêcheur",
+    "id": 36,
+    "resources": [
+      {
+        "id": 1782,
+        "nameId": "Petit Poisson",
+        "iconId": 41294,
+        "level": 1
+      },
+      {
+        "id": 1847,
+        "nameId": "Moyen Poisson",
+        "iconId": 41400,
+        "level": 10
+      },
+      {
+        "id": 1805,
+        "nameId": "Gros Poisson",
+        "iconId": 41317,
+        "level": 20
+      }
+    ]
+  }
+}

@@ -12,7 +12,9 @@ import {
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { ExpandMore } from "@material-ui/icons";
+import fs from "fs";
 import keycode from "keycode";
+import Language from "owl/configurations/language/LanguageManager.js";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -20,20 +22,19 @@ import { handleChanges } from "renderer/actions/actions.js";
 import {
   AUTO_DELETE,
   MAX_PODS,
+  PUT_ITEM,
   PUT_KAMAS,
   PUT_KAMAS_QUANT,
-  TAKE_KAMAS,
-  TAKE_KAMAS_QUANT,
   TAKE_ITEM,
-  PUT_ITEM
+  TAKE_KAMAS,
+  TAKE_KAMAS_QUANT
 } from "renderer/actions/types";
 import MultipleChoiceAutoComplete from "renderer/components/AutoComplete/MultipleChoiceAutoComplete";
-import BankItemManager from "renderer/views/Modal/ItinerarySettings/Bank/BankItemManager";
 import { ITEMS } from "renderer/components/AutoComplete/types";
+import BankItemManager from "renderer/views/Modal/ItinerarySettings/Bank/BankItemManager";
 import styles from "renderer/views/Modal/ItinerarySettings/Bank/styles.js";
-import Language from "owl/configurations/language/LanguageManager.js";
 
-const Items = Object.values(require(__static + "/langs/fr/Items.json")).map(item => ({
+const Items = Object.values(JSON.parse(fs.readFileSync(__static + "/langs/fr/Items.json"))).map(item => ({
   id: item.id,
   iconId: item.iconId,
   label: item.nameId

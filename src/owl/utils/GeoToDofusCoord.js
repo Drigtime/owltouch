@@ -52,7 +52,8 @@ export const mapTileLayer = {
   actualLayerName: "amakna",
   hideMarkers(map) {
     const types = ["move", "bank", "phenix"];
-    let actualLayer = store.getState().scriptPath.scriptActions[this.actualLayerName];
+    const actualLayer = store.getState().scriptPath.scriptActions[this.actualLayerName];
+    const resourceLayer = store.getState().resourceMarker.markers;
     types.forEach(type => {
       actualLayer[type].forEach(action => {
         action.markers.forEach(marker => {
@@ -60,15 +61,29 @@ export const mapTileLayer = {
         });
       });
     });
+    Object.values(resourceLayer).forEach(resource => {
+      resource.forEach(marker => {
+        marker.marker.removeFrom(map);
+      });
+    });
   },
   showMarkers(map) {
     const types = ["move", "bank", "phenix"];
-    let actualLayer = store.getState().scriptPath.scriptActions[this.actualLayerName];
+    const currentWorldMap = this.getTileLayer().worldMap;
+    const actualLayer = store.getState().scriptPath.scriptActions[this.actualLayerName];
+    const resourceLayer = store.getState().resourceMarker.markers;
     types.forEach(type => {
       actualLayer[type].forEach(action => {
         action.markers.forEach(marker => {
           marker.marker.addTo(map);
         });
+      });
+    });
+    Object.values(resourceLayer).forEach(resource => {
+      resource.forEach(marker => {
+        if (marker.worldMapId == currentWorldMap) {
+          marker.marker.addTo(map);
+        }
       });
     });
   },
@@ -100,13 +115,24 @@ class GeoToDofusCoord {
     return [x, y];
   }
   // in: dofus [x,y] out: pixel coords (x,y) of the [x,y] map's center pixel
-  dofusCoordsToPixelCoords(dofusMapCoord) {
+  dofusCoordsToPixelCoords(dofusMapCoord, layer = mapTileLayer.getTileLayer()) {
     const newDofusCoords = L.point(dofusMapCoord);
-    return mapTileLayer.getTileLayer().coordsTransform.transform(newDofusCoords);
+    return layer.coordsTransform.transform(newDofusCoords);
   }
   geoCoordsToDofusCoords(geoCoords, map) {
     const pixelCoords = this.geoCoordsToPixelCoords(geoCoords, map);
     return this.pixelCoordsToDofusCoords(pixelCoords);
+  }
+  getDofusMapBounds(dofusMapCoord, map, layer = mapTileLayer.getTileLayer()) {
+    const topLeftCornerCorner = this.dofusCoordsToPixelCoords(dofusMapCoord, layer);
+    topLeftCornerCorner.x -= layer.topLeftCornerCorner / 2;
+    topLeftCornerCorner.y -= layer.bottomRightCornerCorner / 2;
+    const bottomRightCornerCorner = L.point(
+      topLeftCornerCorner.x + layer.topLeftCornerCorner / 2,
+      topLeftCornerCorner.y + layer.bottomRightCornerCorner / 2
+    );
+    const bound = this.pixelCoordsToGeoCoords(bottomRightCornerCorner, map);
+    return bound;
   }
 }
 

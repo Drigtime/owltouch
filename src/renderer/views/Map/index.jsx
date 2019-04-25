@@ -3,17 +3,13 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Map } from "react-leaflet";
 import { connect } from "react-redux";
+// import MarkerClusterGroup from "react-leaflet-markercluster";
 import MapArea from "renderer/components/Map/AreaDisplayer/index";
 import MapCoord from "renderer/components/Map/CoordDisplayer/index";
 import HightLight from "renderer/components/Map/HightLight/index";
 import PathDraw from "renderer/components/Map/PathDrawer/index";
 import WorldSwitch from "renderer/components/Map/WorldSwitcher/index";
-import LumberControl from "renderer/components/Map/ResourceDisplayer/LumberControl";
-import FarmerControl from "renderer/components/Map/ResourceDisplayer/FarmerControl";
-import MinerControl from "renderer/components/Map/ResourceDisplayer/MinerControl";
-import FisherControl from "renderer/components/Map/ResourceDisplayer/FisherControl";
-import MiscControl from "renderer/components/Map/ResourceDisplayer/MiscControl";
-import AlchemistControl from "renderer/components/Map/ResourceDisplayer/AlchemistControl";
+import JobResourceContainer from "renderer/components/Map/ResourceDisplayer/jobResourceContainer";
 
 class MapComponent extends Component {
   constructor(props) {
@@ -43,12 +39,13 @@ class MapComponent extends Component {
         <HightLight world={world} />
         <PathDraw world={world} />
         <WorldSwitch onChange={this.HandleWorldSwitch} />
-        <AlchemistControl />
-        <FarmerControl />
-        <LumberControl />
-        <MinerControl />
-        <FisherControl />
-        <MiscControl />
+        <JobResourceContainer jobId={26} />
+        <JobResourceContainer jobId={28} style={{ marginTop: "0px" }} />
+        <JobResourceContainer jobId={24} style={{ marginTop: "0px" }} />
+        <JobResourceContainer jobId={2} style={{ marginTop: "0px" }} />
+        <JobResourceContainer jobId={36} style={{ marginTop: "0px" }} />
+        <JobResourceContainer jobId={1} jobName={"Divers"} />
+        {/* <MarkerClusterGroup>{}</MarkerClusterGroup> */}
       </Map>
     );
   }

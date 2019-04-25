@@ -18,18 +18,6 @@ class PathDrawer extends MapControl {
     };
   }
 
-  getDofusMapBounds(dofusMapCoord, map) {
-    const topLeftCornerCorner = GeoToDofusCoord.dofusCoordsToPixelCoords(dofusMapCoord);
-    topLeftCornerCorner.x -= mapTileLayer.getTileLayer().topLeftCornerCorner / 2;
-    topLeftCornerCorner.y -= mapTileLayer.getTileLayer().bottomRightCornerCorner / 2;
-    const bottomRightCornerCorner = L.point(
-      topLeftCornerCorner.x + mapTileLayer.getTileLayer().topLeftCornerCorner / 2,
-      topLeftCornerCorner.y + mapTileLayer.getTileLayer().bottomRightCornerCorner / 2
-    );
-    const bound = GeoToDofusCoord.pixelCoordsToGeoCoords(bottomRightCornerCorner, map);
-    return bound;
-  }
-
   getArrowSize(size) {
     const zoom = this.state.map.getZoom();
     let scale = 0;
@@ -90,7 +78,7 @@ class PathDrawer extends MapControl {
     markers = [
       ...markers,
       {
-        marker: L.marker(this.getDofusMapBounds(coords, map), {
+        marker: L.marker(GeoToDofusCoord.getDofusMapBounds(coords, map), {
           icon: L.icon({
             iconUrl: join(__static, `/assets/path/${type}/${direction}.svg`),
             iconSize: [newIconSize.width, newIconSize.height],
@@ -125,7 +113,7 @@ class PathDrawer extends MapControl {
     actionsList[actionIndex].markers = [
       ...actionsList[actionIndex].markers,
       {
-        marker: L.marker(this.getDofusMapBounds(coords, map), {
+        marker: L.marker(GeoToDofusCoord.getDofusMapBounds(coords, map), {
           icon: L.icon({
             iconUrl: join(__static, `/assets/path/${type}/${direction}.svg`),
             iconSize: [newIconSize.width, newIconSize.height],

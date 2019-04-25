@@ -7,6 +7,7 @@ import fightTabReducer from "renderer/reducers/scriptSettingReducers/fightTabRed
 import gatherTabReducer from "renderer/reducers/scriptSettingReducers/gatherTabReducer.js";
 import informationTabReducer from "renderer/reducers/scriptSettingReducers/informationTabReducer.js";
 import worldSwitchReducer from "renderer/reducers/worldSwitchReducer.js";
+import resourceMarkerReducer from "renderer/reducers/resourceMarkerReducer.js";
 
 export default combineReducers({
   bankTab: bankTabReducer,
@@ -16,5 +17,6 @@ export default combineReducers({
   moveType: moveTypeReducer,
   moveToggleButtons: moveDirectionReducer,
   scriptPath: scriptPathReducer,
-  worldSwitch: worldSwitchReducer
+  worldSwitch: worldSwitchReducer,
+  resourceMarker: resourceMarkerReducer
 });

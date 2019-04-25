@@ -3,10 +3,10 @@
 import { app, BrowserWindow } from "electron";
 import * as path from "path";
 import { format as formatUrl } from "url";
-import installExtension, {
-  REACT_DEVELOPER_TOOLS,
-  REDUX_DEVTOOLS
-} from "electron-devtools-installer";
+// import installExtension, {
+//   REACT_DEVELOPER_TOOLS,
+//   REDUX_DEVTOOLS
+// } from "electron-devtools-installer";
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
@@ -20,9 +20,9 @@ function createMainWindow() {
     }
   });
 
-  if (isDevelopment) {
-    window.webContents.openDevTools();
-  }
+  // if (isDevelopment) {
+  window.webContents.openDevTools();
+  // }
 
   if (isDevelopment) {
     window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
@@ -70,10 +70,10 @@ app.on("ready", () => {
   mainWindow = createMainWindow();
 });
 
-app.on("ready", () => {
-  installExtension(REACT_DEVELOPER_TOOLS);
-});
+// app.on("ready", () => {
+//   installExtension(REACT_DEVELOPER_TOOLS);
+// });
 
-app.on("ready", () => {
-  installExtension(REDUX_DEVTOOLS);
-});
+// app.on("ready", () => {
+//   installExtension(REDUX_DEVTOOLS);
+// });

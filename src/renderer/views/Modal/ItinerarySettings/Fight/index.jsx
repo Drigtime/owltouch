@@ -12,7 +12,9 @@ import {
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { ExpandMore } from "@material-ui/icons";
+import fs from "fs";
 import keycode from "keycode";
+import Language from "owl/configurations/language/LanguageManager.js";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -35,16 +37,15 @@ import {
 } from "renderer/actions/types";
 import MultipleChoiceAutoComplete from "renderer/components/AutoComplete/MultipleChoiceAutoComplete";
 import { ITEMS, MONSTERS } from "renderer/components/AutoComplete/types";
-import Language from "owl/configurations/language/LanguageManager.js";
 import styles from "renderer/views/Modal/ItinerarySettings/Fight/styles.js";
 
-const Items = Object.values(require(__static + "/langs/fr/Items.json")).map(item => ({
+const Items = Object.values(JSON.parse(fs.readFileSync(__static + "/langs/fr/Items.json"))).map(item => ({
   id: item.id,
   iconId: item.iconId,
   label: item.nameId
 }));
 
-const Monsters = Object.values(require(__static + "/langs/fr/Monsters.json")).map(monster => ({
+const Monsters = Object.values(JSON.parse(fs.readFileSync(__static + "/langs/fr/Monsters.json"))).map(monster => ({
   id: monster.id,
   iconId: monster.id,
   label: monster.nameId

@@ -9,16 +9,14 @@ import React from "react";
 import { toggleButtonStyles } from "renderer/components/ToolBar/ToggleButton/type";
 import { connect } from "react-redux";
 import { handleChanges } from "renderer/actions/actions.js";
-import {
-  MOVEMENT_DIRECTION,
-  BUILDING_PLACEMENT,
-  FORMAT_TOOL
-} from "renderer/actions/types.js";
+import { MOVEMENT_DIRECTION, BUILDING_PLACEMENT, FORMAT_TOOL } from "renderer/actions/types.js";
 
 class ToggleButtons extends React.Component {
   handleToggleChanges = type => (event, value) => {
     this.props.handleChanges(type, value);
   };
+
+  compo;
 
   render() {
     const { classes, directions, format, building } = this.props;
@@ -27,10 +25,7 @@ class ToggleButtons extends React.Component {
       <Grid container={true} spacing={16}>
         <Grid item={true}>
           <div className={classes.toggleContainer}>
-            <ToggleButtonGroup
-              value={directions}
-              onChange={this.handleToggleChanges(MOVEMENT_DIRECTION)}
-            >
+            <ToggleButtonGroup value={directions} onChange={this.handleToggleChanges(MOVEMENT_DIRECTION)}>
               <ToggleButton value="top">
                 <FontAwesomeIcon size="lg" icon="arrow-up" />
               </ToggleButton>
@@ -53,36 +48,32 @@ class ToggleButtons extends React.Component {
               exclusive={true}
               onChange={this.handleToggleChanges(BUILDING_PLACEMENT)}
             >
-              <ToggleButton value="door">
-                <Tooltip title="porte">
+              <Tooltip title="porte" value="door">
+                <ToggleButton>
                   <FontAwesomeIcon size="lg" icon="dungeon" />
-                </Tooltip>
-              </ToggleButton>
-              <ToggleButton value="custom">
-                <Tooltip title="custom">
+                </ToggleButton>
+              </Tooltip>
+              <Tooltip title="custom" value="custom">
+                <ToggleButton>
                   <FontAwesomeIcon size="lg" icon="code" />
-                </Tooltip>
-              </ToggleButton>
-              <ToggleButton value="bank">
-                <Tooltip title="banque">
+                </ToggleButton>
+              </Tooltip>
+              <Tooltip title="banque" value="bank">
+                <ToggleButton>
                   <FontAwesomeIcon size="lg" icon="university" />
-                </Tooltip>
-              </ToggleButton>
-              <ToggleButton value="phoenix">
-                <Tooltip title="phenix">
+                </ToggleButton>
+              </Tooltip>
+              <Tooltip title="phenix" value="phoenix">
+                <ToggleButton>
                   <FontAwesomeIcon size="lg" icon={faPhoenixFramework} />
-                </Tooltip>
-              </ToggleButton>
+                </ToggleButton>
+              </Tooltip>
             </ToggleButtonGroup>
           </div>
         </Grid>
         <Grid item={true}>
           <div className={classes.toggleContainer}>
-            <ToggleButtonGroup
-              value={format}
-              exclusive={true}
-              onChange={this.handleToggleChanges(FORMAT_TOOL)}
-            >
+            <ToggleButtonGroup value={format} exclusive={true} onChange={this.handleToggleChanges(FORMAT_TOOL)}>
               <ToggleButton value="delete">
                 <FontAwesomeIcon size="lg" icon="eraser" />
               </ToggleButton>
@@ -110,7 +101,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  {
-    handleChanges
-  }
+  { handleChanges }
 )(withStyles(toggleButtonStyles)(ToggleButtons));

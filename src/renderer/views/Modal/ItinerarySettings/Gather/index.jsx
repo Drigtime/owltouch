@@ -1,6 +1,8 @@
 import { FormControl, FormControlLabel, Grid, Switch } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
+import fs from "fs";
 import keycode from "keycode";
+import Language from "owl/configurations/language/LanguageManager.js";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -8,9 +10,8 @@ import { handleChanges } from "renderer/actions/actions.js";
 import { ELEMENT_TO_GATHER, GATHER_COUNT, OPEN_BAG } from "renderer/actions/types.js";
 import MultipleChoiceAutoComplete from "renderer/components/AutoComplete/MultipleChoiceAutoComplete";
 import { GATHER } from "renderer/components/AutoComplete/types";
-import Language from "owl/configurations/language/LanguageManager.js";
 
-const Interactives = Object.values(require(__static + "/langs/fr/Interactives.json")).map(item => ({
+const Interactives = Object.values(JSON.parse(fs.readFileSync(__static + "/langs/fr/Interactives.json"))).map(item => ({
   id: item.id,
   label: item.nameId
 }));
