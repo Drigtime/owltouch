@@ -4,10 +4,6 @@
     "id": 1,
     "resources": [
       {
-        "id": 410,
-        "nameId": "Zaap"
-      },
-      {
         "id": 140,
         "nameId": "Classes"
       },
@@ -18,14 +14,6 @@
       {
         "id": "water",
         "nameId": "Eau"
-      },
-      {
-        "id": 401,
-        "nameId": "Banque"
-      },
-      {
-        "id": 447,
-        "nameId": "Phoenix"
       },
       {
         "id": 422,

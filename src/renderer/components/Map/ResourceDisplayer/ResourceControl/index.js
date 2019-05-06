@@ -2,6 +2,7 @@ import { Button, Card, CardContent, MuiThemeProvider, Tooltip, withStyles } from
 import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 import imgSize from "image-size";
 import L from "leaflet";
+import "leaflet.markercluster/dist/leaflet.markercluster";
 import GeoToDofusCoord, { mapTileLayer } from "owl/utils/GeoToDofusCoord.js";
 import path from "path";
 import PropTypes from "prop-types";
@@ -48,18 +49,22 @@ class ResourceControl extends React.Component {
 
     if (value.length < this.state.elements.length) {
       const removedResource = findResourceId(checkMissingResource(this.state.elements, value));
-      markers[removedResource.id].forEach(resource => {
-        resource.marker.removeFrom(this.props.map);
+      Object.values(markers[removedResource.id]).forEach(world => {
+        world.forEach(marker => {
+          this.props.cluster.removeLayer(marker);
+        });
       });
+
       delete markers[removedResource.id];
     } else if (value.length > this.state.elements.length) {
       const newResource = findResourceId(checkMissingResource(value, this.state.elements));
-      markers[newResource.id] = [];
+      markers[newResource.id] = {};
       newResource.locations.forEach(location => {
         if (location.gfx && location.worldMapId !== undefined) {
-          markers[newResource.id].push({
-            worldMapId: location.worldMapId,
-            marker: L.marker(
+          if (markers[newResource.id][location.worldMapId] == undefined)
+            markers[newResource.id][location.worldMapId] = [];
+          markers[newResource.id][location.worldMapId].push(
+            L.marker(
               GeoToDofusCoord.getDofusMapBounds(
                 [location.posX, location.posY],
                 this.props.map,
@@ -75,36 +80,47 @@ class ResourceControl extends React.Component {
                 })
               }
             )
-          });
+          );
         } else if (location.w !== undefined) {
-          markers[newResource.id].push({
-            worldMapId: location.w,
-            marker: L.marker(
+          if (markers[newResource.id][location.w] == undefined) markers[newResource.id][location.w] = [];
+          markers[newResource.id][location.w].push(
+            L.marker(
               GeoToDofusCoord.getDofusMapBounds(
                 [location.posX, location.posY],
                 this.props.map,
                 mapTileLayer[location.w == 1 ? "amakna" : "incarnam"]
               ),
               {
-                icon: L.icon({
+                icon: L.divIcon({
                   iconUrl: newResource.iconUrl,
-                  iconAnchor: [imgSize(newResource.iconUrl).width / 2, imgSize(newResource.iconUrl).height / 2]
-                })
+                  html: `<img src="${newResource.iconUrl}"><div class="qnt qnt${
+                    location.q > 10 ? 2 : location.q > 20 ? 3 : 1
+                  }">${location.q}</div>`,
+                  iconAnchor: [imgSize(newResource.iconUrl).width / 2, imgSize(newResource.iconUrl).height / 2],
+                  className: "myMarker"
+                }),
+                interactive: false
               }
             )
-          });
+          );
         }
       });
       const currentWorldMap = mapTileLayer.getTileLayer().worldMap;
-      markers[newResource.id].forEach(resource => {
-        if (resource.worldMapId == currentWorldMap) {
-          resource.marker.addTo(this.props.map);
-        }
-      });
+      this.props.cluster.addLayers(markers[newResource.id][currentWorldMap]);
+
+      // clusterGroup.removeLayers(markers[newResource.id][currentWorldMap]);
+
+      // markers[newResource.id][currentWorldMap].forEach(marker => {
+      //   marker.addTo(this.props.map);
+      // });
     }
     this.props.handleChanges(RESOURCE_MARKER, markers);
     this.setState({ elements: value });
   };
+
+  componentDidMount() {
+    this.props.map.addLayer(this.props.cluster);
+  }
 
   render() {
     const { classes, resourceList, jobName, jobId } = this.props;
@@ -148,11 +164,13 @@ ResourceControl.propTypes = {
   jobId: PropTypes.number.isRequired,
   map: PropTypes.any.isRequired,
   handleChanges: PropTypes.func.isRequired,
-  markers: PropTypes.object.isRequired
+  markers: PropTypes.object.isRequired,
+  cluster: L.MarkerClusterGroup
 };
 
 const mapStateToProps = state => ({
-  markers: state.resourceMarker.markers
+  markers: state.resourceMarker.markers,
+  cluster: state.resourceMarker.cluster
 });
 
 export default connect(

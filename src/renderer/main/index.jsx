@@ -1,9 +1,11 @@
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import withStyles from "@material-ui/core/styles/withStyles";
+import "leaflet.markercluster/dist/MarkerCluster.css";
+import "leaflet.markercluster/dist/MarkerCluster.Default.css";
+import * as React from "react";
 import Map from "renderer/views/Map/index";
 import ToolBar from "renderer/views/ToolBar/index";
-import * as React from "react";
 import { mainStyles, mainTheme } from "./types";
 
 class Main extends React.Component {

@@ -62,8 +62,10 @@ export const mapTileLayer = {
       });
     });
     Object.values(resourceLayer).forEach(resource => {
-      resource.forEach(marker => {
-        marker.marker.removeFrom(map);
+      Object.values(resource).forEach(world => {
+        world.forEach(marker => {
+          marker.removeFrom(map);
+        });
       });
     });
   },
@@ -80,10 +82,8 @@ export const mapTileLayer = {
       });
     });
     Object.values(resourceLayer).forEach(resource => {
-      resource.forEach(marker => {
-        if (marker.worldMapId == currentWorldMap) {
-          marker.marker.addTo(map);
-        }
+      resource[currentWorldMap].forEach(marker => {
+        marker.addTo(map);
       });
     });
   },

@@ -9,3 +9,28 @@ body,
   height: calc(100% - 48px);
   width: 100%;
 }
+
+.qnt {
+  position: absolute;
+  top: 0;
+  right: -25px;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  color: #000 !important;
+  border: 1px solid #666;
+  text-align: center;
+  font-size: 10px;
+  & {
+    background-color: #fff;
+  }
+  &1 {
+    background-color: #ffe79a;
+  }
+  &2 {
+    background-color: #ff9c9c;
+  }
+  &3 {
+    background-color: #ff5c5c;
+  }
+}

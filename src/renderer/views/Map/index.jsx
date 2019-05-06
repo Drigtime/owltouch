@@ -3,13 +3,12 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Map } from "react-leaflet";
 import { connect } from "react-redux";
-// import MarkerClusterGroup from "react-leaflet-markercluster";
 import MapArea from "renderer/components/Map/AreaDisplayer/index";
 import MapCoord from "renderer/components/Map/CoordDisplayer/index";
 import HightLight from "renderer/components/Map/HightLight/index";
 import PathDraw from "renderer/components/Map/PathDrawer/index";
-import WorldSwitch from "renderer/components/Map/WorldSwitcher/index";
 import JobResourceContainer from "renderer/components/Map/ResourceDisplayer/jobResourceContainer";
+import WorldSwitch from "renderer/components/Map/WorldSwitcher/index";
 
 class MapComponent extends Component {
   constructor(props) {
@@ -45,7 +44,6 @@ class MapComponent extends Component {
         <JobResourceContainer jobId={2} style={{ marginTop: "0px" }} />
         <JobResourceContainer jobId={36} style={{ marginTop: "0px" }} />
         <JobResourceContainer jobId={1} jobName={"Divers"} />
-        {/* <MarkerClusterGroup>{}</MarkerClusterGroup> */}
       </Map>
     );
   }
