@@ -64,7 +64,8 @@ export const mapTileLayer = {
     Object.values(resourceLayer).forEach(resource => {
       Object.values(resource).forEach(world => {
         world.forEach(marker => {
-          marker.removeFrom(map);
+          // marker.removeFrom(map);
+          store.getState().resourceMarker.cluster.removeLayer(marker);
         });
       });
     });
@@ -82,9 +83,11 @@ export const mapTileLayer = {
       });
     });
     Object.values(resourceLayer).forEach(resource => {
-      resource[currentWorldMap].forEach(marker => {
-        marker.addTo(map);
-      });
+      if (resource[currentWorldMap] !== undefined)
+        resource[currentWorldMap].forEach(marker => {
+          // marker.addTo(map);
+          store.getState().resourceMarker.cluster.addLayer(marker);
+        });
     });
   },
   setTileLayer(tileLayer, map) {

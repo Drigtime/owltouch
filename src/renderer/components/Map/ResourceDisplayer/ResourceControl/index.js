@@ -24,6 +24,9 @@ class ResourceControl extends React.Component {
   };
 
   toggleResourceMarkers = (event, value) => {
+    // eslint-disable-next-line no-console
+    console.log("OK");
+
     const markers = this.props.markers;
 
     const checkMissingResource = (firstArray, secondArray) => {
@@ -51,6 +54,7 @@ class ResourceControl extends React.Component {
       const removedResource = findResourceId(checkMissingResource(this.state.elements, value));
       Object.values(markers[removedResource.id]).forEach(world => {
         world.forEach(marker => {
+          // marker.removeFrom(this.props.map);
           this.props.cluster.removeLayer(marker);
         });
       });
@@ -68,7 +72,7 @@ class ResourceControl extends React.Component {
               GeoToDofusCoord.getDofusMapBounds(
                 [location.posX, location.posY],
                 this.props.map,
-                mapTileLayer[location.worldMapId == 1 ? "amakna" : "incarnam"]
+                mapTileLayer[location.worldMapId == 2 ? "incarnam" : "amakna"]
               ),
               {
                 icon: L.icon({
@@ -82,13 +86,14 @@ class ResourceControl extends React.Component {
             )
           );
         } else if (location.w !== undefined) {
-          if (markers[newResource.id][location.w] == undefined) markers[newResource.id][location.w] = [];
-          markers[newResource.id][location.w].push(
+          if (markers[newResource.id][location.w == 2 ? 2 : 1] == undefined)
+            markers[newResource.id][location.w == 2 ? 2 : 1] = [];
+          markers[newResource.id][location.w == 2 ? 2 : 1].push(
             L.marker(
               GeoToDofusCoord.getDofusMapBounds(
                 [location.posX, location.posY],
                 this.props.map,
-                mapTileLayer[location.w == 1 ? "amakna" : "incarnam"]
+                mapTileLayer[location.w == 2 ? "incarnam" : "amakna"]
               ),
               {
                 icon: L.divIcon({
@@ -106,13 +111,8 @@ class ResourceControl extends React.Component {
         }
       });
       const currentWorldMap = mapTileLayer.getTileLayer().worldMap;
-      this.props.cluster.addLayers(markers[newResource.id][currentWorldMap]);
-
-      // clusterGroup.removeLayers(markers[newResource.id][currentWorldMap]);
-
-      // markers[newResource.id][currentWorldMap].forEach(marker => {
-      //   marker.addTo(this.props.map);
-      // });
+      if (markers[newResource.id][currentWorldMap] !== undefined)
+        this.props.cluster.addLayers(markers[newResource.id][currentWorldMap]);
     }
     this.props.handleChanges(RESOURCE_MARKER, markers);
     this.setState({ elements: value });
@@ -165,7 +165,7 @@ ResourceControl.propTypes = {
   map: PropTypes.any.isRequired,
   handleChanges: PropTypes.func.isRequired,
   markers: PropTypes.object.isRequired,
-  cluster: L.MarkerClusterGroup
+  cluster: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({

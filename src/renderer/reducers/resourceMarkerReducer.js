@@ -23,8 +23,6 @@ const initialState = {
 };
 
 export default function(state = initialState, { type, payload }) {
-  // eslint-disable-next-line no-console
-  console.log(payload);
   switch (type) {
     case RESOURCE_MARKER:
       return {
